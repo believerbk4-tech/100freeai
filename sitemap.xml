@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Main Page -->
+  <!-- Main Directory Page -->
   <url>
     <loc>https://100freeai.netlify.app/</loc>
     <lastmod>2026-05-02</lastmod>
     <priority>1.00</priority>
   </url>
-  <!-- Add URLs for any sub-pages here if you create them later -->
+
+  <!-- Privacy Policy Page -->
+  <url>
+    <loc>https://100freeai.netlify.app/privacy-policy.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <priority>0.80</priority>
+  </url>
 </urlset>
