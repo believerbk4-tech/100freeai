@@ -52,120 +52,91 @@
             h3 { font-size: 16px; margin: 5px 0; }
             header { padding: 40px 10px; }
             .modal-box h1 { font-size: 1.5rem; }
-
+<!-- Final Fixed Professional Corner Buttons -->
 <style>
-    /* Professional Pill Styling */
-    .btn-pill {
-        position: fixed;
-        padding: 12px 28px;
-        border-radius: 50px;
-        font-weight: 800;
-        text-decoration: none;
-        text-transform: uppercase;
-        font-size: 13px;
-        z-index: 10000;
-        transition: all 0.3s ease;
-        letter-spacing: 1px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+    /* Resetting any conflicting styles */
+    .corner-btn {
+        position: fixed !important; /* Forces the position */
+        padding: 12px 25px !important;
+        border-radius: 50px !important;
+        font-weight: 800 !important;
+        text-decoration: none !important;
+        text-transform: uppercase !important;
+        font-size: 13px !important;
+        z-index: 99999 !important; /* Stays on top of everything */
+        transition: all 0.3s ease !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-family: sans-serif !important;
     }
 
-    /* 1. TOP RIGHT: CONTACT US (WhatsApp) */
-    .nav-contact {
-        top: 25px;
-        right: 25px;
-        background: #1a1a1a;
-        color: #ffffff;
-        border: 2px solid #ff6600; /* Professional Orange */
-        box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+    /* 1. TOP RIGHT: CONTACT US */
+    .top-right-contact {
+        top: 20px !important;
+        right: 20px !important;
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border: 2px solid #ff6600 !important;
+        box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3) !important;
     }
 
-    /* 2. BOTTOM RIGHT: FEEDBACK (Email) */
-    .nav-feedback {
-        bottom: 25px;
-        right: 25px;
-        background: #3b71ca; /* Professional Blue */
-        color: #ffffff;
-        border: 1px solid rgba(255,255,255,0.2);
-        box-shadow: 0 4px 15px rgba(59, 113, 202, 0.3);
+    /* 2. BOTTOM RIGHT: FEEDBACK */
+    .bottom-right-feedback {
+        bottom: 20px !important;
+        right: 20px !important;
+        background-color: #3b71ca !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        box-shadow: 0 5px 15px rgba(59, 113, 202, 0.3) !important;
     }
 
-    /* 3. BOTTOM LEFT: RATE US (Stars) */
-    .nav-rate {
-        bottom: 25px;
-        left: 25px;
-        background: #ffffff;
-        color: #111;
-        border: 1px solid #ddd;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        cursor: pointer;
+    /* 3. BOTTOM LEFT: RATE US */
+    .bottom-left-rate {
+        bottom: 20px !important;
+        left: 20px !important;
+        background-color: #ffffff !important;
+        color: #111111 !important;
+        border: 1px solid #dddddd !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+        cursor: pointer !important;
     }
 
-    .stars {
-        color: #ffcc00;
-        font-size: 14px;
-        margin-top: 2px;
+    .star-box {
+        color: #ffcc00 !important;
+        font-size: 14px !important;
+        margin-top: 2px !important;
+        font-weight: bold !important;
     }
 
-    .btn-pill:hover {
-        transform: translateY(-3px);
-        filter: brightness(1.1);
+    .corner-btn:hover {
+        transform: translateY(-3px) !important;
+        filter: brightness(1.2) !important;
     }
 </style>
 
 <!-- Top Right Button -->
-<a href="https://wa.me/923175006728" target="_blank" class="btn-pill nav-contact">
+<a href="https://wa.me/923175006728" target="_blank" class="corner-btn top-right-contact">
     CONTACT US
 </a>
 
 <!-- Bottom Right Button -->
-<a href="mailto:believerbk4@Gmail.com?subject=Feedback%20for%20100FreeAI" class="btn-pill nav-feedback">
+<a href="mailto:believerbk4@Gmail.com?subject=Website%20Feedback" class="corner-btn bottom-right-feedback">
     FEEDBACK
 </a>
 
 <!-- Bottom Left Button -->
-<div class="btn-pill nav-rate" onclick="handleRateClick()">
+<div class="corner-btn bottom-left-rate" onclick="handleNewRating()">
     RATE US!
-    <div class="stars">★★★★★</div>
+    <div class="star-box">★★★★★</div>
 </div>
 
 <script>
-    function handleRateClick() {
-        let val = prompt("How many stars would you give 100FreeAI? (1-5)", "5");
-        if (val >= 1 && val <= 5) {
-            alert("Thanks for the " + val + " stars, bro! I appreciate the support.");
-        }
-    }
-</script>
-
-</style>
-
-<!-- HTML Elements -->
-<a href="https://wa.me/923175006728" target="_blank" class="floating-pill contact-us-float">
-    <div class="pill-decoration"></div>
-    CONTACT US
-</a>
-
-<a href="mailto:believerbk4@Gmail.com?subject=100FreeAI%20Issue/Feedback" class="floating-pill feedback-float">
-    <div class="pill-decoration"></div>
-    FEEDBACK
-</a>
-
-<div class="floating-pill rate-us-float" onclick="submitRating()">
-    RATE US!
-    <div class="star-row">★★★★★</div>
-</div>
-
-<!-- JavaScript Logic -->
-<script>
-    function submitRating() {
-        let stars = prompt("How many stars would you give 100FreeAI? (1 to 5)", "5");
+    function handleNewRating() {
+        let stars = prompt("How many stars for 100FreeAI? (1-5)", "5");
         if (stars >= 1 && stars <= 5) {
-            alert("Thanks for the " + stars + " star rating, bro! Your support means everything to the project.");
-        } else if (stars !== null) {
-            alert("Please enter a number between 1 and 5!");
+            alert("Thanks for the " + stars + " stars, bro! I'm glad you're part of the journey.");
         }
     }
 </script>
