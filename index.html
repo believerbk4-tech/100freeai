@@ -55,115 +55,42 @@
 <!-- Final Fixed Professional Corner Buttons -->
 <style>
    {
-       
-  <!-- PROFESSIONAL CONTACT STICKER - BYPASSING ALL OLD STYLES -->
-<a href="https://wa.me/923175006728" 
-   target="_blank" 
-   style="position: fixed !important; 
-          top: 30px !important; 
-          right: 30px !important; 
-          display: flex !important; 
-          align-items: center !important; 
-          background: #0047FF !important; 
-          color: white !important; 
-          padding: 12px 28px !important; 
-          border-radius: 50px !important; 
-          text-decoration: none !important; 
-          font-weight: 900 !important; 
-          font-family: 'Arial Black', sans-serif !important; 
-          border: 4px solid white !important; 
-          box-shadow: 6px 6px 0px rgba(0,0,0,0.3) !important; 
-          z-index: 10000000 !important; 
-          transition: 0.3s !important;">
-    
-    <span style="background: white !important; 
-                 color: #0047FF !important; 
-                 width: 26px !important; 
-                 height: 26px !important; 
-                 border-radius: 50% !important; 
-                 display: flex !important; 
-                 align-items: center !important; 
-                 justify-content: center !important; 
-                 margin-right: 12px !important; 
-                 font-size: 15px !important;">
-        📞
-    </span>
-    
-    CONTACT US!
-</a>
-        
-     }
-        
-   <!-- STEP 2: PROFESSIONAL FEEDBACK BUTTON -->
-<style>
-    <!-- ULTIMATE PROFESSIONAL FEEDBACK BUTTON -->
-<a href="mailto:believerbk4@gmail.com?subject=Feedback%20for%20100FreeAI" 
-   style="position: fixed !important; 
-          bottom: 25px !important; 
-          right: 25px !important; 
-          background: #3b71ca !important; 
-          color: #ffffff !important; 
-          padding: 12px 24px !important; 
-          border-radius: 12px !important; 
-          font-weight: 800 !important; 
-          font-size: 13px !important; 
-          text-transform: uppercase !important; 
-          text-decoration: none !important; 
-          z-index: 9999999 !important; 
-          box-shadow: 0 4px 15px rgba(59, 113, 202, 0.4) !important; 
-          display: flex !important; 
-          align-items: center !important; 
-          font-family: sans-serif !important; 
-          letter-spacing: 1px !important;
-          transition: 0.3s !important;">
-    FEEDBACK
-</a>
 
- <!-- PROFESSIONAL RATE US SYSTEM -->
+     <!-- 1. HIGH-TECH WELCOME PORTAL -->
+<div id="welcomePortal" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: #050505 !important; background-image: radial-gradient(circle at center, #1a0b3b 0%, #050505 100%) !important; z-index: 10000005 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; transition: 0.8s ease !important; font-family: sans-serif !important;">
+    <h1 style="color: white !important; font-size: clamp(3rem, 10vw, 5rem) !important; font-weight: 900 !important; margin-bottom: 10px !important; text-shadow: 0 0 20px rgba(138, 43, 226, 0.5) !important;">100FREEAI</h1>
+    <p style="color: #8a2be2 !important; font-size: 1.1rem !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 4px !important; margin-bottom: 30px !important;">Elite AI Directory</p>
+    <button onclick="closePortal()" style="background: transparent !important; color: white !important; padding: 15px 40px !important; border: 2px solid #8a2be2 !important; border-radius: 4px !important; cursor: pointer !important; font-weight: 700 !important; letter-spacing: 2px !important;">ENTER DIRECTORY</button>
+</div>
 
-<!-- 1. THE HIDDEN RATING PANEL -->
-<div id="rateModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 35px; border-radius: 24px; border: 1px solid #333; z-index: 10000001; text-align: center; color: white; box-shadow: 0 20px 60px rgba(0,0,0,0.9); width: 320px; font-family: sans-serif; backdrop-filter: blur(15px);">
-    <h3 style="margin-bottom: 8px; font-size: 1.4rem;">Enjoying 100FreeAI?</h3>
-    <p style="color: #888; font-size: 14px; margin-bottom: 25px;">How would you rate your experience?</p>
-    
-    <!-- INTERACTIVE STARS -->
-    <div style="font-size: 35px; margin-bottom: 30px; display: flex; justify-content: center; gap: 8px;">
-        <span onclick="submitRate(1)" onmouseover="glow(1)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
-        <span onclick="submitRate(2)" onmouseover="glow(2)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
-        <span onclick="submitRate(3)" onmouseover="glow(3)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
-        <span onclick="submitRate(4)" onmouseover="glow(4)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
-        <span onclick="submitRate(5)" onmouseover="glow(5)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
+<!-- 2. INTERACTIVE RATE MODAL -->
+<div id="rateModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 35px; border-radius: 20px; border: 1px solid #333; z-index: 10000010; text-align: center; color: white; width: 300px; font-family: sans-serif;">
+    <h3 style="margin-bottom: 10px;">Rate Your Experience</h3>
+    <div id="starContainer" style="font-size: 35px; margin-bottom: 20px; cursor: pointer; color: #444;">
+        <span onclick="submitRate(1)" class="s">★</span><span onclick="submitRate(2)" class="s">★</span><span onclick="submitRate(3)" class="s">★</span><span onclick="submitRate(4)" class="s">★</span><span onclick="submitRate(5)" class="s">★</span>
     </div>
-
-    <button onclick="closeRate()" style="background: transparent; color: #666; border: none; cursor: pointer; font-size: 13px; text-decoration: underline; font-weight: 600;">CLOSE</button>
+    <button onclick="closeRate()" style="background: none; border: none; color: #666; cursor: pointer; text-decoration: underline;">Close</button>
 </div>
 
-<!-- 2. THE TRIGGER BUTTON (BOTTOM LEFT) -->
-<div onclick="openRate()" style="position: fixed !important; bottom: 25px !important; left: 25px !important; background: rgba(255, 255, 255, 0.08) !important; color: white !important; padding: 14px 22px !important; border-radius: 12px !important; font-weight: 800 !important; cursor: pointer !important; z-index: 9999998 !important; border: 1px solid rgba(255,255,255,0.1) !important; backdrop-filter: blur(12px) !important; font-family: sans-serif !important; font-size: 12px !important; letter-spacing: 1px !important; transition: 0.3s !important; text-transform: uppercase !important;">
-    RATE US! ★★★★★
-</div>
+<!-- 3. CORNER BUTTONS -->
+<!-- Top Right: Contact -->
+<a href="https://wa.me/923175006728" target="_blank" style="position: fixed !important; top: 25px !important; right: 25px !important; background: #0047FF !important; color: white !important; padding: 12px 24px !important; border-radius: 50px !important; text-decoration: none !important; font-weight: 900 !important; border: 4px solid white !important; z-index: 10000000 !important; display: flex !important; align-items: center !important;">
+    <span style="background:white; color:#0047FF; width:20px; height:20px; border-radius:50%; margin-right:10px; display:flex; align-items:center; justify-content:center; font-size:12px;">📞</span> CONTACT US!
+</a>
+
+<!-- Bottom Right: Feedback -->
+<a href="mailto:believerbk4@gmail.com" style="position: fixed !important; bottom: 25px !important; right: 25px !important; background: #3b71ca !important; color: white !important; padding: 12px 24px !important; border-radius: 10px !important; text-decoration: none !important; font-weight: 800 !important; z-index: 10000000 !important;">FEEDBACK</a>
+
+<!-- Bottom Left: Rate Us -->
+<div onclick="openRate()" style="position: fixed !important; bottom: 25px !important; left: 25px !important; background: rgba(255,255,255,0.1) !important; color: white !important; padding: 12px 24px !important; border-radius: 10px !important; cursor: pointer !important; z-index: 10000000 !important; border: 1px solid rgba(255,255,255,0.2) !important; backdrop-filter: blur(10px) !important;">RATE US! ★★★★★</div>
 
 <script>
-    const stars = document.querySelectorAll('.star-icon');
+    function closePortal() { document.getElementById('welcomePortal').style.opacity = '0'; setTimeout(() => { document.getElementById('welcomePortal').style.display = 'none'; }, 800); }
     function openRate() { document.getElementById('rateModal').style.display = 'block'; }
     function closeRate() { document.getElementById('rateModal').style.display = 'none'; }
-    
-    function glow(n) {
-        stars.forEach((s, i) => {
-            s.style.color = i < n ? '#FFD700' : '#444';
-            s.style.textShadow = i < n ? '0 0 15px rgba(255, 215, 0, 0.6)' : 'none';
-        });
-    }
-
-    function resetGlow() {
-        stars.forEach(s => { s.style.color = '#444'; s.style.textShadow = 'none'; });
-    }
-
-    function submitRate(n) {
-        alert("Success! You gave us " + n + " stars. Thanks, partner!");
-        closeRate();
-    }
-</script>
+    function submitRate(n) { alert("Thanks for the " + n + " star rating!"); closeRate(); }
+</script>  
+  
 
     <!-- 1. CONTACT US STICKER (TOP RIGHT) -->
 <a href="https://wa.me/923175006728" target="_blank" style="position: fixed !important; top: 25px !important; right: 25px !important; display: flex !important; align-items: center !important; background: #0047FF !important; color: white !important; padding: 12px 28px !important; border-radius: 50px !important; text-decoration: none !important; font-weight: 900 !important; font-family: 'Arial Black', sans-serif !important; border: 4px solid white !important; box-shadow: 6px 6px 0px rgba(0,0,0,0.3) !important; z-index: 9999999 !important;">
