@@ -71,33 +71,45 @@
         justify-content: center !important;
         font-family: sans-serif !important;
     }
-<!-- 1. ENTRY PORTAL (MATCHING REFERENCE 98) -->
-<div id="welcomePortal" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: radial-gradient(circle at center, #1a0b3b 0%, #050505 100%) !important; z-index: 9999999 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; transition: opacity 0.8s ease !important;">
+
+  <!-- PROFESSIONAL CONTACT STICKER - BYPASSING ALL OLD STYLES -->
+<a href="https://wa.me/923175006728" 
+   target="_blank" 
+   style="position: fixed !important; 
+          top: 30px !important; 
+          right: 30px !important; 
+          display: flex !important; 
+          align-items: center !important; 
+          background: #0047FF !important; 
+          color: white !important; 
+          padding: 12px 28px !important; 
+          border-radius: 50px !important; 
+          text-decoration: none !important; 
+          font-weight: 900 !important; 
+          font-family: 'Arial Black', sans-serif !important; 
+          border: 4px solid white !important; 
+          box-shadow: 6px 6px 0px rgba(0,0,0,0.3) !important; 
+          z-index: 10000000 !important; 
+          transition: 0.3s !important;">
     
-    <h1 style="color: white !important; font-size: clamp(40px, 8vw, 80px) !important; font-weight: 900 !important; margin-bottom: 10px !important; font-family: sans-serif !important; text-transform: uppercase !important;">WELCOME TO 100FREEAI</h1>
-    <p style="color: rgba(255,255,255,0.7) !important; font-size: 20px !important; margin-bottom: 40px !important; font-family: sans-serif !important;">Explore the 100+ Elite AI Tools</p>
-
-    <button onclick="closePortal()" style="background: linear-gradient(90deg, #7b2ff7, #b12ff7) !important; color: white !important; padding: 18px 50px !important; border-radius: 12px !important; font-weight: 800 !important; font-size: 1.1rem !important; border: none !important; cursor: pointer !important; box-shadow: 0 0 30px rgba(123, 47, 247, 0.6) !important; text-transform: uppercase !important;">
-        EXPLORE AI TOOLS
-    </button>
-</div>
-
-<!-- 2. CONTACT US STICKER (MATCHING BLUE REFERENCE) -->
-<a href="https://wa.me/923175006728" target="_blank" style="position: fixed !important; top: 25px !important; right: 25px !important; display: flex !important; align-items: center !important; background: #0047FF !important; color: white !important; padding: 12px 28px !important; border-radius: 50px !important; text-decoration: none !important; font-weight: 900 !important; font-family: 'Arial Black', sans-serif !important; border: 4px solid white !important; box-shadow: 6px 6px 0px rgba(0,0,0,0.3) !important; z-index: 999999 !important; transition: 0.3s !important;">
-    <span style="background: white !important; color: #0047FF !important; width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 10px !important; font-weight: bold !important;">📞</span>
+    <span style="background: white !important; 
+                 color: #0047FF !important; 
+                 width: 26px !important; 
+                 height: 26px !important; 
+                 border-radius: 50% !important; 
+                 display: flex !important; 
+                 align-items: center !important; 
+                 justify-content: center !important; 
+                 margin-right: 12px !important; 
+                 font-size: 15px !important;">
+        📞
+    </span>
+    
     CONTACT US!
 </a>
-
-<script>
-    function closePortal() {
-        const portal = document.getElementById('welcomePortal');
-        portal.style.opacity = '0';
-        setTimeout(() => {
-            portal.style.display = 'none';
-        }, 800);
-    }
-</script>
-    
+        
+     }
+        
    <!-- STEP 2: PROFESSIONAL FEEDBACK BUTTON -->
 <style>
     /* The Feedback Button - Locked to Bottom Right */
@@ -237,29 +249,36 @@
 
  <body>
 
-<!-- 1. HIGH-TECH WELCOME PORTAL (FULL SCREEN ENTRY) -->
-<div id="welcomePortal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #1a0b3b 0%, #050505 100%); z-index: 200000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: 0.8s ease-in-out; overflow: hidden; padding: 20px;">
+<!-- HIGH-TECH PRO ENTRY PORTAL -->
+<div id="welcomePortal" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: #050505 !important; background-image: radial-gradient(circle at center, #1a0b3b 0%, #050505 100%), linear-gradient(rgba(138, 43, 226, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(138, 43, 226, 0.05) 1px, transparent 1px) !important; background-size: 100% 100%, 50px 50px, 50px 50px !important; z-index: 9999999 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; transition: 0.8s ease !important; font-family: 'Inter', sans-serif !important;">
     
-    <!-- Futuristic Glow Background -->
-    <div style="position: absolute; width: 600px; height: 600px; background: rgba(138, 43, 226, 0.15); filter: blur(120px); border-radius: 50%; z-index: -1;"></div>
+    <!-- Moving Glow Node -->
+    <div style="position: absolute; width: 300px; height: 300px; background: rgba(138, 43, 226, 0.2); filter: blur(80px); border-radius: 50%; animation: pulse 4s infinite alternate; z-index: 0;"></div>
 
-    <h1 style="color: white; font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; letter-spacing: -2px; margin-bottom: 10px; font-family: 'Inter', sans-serif;">WELCOME TO 100FREEAI</h1>
-    <p style="color: rgba(255,255,255,0.7); font-size: clamp(1.1rem, 3vw, 1.8rem); margin-bottom: 40px; font-weight: 300;">Explore the 100+ Elite AI Tools</p>
+    <div style="z-index: 1;">
+        <h1 style="color: white !important; font-size: clamp(3rem, 10vw, 6rem) !important; font-weight: 900 !important; margin-bottom: 0px !important; text-shadow: 0 0 20px rgba(138, 43, 226, 0.5) !important; letter-spacing: -3px !important;">100FREEAI</h1>
+        <p style="color: #8a2be2 !important; font-size: 1.2rem !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 5px !important; margin-bottom: 40px !important;">The Ultimate AI Toolkit</p>
 
-    <!-- The "Enter" Button -->
-    <button onclick="closePortal()" style="background: linear-gradient(90deg, #7b2ff7, #b12ff7); color: white; padding: 20px 50px; border-radius: 15px; font-weight: 800; text-transform: uppercase; font-size: 1.2rem; border: none; cursor: pointer; box-shadow: 0 0 30px rgba(123, 47, 247, 0.6); transition: 0.3s; letter-spacing: 1px;">
-        EXPLORE AI TOOLS
-    </button>
+        <!-- Modern Explore Button -->
+        <button onclick="closePortal()" style="background: transparent !important; color: white !important; padding: 15px 40px !important; border-radius: 4px !important; font-weight: 700 !important; font-size: 1rem !important; border: 2px solid #8a2be2 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.4s !important; box-shadow: 0 0 15px rgba(138, 43, 226, 0.3) !important;">
+            Enter Directory
+        </button>
+    </div>
 </div>
+
+<style>
+    @keyframes pulse {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+        100% { transform: translate(-40%, -60%) scale(1.2); opacity: 0.8; }
+    }
+</style>
 
 <script>
     function closePortal() {
         const portal = document.getElementById('welcomePortal');
         portal.style.opacity = '0';
-        portal.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-            portal.style.display = 'none';
-        }, 800);
+        portal.style.filter = 'blur(20px)';
+        setTimeout(() => { portal.style.display = 'none'; }, 800);
     }
 </script>
      
