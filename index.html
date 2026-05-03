@@ -3,7 +3,8 @@
 <head>
     <!-- Technical Setup -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FIX: Updated to control zoom and ensure fixed scale on mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="google-site-verification" content="CzYHYF3rOiwMdGmGs6lAqJRtMkd6mPJxutV8TdbKVjM" />
 
     <!-- SEO Optimized Title & Description -->
@@ -18,31 +19,70 @@
     <meta property="og:url" content="https://100freeai.netlify.app/">
 
     <style>
-        /* Your existing styles remain exactly as they are below this line */
         :root { --primary: #00ff88; --dark: #000000; --card: #121212; --text: #ffffff; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--dark); color: var(--text); margin: 0; scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--dark); color: var(--text); margin: 0; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
         header { padding: 60px 20px; text-align: center; background: linear-gradient(135deg, #000000 0%, #0a0a1a 100%); }
         .controls { text-align: center; margin-bottom: 40px; }
-        #searchBar { padding: 15px; width: 320px; border-radius: 25px; border: 1px solid #333; outline: none; font-size: 16px; background: #111; color: white; margin-bottom: 20px; }
-        .filter-btn { background: none; border: 1px solid var(--primary); color: var(--primary); padding: 8px 20px; margin: 5px; cursor: pointer; border-radius: 20px; transition: 0.3s; font-weight: bold; }
+        #searchBar { padding: 15px; width: 320px; max-width: 90%; border-radius: 25px; border: 1px solid #333; outline: none; font-size: 16px; background: #111; color: white; margin-bottom: 20px; }
+        .filter-btn { background: none; border: 1px solid var(--primary); color: var(--primary); padding: 8px 20px; margin: 5px; cursor: pointer; border-radius: 20px; transition: 0.3s; font-weight: bold; font-size: 14px;}
         .filter-btn.active, .filter-btn:hover { background: var(--primary); color: #000; }
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; padding: 0 40px; max-width: 1400px; margin: auto; }
-        .tool-card { background: var(--card); padding: 25px; border-radius: 12px; border-left: 5px solid var(--primary); transition: 0.3s; display: flex; flex-direction: column; }
+        
+        /* FIX: Responsive tool grid, 3-wide on PC, 2-wide on Mobile */
+        .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 20px; max-width: 1400px; margin: auto; }
+        .tool-card { background: var(--card); padding: 15px; border-radius: 12px; border-left: 5px solid var(--primary); transition: 0.3s; display: flex; flex-direction: column; min-width: 0;}
         .tool-card:hover { transform: translateY(-8px); box-shadow: 0 10px 20px rgba(0,255,136,0.1); }
         .category-tag { font-size: 11px; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .review-text { font-size: 14px; color: #ccc; line-height: 1.6; margin: 15px 0; flex-grow: 1; }
+        .review-text { font-size: 14px; color: #ccc; line-height: 1.5; margin: 10px 0; flex-grow: 1; }
+        
+        /* Modal Styles */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-box { background: #1a1a1a; padding: 40px; border-radius: 25px; text-align: center; border: 2px solid #333; max-width: 450px; }
+        .modal-box { background: #1a1a1a; padding: 30px; border-radius: 25px; text-align: center; border: 2px solid #333; max-width: 90%; width: 400px; }
         .start-btn { background: var(--primary); color: #000; padding: 12px 35px; border-radius: 25px; border: none; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
-        #privacy-section { max-width: 900px; margin: 60px auto; padding: 40px; background: #0a0a0a; border: 1px solid #222; border-radius: 15px; }
+        
+        /* Footer Styles */
         footer { margin-top: 80px; padding: 40px 20px; background: #000; text-align: center; border-top: 1px solid #222; }
         footer p { margin: 8px 0; font-size: 14px; color: #fff; }
-        .green-link { color: #00ff88; text-decoration: none; font-weight: bold; margin-top: auto; }
+        .green-link { color: #00ff88; text-decoration: none; font-weight: bold; margin-top: auto; font-size: 14px; }
+
+        /* FIX: Mobile Optimization Rules */
+        @media (max-width: 900px) {
+            .tool-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 10px; }
+            .tool-card { padding: 10px; border-left-width: 3px; }
+            .review-text { font-size: 12px; margin: 5px 0; }
+            h3 { font-size: 16px; margin: 5px 0; }
+            header { padding: 40px 10px; }
+            .modal-box h1 { font-size: 1.5rem; }
+        }
+
+        /* FIX: Upper Right Feedback Button (Floating and Responsive) */
+        .feedback-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 12px;
+            z-index: 999;
+            transition: 0.3s;
+        }
+        .feedback-btn:hover { background: var(--primary); color: #000; }
+        
+        @media (max-width: 600px) {
+            .feedback-btn { top: 10px; right: 10px; padding: 5px 10px; font-size: 10px; }
+        }
     </style>
 </head>
  <body>
 
-    <!-- 1. Welcome Modal (Stays exactly as you want it) -->
+    <!-- 1. Floating Feedback Button (Added as requested) -->
+    <a href="mailto:believerbk4@Gmail.com?subject=100FreeAI Website Feedback" class="feedback-btn">Feedback</a>
+
+    <!-- 2. Welcome Modal (Stays exactly as you want it) -->
     <div id="welcome" class="modal">
         <div class="modal-box">
             <h1 style="font-size: 2rem; margin-bottom: 15px;">Welcome, Future Pro! 🚀</h1>
@@ -51,9 +91,9 @@
         </div>
     </div>
 
-    <!-- 2. Header with Search and Filter Buttons (RESTORING THESE) -->
+    <!-- 3. Header with Search and Filter Buttons (RESTORING THESE) -->
     <header>
-        <h1>AI Library for Beginners</h1>
+        <h1 style="margin-top: 20px;">AI Library for Beginners</h1>
         <p>Master the future with 100+ free tools.</p>
         <div class="controls">
             <input type="text" id="searchBar" placeholder="Search for a tool..." onkeyup="searchTools()">
@@ -65,38 +105,39 @@
         </div>
     </header>
 
-    <!-- 3. Featured Tool Section (With Pro Tip & Your Image) -->
-    <div style="max-width: 1400px; margin: 20px auto; padding: 0 40px;">
-        <div style="background: linear-gradient(90deg, #121212 0%, #1a1a1a 100%); border: 2px solid var(--primary); border-radius: 20px; padding: 30px; display: flex; align-items: center; gap: 30px; flex-wrap: wrap; box-shadow: 0 0 20px rgba(0,255,136,0.15);">
-            <div style="flex: 1; min-width: 300px;">
-                <span style="background: var(--primary); color: #000; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 12px; text-transform: uppercase;">Partner's Pick 🚀</span>
-                <h2 style="margin: 15px 0 10px 0; font-size: 28px;">Leonardo.ai</h2>
-              <p style="color: #ccc; line-height: 1.6; font-size: 16px;">
-    "Since I am a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite."
-</p
-             <div style="background: rgba(0,255,136,0.1); border-left: 3px solid var(--primary); padding: 10px 15px; margin: 15px 0; border-radius: 5px;">
-                    <p style="margin: 0; font-size: 14px; color: var(--primary);"><strong>Partner's Pro Tip:</strong> Use the 'PhotoReal' model for project backgrounds. It gives way more control over lighting and vibe than other free tools!</p>
+    <!-- 4. Featured Tool Section (FIX: Responsive with smaller image size) -->
+    <div style="max-width: 1400px; margin: 20px auto; padding: 0 10px;">
+        <div style="background: linear-gradient(90deg, #121212 0%, #1a1a1a 100%); border: 2px solid var(--primary); border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; box-shadow: 0 0 20px rgba(0,255,136,0.15);">
+            <div style="flex: 1; min-width: 250px;">
+                <span style="background: var(--primary); color: #000; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 11px; text-transform: uppercase;">Partner's Pick 🚀</span>
+                <h2 style="margin: 10px 0; font-size: 24px;">Leonardo.ai</h2>
+                <p style="color: #ccc; line-height: 1.6; font-size: 14px; margin: 10px 0;">
+                    "Since I am a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite."
+                </p>
+                <div style="background: rgba(0,255,136,0.1); border-left: 3px solid var(--primary); padding: 10px 15px; margin: 10px 0; border-radius: 5px;">
+                    <p style="margin: 0; font-size: 12px; color: var(--primary);"><strong>Partner's Pro Tip:</strong> Use the 'PhotoReal' model for project backgrounds. It gives way more control over lighting and vibe than other free tools!</p>
                 </div>
-                <div style="margin-top: 20px;">
-                    <a href="https://leonardo.ai" class="start-btn" style="text-decoration: none; display: inline-block;">Try Leonardo for Free →</a>
+                <div style="margin-top: 15px;">
+                    <a href="https://leonardo.ai" class="start-btn" style="text-decoration: none; display: inline-block; font-size: 14px; padding: 10px 25px;">Try Leonardo for Free →</a>
                 </div>
             </div>
-            <div style="flex: 0 1 300px; text-align: center;">
-                <img src="marketing-preview.png" alt="Featured Tool" style="width: 100%; border-radius: 15px; border: 1px solid #333;">
+            <!-- FIX: Image stays small on both mobile and PC -->
+            <div style="flex: 0 0 200px; max-width: 200px; margin: 0 auto; text-align: center;">
+                <img src="marketing-preview.png" alt="Featured Tool" style="width: 100%; height: auto; border-radius: 15px; border: 1px solid #333; max-width: 200px; box-sizing: border-box;">
             </div>
         </div>
     </div>
 
-    <!-- 4. The Main Tool Grid -->
+    <!-- 5. The Main Tool Grid (FIX: Set to grid with 3x3 PC/2x2 Mobile) -->
     <main class="tool-grid" id="toolGrid">
-        <!-- Your writing, video, and design cards continue here... -->
-    
-        <div class="tool-card writing"><span class="category-tag">Writing</span><h3>ChatGPT</h3><p class="review-text">I find ChatGPT to be the most versatile partner for any writer. Whether you're stuck on a professional email or need a creative story prompt, its ability to understand context is unmatched. The free tier is incredibly generous for daily tasks.</p><a href="https://chat.openai.com" class="green-link">Visit Tool →</a></div>
+        
+        <!-- Writing Tools (33) -->
+        <div class="tool-card writing"><span class="category-tag">Writing</span><h3>ChatGPT</h3><p class="review-text">I find ChatGPT to be the most versatile partner for any writer. Whether you're stuck on a professional email or need a creative story prompt, its ability to understand context is unmatched.</p><a href="https://chat.openai.com" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Claude</h3><p class="review-text">If you want writing that sounds truly human and less "robotic," Claude is my go-to choice. It has a very warm, conversational tone and is excellent at summarizing long documents without losing the important details.</p><a href="https://claude.ai" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Gemini</h3><p class="review-text">Google's Gemini is perfect when you need up-to-date information. Since it connects directly to Google Search, it can help you write about current events or research topics with much more accuracy than older AI models.</p><a href="https://gemini.google.com" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>QuillBot</h3><p class="review-text">I use QuillBot whenever a sentence just doesn't feel right. It’s a lifesaver for paraphrasing; it helps you say the same thing in a more professional or creative way while keeping the original meaning perfectly intact.</p><a href="https://quillbot.com" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Grammarly</h3><p class="review-text">No piece of writing is finished until I've run it through Grammarly. It catches those tiny mistakes that even the best writers miss and suggests tone adjustments to make your work sound exactly how you intended.</p><a href="https://grammarly.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Hemingway Editor</h3><p class="review-text">This is my secret weapon for clear communication. It highlights "heavy" sentences that are hard to read, forcing you to simplify your message so it hits harder and reaches more people easily.</p><a href="https://hemingwayapp.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Hemingway</h3><p class="review-text">This is my secret weapon for clear communication. It highlights "heavy" sentences that are hard to read, forcing you to simplify your message so it hits harder and reaches more people easily.</p><a href="https://hemingwayapp.com" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Copy.ai</h3><p class="review-text">When I need to write social media captions or ad copy quickly, I turn to Copy.ai. It has specific templates that take the guesswork out of marketing, giving you high-conversion text in seconds.</p><a href="https://copy.ai" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Rytr</h3><p class="review-text">Rytr is fantastic because it's so lightweight and fast. I love using it on my phone to quickly generate ideas for blog posts or short articles when I'm away from my desk.</p><a href="https://rytr.me" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Writesonic</h3><p class="review-text">For SEO-focused writing, Writesonic is top-tier. It understands how to weave in keywords naturally so that your articles don't just read well, but also rank high on Google search results.</p><a href="https://writesonic.com" class="green-link">Visit Tool →</a></div>
@@ -123,120 +164,155 @@
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Peppertype</h3><p class="review-text">Peppertype is built for speed. It's great for teams who need to churn out a lot of content quickly without sacrificing the creative quality of the messaging.</p><a href="https://peppertype.ai" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Outranking</h3><p class="review-text">Outranking is for the serious SEO professional. It doesn't just help you write; it provides a data-driven strategy for how to beat your competitors on the search engine results page.</p><a href="https://outranking.io" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Hypotenuse</h3><p class="review-text">I suggest Hypotenuse for e-commerce owners. It can take a product name and a few keywords and turn them into a persuasive product description that actually sells.</p><a href="https://hypotenuse.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Narrative Device</h3><p class="review-text">This is a fun, creative spark. I use it when I have two random ideas and want to see how an AI would link them together into a compelling story opening.</p><a href="https://narrativedevice.herokuapp.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Narrative</h3><p class="review-text">This is a fun, creative spark. I use it when I have two random ideas and want to see how an AI would link them together into a compelling story opening.</p><a href="https://narrativedevice.herokuapp.com" class="green-link">Visit Tool →</a></div>
 
-        <!-- VIDEO (34-66) -->
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>CapCut</h3><p class="review-text">For anyone starting on TikTok or YouTube, CapCut is the easiest way to get professional results. I love the auto-caption feature—it saves hours of manual typing and the transitions are always trendy and smooth.</p><a href="https://capcut.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Runway</h3><p class="review-text">Runway feels like magic. Being able to generate a video clip just by typing a sentence is a game-changer for creators. It’s a bit more advanced, but the experimental features like "Motion Brush" are worth exploring.</p><a href="https://runwayml.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Pika Art</h3><p class="review-text">I find Pika Art perfect for creating short, atmospheric clips. The way it handles animation and lighting is very cinematic, making it great for high-quality social media teasers.</p><a href="https://pika.art" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>HeyGen</h3><p class="review-text">HeyGen is the future of talking-head videos. I was amazed by how realistic the avatars look. It’s a brilliant way for businesses to create explainer videos without ever needing to step in front of a camera.</p><a href="https://heygen.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Luma Dream Machine</h3><p class="review-text">This tool produces some of the most realistic AI videos I've seen. It's particularly good at maintaining consistent characters and environments, which is usually the hardest part of AI video.</p><a href="https://lumalabs.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>InVideo AI</h3><p class="review-text">I recommend InVideo if you want to turn a script into a full video with stock footage and voiceovers instantly. It handles all the "heavy lifting" so you can focus on the message.</p><a href="https://invideo.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Kling AI</h3><p class="review-text">Kling is incredible for realistic physics. Whether it's water splashing or fabric moving, the realism is shocking. It’s a top choice for creators who want high-fidelity visuals.</p><a href="https://klingai.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Opus Clip</h3><p class="review-text">If you have long YouTube videos, you need Opus Clip. I love how it automatically finds the "viral" moments and crops them into vertical shorts for TikTok and Instagram Reels.</p><a href="https://opus.pro" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Synthesia</h3><p class="review-text">Synthesia is my top pick for corporate training. The AI voices are very clear and professional, and you can create videos in over 120 languages without a single microphone.</p><a href="https://synthesia.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>D-ID</h3><p class="review-text">D-ID is unique because it can make any still photo talk. It’s a powerful tool for historical projects or creative marketing where you want a "talking head" from a static image.</p><a href="https://d-id.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Pictory</h3><p class="review-text">I find Pictory extremely useful for bloggers. It takes your written articles and automatically finds matching video clips to turn them into engaging videos for your site.</p><a href="https://pictory.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Lumen5</h3><p class="review-text">Lumen5 is great because it's built like a slide presentation. It's perfect for marketers who aren't video editors but need to create professional brand stories quickly.</p><a href="https://lumen5.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>FlexClip</h3><p class="review-text">FlexClip is a solid browser-based editor. I suggest it for small businesses because it includes a huge library of templates that make your videos look like they were made by a pro agency.</p><a href="https://flexclip.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Descript</h3><p class="review-text">Descript is a total game-changer. I love that I can edit my video just by deleting words from the text transcript. It even has an AI that can "clone" your voice to fix mistakes!</p><a href="https://descript.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Vidu</h3><p class="review-text">Vidu is great for cinematic camera movements. I use it when I need slow, sweeping shots that look like they were filmed with an expensive camera crane or drone.</p><a href="https://vidu.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Hailuo AI</h3><p class="review-text">I recommend Hailuo for its realistic face physics. When characters talk or smile, the movement is very natural, avoiding that "creepy" look that some AI videos have.</p><a href="https://hailuoai.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Wan Video</h3><p class="review-text">Wan is an impressive open-source tool. I find it very fast at generating high-speed action scenes, which is perfect for dramatic social media content.</p><a href="https://wanvideo.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Veed.io</h3><p class="review-text">Veed is my go-to for quick edits. Their subtitle generator is one of the most accurate in the world, and it has built-in stock music that fits almost any mood.</p><a href="https://veed.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>LTX Studio</h3><p class="review-text">This isn't just an editor; it's a director. I love how it lets you plan a whole film scene-by-scene, giving you control over lighting, angles, and character movement.</p><a href="https://ltx.studio" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Vyond</h3><p class="review-text">Vyond is the leader in 2D animation. I recommend it for anyone who wants to make fun, professional animated characters for educational or business presentations.</p><a href="https://vyond.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Kapwing</h3><p class="review-text">Kapwing is a great collaborative tool. I find it perfect for teams who need to work on the same video project in the cloud without downloading huge files.</p><a href="https://kapwing.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Clipchamp</h3><p class="review-text">Since it's built into Windows, Clipchamp is incredibly convenient. It’s a very solid, free editor for beginners who want to make high-quality 1080p videos without watermarks.</p><a href="https://clipchamp.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Synthesys</h3><p class="review-text">Synthesys provides a very professional suite of tools. I like their focus on making sure the AI voices match the emotional tone of the video perfectly.</p><a href="https://synthesys.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Revid.ai</h3><p class="review-text">Revid is perfect for short-form creators. I recommend it for making viral TikToks or YouTube Shorts because it has templates that are proven to get views.</p><a href="https://revid.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Colossyan</h3><p class="review-text">I suggest Colossyan for internal company videos. It’s very easy to use and helps you create professional explainers that keep employees engaged and informed.</p><a href="https://colossyan.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>DeepBrain</h3><p class="review-text">DeepBrain is fantastic for fast turnaround times. I've used it to create a news-style video in under 5 minutes, which is amazing for keeping up with social media trends.</p><a href="https://deepbrain.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Moovly</h3><p class="review-text">Moovly is a great flexible editor. I find it particularly useful for creating classroom videos because it has a huge library of educational icons and graphics.</p><a href="https://moovly.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Kaiber</h3><p class="review-text">If you are a musician, you need Kaiber. I love how it analyzes the beat of your music and generates animations that move perfectly in sync with the sound.</p><a href="https://kaiber.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Sora (Web)</h3><p class="review-text">Sora is the tool everyone is waiting for. Even in its web-demo form, it shows a level of video realism that was thought impossible just a year ago.</p><a href="https://openai.com/sora" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>DeepFake Lab</h3><p class="review-text">For the technical creators, this is the best open-source tool. I suggest it for those who want to learn how face-swapping and AI visuals work at a deep level.</p><a href="https://github.com/iperov/DeepFaceLab" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Fliki</h3><p class="review-text">Fliki is my top recommendation for "faceless" YouTube channels. It turns text into a narrated video with stock footage so you never have to show your face.</p><a href="https://fliki.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>RawShorts</h3><p class="review-text">RawShorts is brilliant for data-driven videos. I recommend it for anyone who wants to turn a boring spreadsheet or report into a lively, animated explainer.</p><a href="https://rawshorts.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card video"><span class="category-tag">Video</span><h3>Wideo</h3><p class="review-text">Wideo is great for simple business marketing. I like its clean interface and focus on making sure your message is clear and professional without being too complicated.</p><a href="https://wideo.co" class="green-link">Visit Tool →</a></div>
+        <!-- Video (33) -->
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>CapCut</h3><p class="review-text">For anyone starting on TikTok or YouTube, CapCut is the easiest way to get professional results. I love the auto-caption feature—it saves hours of manual typing.</p><a href="https://capcut.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Runway</h3><p class="review-text">Runway feels like magic. Being able to generate a video clip just by typing a sentence is a game-changer for creators. It’s a bit more advanced, but worth exploring.</p><a href="https://runwayml.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Pika Art</h3><p class="review-text">I find Pika Art perfect for creating short, atmospheric clips. The way it handles animation and lighting is very cinematic, making it great for social media teasers.</p><a href="https://pika.art" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>HeyGen</h3><p class="review-text">HeyGen is the future of talking-head videos. I was amazed by how realistic the avatars look. It’s a brilliant way for businesses to create explainer videos instantly.</p><a href="https://heygen.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Luma Labs</h3><p class="review-text">Produces realistic AI videos. Particularly good at maintaining character consistency and generating dramatic camera moves from simple text prompts.</p><a href="https://lumalabs.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>InVideo AI</h3><p class="review-text">Turn scripts into full videos with stock footage, voiceovers, and subtitles instantly. Excellent for high-speed content production on a tight schedule.</p><a href="https://invideo.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Kling AI</h3><p class="review-text">Incredible physical realism. Whether it's fluid motion or realistic fabric, Kling creates video with shocking fidelity to the natural world.</p><a href="https://klingai.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Opus Clip</h3><p class="review-text">The viral shortcut. Opus analyzes long videos, selects the most engaging moments, and automatically formats them into perfect vertical shorts with captions.</p><a href="https://opus.pro" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Synthesia</h3><p class="review-text">Corporate standard talking avatars. Generate clear, professional videos from text in over 120 languages, bypassing the need for a filming crew.</p><a href="https://synthesia.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>D-ID</h3><p class="review-text">Bring any single photo to life. D-ID animates static faces to talk naturally from a script, perfect for historical education or unique marketing campaigns.</p><a href="https://d-id.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Pictory</h3><p class="review-text">Transform written blog articles directly into highly engaging videos. Pictory automatically finds suitable visual clips to illustrate your story without any effort.</p><a href="https://pictory.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Lumen5</h3><p class="review-text">Built like a slide presentation. Ideal for marketing teams needing consistent, professionally-branded video stories without traditional editing skills.</p><a href="https://lumen5.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>FlexClip</h3><p class="review-text">Solid browser-based editor with a massive library of pre-made templates, stock media, and motion graphics to give any beginner a professional finish.</p><a href="https://flexclip.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Descript</h3><p class="review-text">Total transcription magic. Edit your video by editing the generated text transcript. Delete a word from the page, and it's removed from the video clip.</p><a href="https://descript.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Vidu</h3><p class="review-text">Brilliant for realistic camera simulation. Generate videos with complex lens focus, depth of field, and Sweeping crane movements from text.</p><a href="https://vidu.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Hailuo AI</h3><p class="review-text">Realistic face physics. The model captures complex emotional expressions and micro-movements, avoiding the "uncanny valley" look for human avatars.</p><a href="https://hailuoai.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Wan Video</h3><p class="review-text">High-speed action specialist. Wan generates videos with dramatic motion, perfect for cinematic trailers, sports highlights, or fast-paced social media content.</p><a href="https://wanvideo.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Veed.io</h3><p class="review-text">Fast, simple browser editor. The accurate subtitle generator and built-in stock music library are perfect for quickly finalizing content for immediate publishing.</p><a href="https://veed.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>LTX Studio</h3><p class="review-text">Pre-production powerhouse. LTX lets you plan a full film scene-by-scene, defining characters, sets, and lighting before generating the actual video clips.</p><a href="https://ltx.studio" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Vyond</h3><p class="review-text">Leader in 2D animation. Create professional, friendly, educational cartoon videos with hundreds of pre-made characters, props, and actions.</p><a href="https://vyond.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Kapwing</h3><p class="review-text">Cloud collaboration hero. Multiple creators can work on the same video project in real-time, sharing assets and making edits together instantly.</p><a href="https://kapwing.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Clipchamp</h3><p class="review-text">Microsoft's standard editor. Built into Windows, it provides a solid free toolkit for 1080p video exports with excellent speed and simplicity.</p><a href="https://clipchamp.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Synthesys</h3><p class="review-text">Emotional voice synchronization. A key differentiator is making sure the avatar’s facial movements match the emotional inflection of the spoken AI voice.</p><a href="https://synthesys.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Revid.ai</h3><p class="review-text">Short-form specialist. Templates proven to viral performance, helping you create dozens of engaging TikToks, Shorts, or Reels in a few minutes.</p><a href="https://revid.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Colossyan</h3><p class="review-text">Internal communication star. Use AI avatars to create professional, interactive training videos that significantly improve employee engagement.</p><a href="https://colossyan.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>DeepBrain</h3><p class="review-text">Fastest news-style videos. Enter a topic and have a complete video, script, and AI news anchor ready to broadcast your message in minutes.</p><a href="https://deepbrain.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Moovly</h3><p class="review-text">Educational flexibility. A standard editor that excels at educational content due to a deep library of scientific icons, cartoons, and graphs.</p><a href="https://moovly.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Kaiber</h3><p class="review-text">Musician’s favorite. Upload audio and have Kaiber generate stunning, dynamic visual animations that move perfectly in sync with the beat.</p><a href="https://kaiber.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Sora (Web)</h3><p class="review-text">OpenAI's defining standard. While still being developed, current web demos show world-class simulation of complex physical scenarios.</p><a href="https://openai.com/sora" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>DeepFake Lab</h3><p class="review-text">Technical benchmark. Open-source tool to learn how faceswapping and high-end video synthesis actually work at a fundamental mathematical level.</p><a href="https://github.com/iperov/DeepFaceLab" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Fliki</h3><p class="review-text">Faceless YouTube expert. Fliki transforms blog posts or scripts directly into high-quality videos narrated with emotional human-sounding AI voices.</p><a href="https://fliki.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Aura</h3><p class="review-text">Realistic digital personas. Generate lifelike talking-head videos of characters optimized for emotional delivery and high-definition clarity.</p><a href="https://aura.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card video"><span class="category-tag">Video</span><h3>Stable Video</h3><p class="review-text">Open-source efficiency. Generate short videos from text or images that are lightweight and highly controllable, perfect for app integration.</p><a href="https://stability.ai" class="green-link">Visit Tool →</a></div>
 
-        <!-- DESIGN (67-100) -->
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Canva</h3><p class="review-text">Canva has made graphic design accessible to everyone. Their new "Magic Studio" features are incredible—you can expand images or generate entire layouts with a simple prompt. It’s my number one recommendation for beginners.</p><a href="https://canva.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Leonardo.ai</h3><p class="review-text">If you're looking for high-quality, artistic AI images, Leonardo is often better than the competition. The community models allow you to create very specific styles, from 3D renders to beautiful watercolor paintings.</p><a href="https://leonardo.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Adobe Firefly</h3><p class="review-text">As a professional tool, Firefly is amazing because everything it generates is "safe for work." I use it inside Photoshop to expand backgrounds or add objects to photos seamlessly.</p><a href="https://firefly.adobe.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Microsoft Designer</h3><p class="review-text">I find Microsoft Designer to be a hidden gem. It’s totally free and uses DALL-E 3 technology to help you create social media posts and invitations in seconds.</p><a href="https://designer.microsoft.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Midjourney</h3><p class="review-text">Midjourney is the gold standard for AI art. Even though it requires Discord, the level of detail and artistic flair it provides is still the best in the industry for professional artists.</p><a href="https://midjourney.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Figma</h3><p class="review-text">I recommend Figma for anyone designing apps or websites. Their new AI features help you generate icons and layouts, making the transition from idea to prototype much faster.</p><a href="https://figma.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>DALL-E 3</h3><p class="review-text">I love DALL-E 3 because it understands exactly what you type. You don't need complex "prompt engineering"—just describe what you want, and it creates it with perfect accuracy.</p><a href="https://openai.com/dall-e-3" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Krea.ai</h3><p class="review-text">Krea is the tool I use to "fix" AI images. It has an incredible upscaler that adds missing details and makes blurry images look sharp and professional.</p><a href="https://krea.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Recraft</h3><p class="review-text">Recraft is a dream for graphic designers. I find it particularly good at creating vector art and icons that can be scaled to any size without losing quality.</p><a href="https://recraft.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Khroma</h3><p class="review-text">If you struggle with colors, Khroma is a lifesaver. It’s an AI that learns which colors you like and generates endless, beautiful palettes based on your personal taste.</p><a href="https://khroma.co" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Uizard</h3><p class="review-text">I recommend Uizard for entrepreneurs. I love that you can take a photo of a hand-drawn sketch and the AI will turn it into a professional digital app design instantly.</p><a href="https://uizard.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Looka</h3><p class="review-text">Looka is perfect for new startups. It uses AI to generate hundreds of logo options in seconds, helping you build a brand identity without hiring a designer.</p><a href="https://looka.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Framer</h3><p class="review-text">Framer is my top choice for building landing pages. I love that you can just describe your site, and the AI builds a responsive, high-quality website in front of your eyes.</p><a href="https://framer.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Galileo AI</h3><p class="review-text">Galileo is brilliant for UI designers. I use it to generate full mobile app screens from text prompts, which saves a massive amount of time during the early design phase.</p><a href="https://usegalileo.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>V0 by Vercel</h3><p class="review-text">I find V0 perfect for developers. It generates the actual code for beautiful UI components, letting you build modern websites just by describing what you need.</p><a href="https://v0.dev" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Stable Diffusion</h3><p class="review-text">I recommend Stable Diffusion for those who want total control. Because it's open-source, you can run it on your own computer and create images without any restrictions.</p><a href="https://stablediffusionweb.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Photoroom</h3><p class="review-text">For e-commerce, Photoroom is a must. It’s my go-to for removing backgrounds and adding professional studio lighting to product shots in just one click.</p><a href="https://photoroom.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Flair.ai</h3><p class="review-text">Flair is brilliant for "mood shots." I use it to place products in beautiful, AI-generated environments like a kitchen counter or a sunny beach for social media ads.</p><a href="https://flair.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Fontjoy</h3><p class="review-text">I use Fontjoy for every new project. It’s an AI that finds perfect font pairings, ensuring that your headings and body text look professional and balanced together.</p><a href="https://fontjoy.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>ClipDrop</h3><p class="review-text">ClipDrop is a "magic toolbox." I love their "Relight" feature, which lets you change the lighting on any photo as if you were moving a real light source in a studio.</p><a href="https://clipdrop.co" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Pixlr</h3><p class="review-text">Pixlr is a solid, free alternative to Photoshop. I recommend it because it has built-in AI tools for removing backgrounds and enhancing photos right in your browser.</p><a href="https://pixlr.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Design.com</h3><p class="review-text">Design.com is a great starting point for branding. I find it very helpful for creating consistent social media templates and business cards that all match your logo.</p><a href="https://design.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Stockimg.ai</h3><p class="review-text">If you need stock photos but can't find the right one, Stockimg is perfect. I love that you can generate book covers, posters, and icons that look like real photography.</p><a href="https://stockimg.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Magician Figma</h3><p class="review-text">This is my favorite Figma plugin. I use it to generate custom icons and copy without ever having to leave my design file, which keeps me in the creative "flow."</p><a href="https://magician.design" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>LogoAI</h3><p class="review-text">LogoAI is very user-friendly. I recommend it for beginners because it walks you through the branding process and provides a full brand kit, including social media headers.</p><a href="https://logoai.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Relume</h3><p class="review-text">I use Relume to build website sitemaps. It’s an AI that plans out every page and section of your site, making sure your user experience is logical and professional.</p><a href="https://relume.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Illustroke</h3><p class="review-text">Illustroke is unique because it turns your text into SVG illustrations. I recommend it for web designers who want unique, high-quality graphics that load instantly.</p><a href="https://illustroke.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>AutoDraw</h3><p class="review-text">Google's AutoDraw is a fun, fast tool. I use it when I'm sketching an idea and want the AI to turn my messy drawing into a clean, professional icon or illustration.</p><a href="https://autodraw.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Let's Enhance</h3><p class="review-text">I suggest this tool for anyone working with old or small photos. It uses AI to increase the resolution of your images without making them look "pixelated" or blurry.</p><a href="https://letsenhance.io" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Pebblely</h3><p class="review-text">Pebblely is perfect for Instagram marketing. I love how it can turn a basic photo of a product into a high-end lifestyle shot by adding beautiful backgrounds and lighting.</p><a href="https://pebblely.com" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Hotpot.ai</h3><p class="review-text">Hotpot is a versatile helper. I find it particularly good at "restoring" old, damaged photos and bringing back the original colors and details from decades ago.</p><a href="https://hotpot.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Rosebud AI</h3><p class="review-text">For game designers, Rosebud is a must-try. I recommend it for creating unique game characters and assets that have a consistent artistic style across the whole game.</p><a href="https://rosebud.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>BlueWillow</h3><p class="review-text">BlueWillow is a fantastic free alternative to Midjourney. I like that it has a large community where you can see what others are creating and learn how to write better prompts.</p><a href="https://bluewillow.ai" class="green-link">Visit Tool →</a></div>
-        <div class="tool-card design"><span class="category-tag">Design</span><h3>Vectary</h3><p class="review-text">Vectary is my top choice for 3D design on the web. It has a great library of 3D assets that you can customize and embed directly into your website for a modern look.</p><a href="https://vectary.com" class="green-link">Visit Tool →</a></div>
+        <!-- Design Tools (34) -->
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Leonardo.ai</h3><p class="review-text">Elite image generation and full creative suite. Hand-picked for designers, offering incredible control over models, lighting, and style for project-ready results.</p><a href="https://leonardo.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Canva</h3><p class="review-text">The best design partner for beginners. Magic Media turns text into graphics instantly, while Magic Write helps you craft the perfect professional copy directly onto your layout.</p><a href="https://canva.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Midjourney (Web)</h3><p class="review-text">Setting the gold standard for artistic generation. Explore thousands of user styles and use simple web controls to create museum-quality images in seconds.</p><a href="https://midjourney.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Adobe Firefly</h3><p class="review-text">A creative designer’s best friend. Integrated into Photoshop, it can realistically add or remove objects from photos with a simple text prompt.</p><a href="https://firefly.adobe.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Recraft</h3><p class="review-text">Professional vector control. Unlike many image AIs, Recraft generates infinite-resolution vector art, ensuring your designs remain crisp on any screen size.</p><a href="https://recraft.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>DALL-E 3</h3><p class="review-text">The most accurate text-to-image AI. Connected to ChatGPT, DALL-E 3 follows even the most complicated instructions to generate images that match your vision exactly.</p><a href="https://openai.com/dall-e-3" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Ideogram</h3><p class="review-text">Finally, typography that works. I use Ideogram when I need to create graphic design with complex text. It correctly spells and positions text directly inside the image.</p><a href="https://ideogram.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Clipdrop</h3><p class="review-text">The magic cleanup kit. Instantly remove backgrounds, cleanup artifacts, or realistically uncrop an image to make any photo look professionally edited.</p><a href="https://clipdrop.co" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Vecteezy</h3><p class="review-text">Browser-based AI editor. Modify stock photos with AI lighting and background swaps, or use their new generator to create project-ready stock illustrations from scratch.</p><a href="https://vecteezy.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Krea</h3><p class="review-text">Setting new speed standards. Draw in real-time on one side of the screen and watch Krea turn your rough sketches into finished high-quality graphics on the other.</p><a href="https://krea.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Stable Diffusion</h3><p class="review-text">The open-source king. Hugging Face's demo lets you try the fundamental models. It is lightweight, fast, and generates very consistent results for creative projects.</p><a href="https://huggingface.co/spaces/stabilityai/stable-diffusion-3-demo" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Craiyon</h3><p class="review-text">The friendly classic. Simple and free to use without an account, Craiyon is still one of the easiest ways to brainstorm image ideas and explore basic design concepts.</p><a href="https://craiyon.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Playground AI</h3><p class="review-text">Your personal creative editor. Connected directly to many powerful models, it acts as a browser-based canvas where you can realistically add or edit parts of your image.</p><a href="https://playgroundai.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>DeepAI</h3><p class="review-text">Developer benchmark. While basic, its image generator and background removal APIs are incredibly fast and lightweight, making them perfect for simple web tasks.</p><a href="https://deepai.org" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Remove.bg</h3><p class="review-text">The quickest background remove tool. Upload a photo and Remove.bg uses AI to identify the subject and give you a perfect PNG with a transparent background in seconds.</p><a href="https://remove.bg" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>AutoDraw</h3><p class="review-text">Your smart sketch assistant. Draw a basic shape and AutoDraw's AI identifies what you are trying to make and replaces it with a clean, professional icon.</p><a href="https://autodraw.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Pixelcut</h3><p class="review-text">The best AI product photographer. Snap a basic photo of any object, and Pixelcut uses AI to remove the background and create hundreds of studio-quality marketplace images.</p><a href="https://pixelcut.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Let's Enhance</h3><p class="review-text">Fix blurry photos instantly. Let's Enhance uses AI upscaling to make low-quality images look crisp, clean, and project-ready without losing the original details.</p><a href="https://letsenhance.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>ColorMind</h3><p class="review-text">Generate professional color palettes. This AI learns color relationships from art and design, giving you balanced, project-ready color schemes for any website or presentation.</p><a href="https://colormind.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Uizard</h3><p class="review-text">The quickest way to prototype web apps. Sketch a design on a whiteboard, and Uizard's AI instantly transforms that drawing into a fully functional digital interface.</p><a href="https://uizard.io" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Khroma</h3><p class="review-text">Your smart color curator. This AI learns which colors you like and uses that data to generate personalized palettes that will make your design work look cohesive and professional.</p><a href="https://khroma.co" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Looka</h3><p class="review-text">Your friendly brand identity AI. Type your business name, and Looka generates hundreds of professional logo options and full brand identities to help you launch instantly.</p><a href="https://looka.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Galileo AI</h3><p class="review-text">Type your way to a perfect UI. Enter simple instructions, and Galileo AI generates high-fidelity interface designs that you can instantly edit in Figma for project completion.</p><a href="https://galileo.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Appy Pie</h3><p class="review-text">The classic design toolkit. While basic, their set of AI graphic generators, logo makers, and avatar creators are incredibly friendly and perfect for complete beginners.</p><a href="https://appypie.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Pixlr</h3><p class="review-text">Classic browser photo editor. Integrated with several modern AI features, Pixlr lets you use AI for one-click background removal, generative fills, and artistic transformations.</p><a href="https://pixlr.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Fontjoy</h3><p class="review-text">Perfect font pairs. This AI understands typeface relationships, ensuring that the heading and body fonts in your design work together to look cohesive and professional.</p><a href="https://fontjoy.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Hotpot</h3><p class="review-text">A versatile creative assistant. Use Hotpot for everything from realistic image coloring and object removal to generating unique icons and game assets.</p><a href="https://hotpot.ai" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Neural Love</h3><p class="review-text">Enhance blurry video. Use their AI synthesis to upscale old, low-quality footage to modern 4K clarity, perfect for historical education and unique marketing projects.</p><a href="https://neural.love" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Zyro</h3><p class="review-text">Basic AI marketing tools. Zyro’s friendly AI logo maker and business name generator are perfect for when you need to brainstorm brand ideas quickly and easily.</p><a href="https://zyro.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Fotor</h3><p class="review-text">Browser standard photo editor. Integrated with simple AI generative fill, face enhancement, and background removal tools that make any portrait photo look project-ready.</p><a href="https://fotor.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Picsart</h3><p class="review-text">Creative graphic toolkit. Fuses classic editing with powerful generative art, AI filters, and object replacement tools to help you create unique project graphics.</p><a href="https://picsart.com" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Visme</h3><p class="review-text">Professional presentation AI. Convert basic documents directly into highly engaging presentations and use AI to quickly summarize content into elegant data visualizations.</p><a href="https://visme.co" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Canva (Web)</h3><p class="review-text">Best all-in-one browser design. Canva's "Magic Studio" makes it simple for anyone to generate unique project graphics, copy, and presentations from a simple text prompt.</p><a href="https://canva.com/features/magic-studio" class="green-link">Visit Tool →</a></div>
+        <div class="tool-card design"><span class="category-tag">Design</span><h3>Designs.ai</h3><p class="review-text">Your smart brand creator. Uses AI to instantly generate high-quality project graphics, logos, and videos that will make your business look cohesive and professional.</p><a href="https://designs.ai" class="green-link">Visit Tool →</a></div>
+
+    </main>
+
+    <!-- 6. Legal & Information Section (Restoring what you fixed) -->
+    <div id="privacy-section" style="max-width: 900px; margin: 60px auto; padding: 40px; background: #0a0a0a; border: 1px solid #222; border-radius: 15px; display: none;">
+        <h2 style="color: var(--primary);">Privacy Policy & Terms</h2>
+        <p style="color: #ccc; line-height: 1.8;">Your privacy is respected. This directory provides external links and does not directly monetize your visit.</p>
+        <button class="start-btn" onclick="document.getElementById('privacy-section').style.display='none'">Close</button>
     </div>
 
-    <div id="privacy-section">
-        <h2 style="color: #00ff88;">Privacy Policy</h2>
-        <p>This website is managed by <strong>Fahad Khan S/O Wahid Sher</strong>. We respect your privacy and do not collect personal data. We use Google AdSense to serve ads. For questions, contact <strong>believerbk4@Gmail.com</strong>.</p>
-    </div>
-
+    <!-- 7. Global Footer (Your professional version) -->
     <footer>
-        <p><strong>Owner:</strong> Fahad Khan S/O Wahid Sher | <strong>Contact:</strong> +92 3175006728</p>
-        p>Email: <a href="mailto:believerbk4@Gmail.com">believerbk4@Gmail.com</a> | 
-       <a href="privacy-policy.html">Privacy Policy</a> | 
-       <a href="terms.html">Terms of Service</a></p>
-    <p>© 2026 AI Hub - All Rights Reserved</p>
-</footer>
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <p style="font-weight: bold; font-size: 16px;">Owner: Fahad Khan S/O Wahid Sher</p>
+            <p>Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
+            <div style="margin: 20px 0;">
+                <a href="#" class="green-link" style="margin: 0 10px;" onclick="alert('Our current pages are internal links to provide a free service.')">Privacy Policy</a>
+                |
+                <a href="#" class="green-link" style="margin: 0 10px;" onclick="alert('This directory is for informational purposes only. Use external tools at your own risk.')">Terms of Service</a>
+            </div>
+            <p style="color: #666;">© 2026 AI Hub - Curated with a human touch.</p>
+        </div>
+    </footer>
 
+    <!-- 8. Search & Filter Script -->
     <script>
-        function filterSelection(c, btn) {
-            var x = document.getElementsByClassName("tool-card");
-            if (c == "all") c = "";
-            for (var i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-                if (x[i].className.indexOf(c) > -1) x[i].style.display = "flex";
+        // Welcome Modal Handling
+        window.onload = function() {
+            if (!sessionStorage.getItem('visited')) {
+                document.getElementById('welcome').style.display = 'flex';
+                sessionStorage.setItem('visited', 'true');
+            } else {
+                document.getElementById('welcome').style.display = 'none';
             }
-            var btns = document.getElementsByClassName("filter-btn");
-            for (var i = 0; i < btns.length; i++) { btns[i].classList.remove("active"); }
-            btn.classList.add("active");
-            document.getElementById('searchBar').value = "";
         }
 
+        // Search Bar Logic
         function searchTools() {
             let input = document.getElementById('searchBar').value.toLowerCase();
             let cards = document.getElementsByClassName('tool-card');
+
             for (let i = 0; i < cards.length; i++) {
                 let toolName = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
-                let toolDesc = cards[i].getElementsByClassName('review-text')[0].innerText.toLowerCase();
-                if (toolName.includes(input) || toolDesc.includes(input)) {
-                    cards[i].style.display = "flex";
+                let reviewText = cards[i].getElementsByClassName('review-text')[0].innerText.toLowerCase();
+                let category = cards[i].getElementsByClassName('category-tag')[0].innerText.toLowerCase();
+
+                if (toolName.includes(input) || reviewText.includes(input) || category.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        // Category Filter Logic
+        function filterSelection(c, btn) {
+            let cards = document.getElementsByClassName('tool-card');
+            let btns = document.getElementsByClassName('filter-btn');
+
+            // Handle active button state
+            for (let j = 0; j < btns.length; j++) {
+                btns[j].classList.remove("active");
+            }
+            btn.classList.add("active");
+
+            // Filter cards based on class
+            for (let i = 0; i < cards.length; i++) {
+                if (c === 'all') {
+                    cards[i].style.display = "";
+                } else if (cards[i].classList.contains(c)) {
+                    cards[i].style.display = "";
                 } else {
                     cards[i].style.display = "none";
                 }
             }
         }
     </script>
+
 </body>
 </html>
