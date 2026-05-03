@@ -8,7 +8,7 @@
     <style>
         :root { --primary: #00ff88; --dark: #000000; --text: #ffffff; --accent: #8a2be2; }
         
-        /* Fixes text zooming/shifting on mobile */
+        /* Stop mobile text zooming */
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         
         body { 
@@ -16,72 +16,82 @@
             background-color: var(--dark); 
             color: var(--text); 
             margin: 0; 
-            overflow-x: hidden; 
+            overflow-x: hidden;
             width: 100%;
         }
 
-        /* 1. WELCOME PORTAL (STAYS LOCKED) */
+        /* 1. WELCOME PORTAL */
         #welcomePortal {
             position: fixed !important; top: 0; left: 0; width: 100vw; height: 100vh;
             background: radial-gradient(circle at center, #1a0b3b 0%, #050505 100%);
             z-index: 9999999; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; text-align: center;
-            transition: 0.8s ease;
+            transition: 0.6s ease;
         }
-        #welcomePortal h1 { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; margin: 0; letter-spacing: -2px; }
-        #welcomePortal p { color: var(--accent); font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; margin: 10px 0 30px; }
+        #welcomePortal h1 { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; margin: 0; }
         .enter-btn {
             background: transparent; color: white; padding: 15px 40px; border-radius: 4px; 
             font-weight: 700; border: 2px solid var(--accent); cursor: pointer; text-transform: uppercase;
         }
 
-        /* 2. THE GRID - FORCED 3x3 ON PC AND MOBILE */
+        /* 2. HEADER & SEARCH */
+        header { padding: 80px 20px 40px; text-align: center; }
+        .main-h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; color: var(--primary); margin: 0; }
+        .search-container { max-width: 500px; margin: 20px auto; }
+        #searchBar {
+            width: 100%; padding: 14px 25px; border-radius: 50px; 
+            border: 1px solid #333; background: #0a0a0a; color: white; outline: none;
+        }
+
+        /* 3. THE GRID (FORCED 3x3) */
         .tool-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* FORCES 3 COLUMNS */
-            gap: 15px;
-            padding: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 0 20px;
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 0 auto 50px;
         }
 
-        /* Responsive adjustment for very small screens */
-        @media (max-width: 600px) {
-            .tool-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
-            .main-h1 { font-size: 2rem !important; }
-        }
+        @media (max-width: 900px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .tool-grid { grid-template-columns: repeat(1, 1fr); } }
 
+        /* Card Style from Screenshot 109 */
         .tool-card {
-            background: #111;
-            border: 1px solid #222;
-            padding: 15px;
+            background: #0d0d0d; 
+            border: 1px solid #1a1a1a; 
+            padding: 25px;
             border-radius: 12px;
-            transition: 0.3s;
+            text-align: left;
         }
-        .tool-card h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 1.1rem; }
-        .tool-card p { font-size: 0.85rem; color: #ccc; line-height: 1.4; margin-bottom: 15px; }
-        .tool-link { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.8rem; }
+        .category-label { color: #888; font-size: 14px; margin-bottom: 5px; display: block; }
+        .tool-card h3 { margin: 0 0 12px 0; color: var(--primary); font-size: 1.4rem; }
+        .tool-card p { font-size: 0.95rem; color: #ccc; line-height: 1.6; margin-bottom: 20px; }
+        
+        /* Green Visit Tool Link for ALL cards */
+        .tool-link { 
+            color: var(--primary) !important; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 14px; 
+        }
 
-        /* 3. FIXED UI BUTTONS */
+        /* 4. UI BUTTONS */
         .contact-pill {
             position: fixed; top: 20px; right: 20px; background: #0052ff; 
-            color: white; padding: 8px 16px; border-radius: 50px; 
+            color: white; padding: 8px 20px; border-radius: 50px; 
             text-decoration: none; font-weight: 900; display: flex; 
-            align-items: center; z-index: 1000; font-size: 12px; border: 2px solid rgba(255,255,255,0.3);
+            align-items: center; z-index: 1000; font-size: 13px;
         }
-        .phone-circle { background: #000; color: #ff3b3b; width: 24px; height: 24px; border-radius: 50%; margin-right: 8px; display: flex; align-items: center; justify-content: center; }
-        .feedback-btn { position: fixed; bottom: 20px; right: 20px; background: #3b71ca; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800; z-index: 1000; font-size: 12px; }
-        .rate-card { position: fixed; bottom: 20px; left: 20px; background: #111; color: white; padding: 10px 20px; border-radius: 10px; z-index: 1000; border: 1px solid #333; font-weight: 800; font-size: 12px; }
-
-        header { padding: 60px 20px 20px; text-align: center; }
-        .main-h1 { font-size: 3rem; font-weight: 900; color: var(--primary); margin: 0; }
+        .phone-circle { background: #000; color: #ff3b3b; width: 24px; height: 24px; border-radius: 50%; margin-right: 10px; display: flex; align-items: center; justify-content: center; }
+        .feedback-btn { position: fixed; bottom: 20px; right: 20px; background: #3b71ca; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: 800; z-index: 1000; }
+        .rate-card { position: fixed; bottom: 20px; left: 20px; background: #111; color: white; padding: 12px 25px; border-radius: 12px; z-index: 1000; border: 1px solid #333; font-weight: 800; font-size: 12px; }
     </style>
 </head>
 <body>
 
     <div id="welcomePortal">
-        <h1>WELCOME TO 100FREEAI</h1>
-        <p>The Ultimate AI Toolkit</p>
+        <h1>100FREEAI</h1>
         <button class="enter-btn" onclick="closePortal()">Enter Directory</button>
     </div>
 
@@ -91,45 +101,52 @@
 
     <header>
         <h1 class="main-h1">The Ultimate AI Toolkit</h1>
-        <p style="color: #888;">100+ hand-picked free AI tools.</p>
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search for a tool...">
+        </div>
     </header>
 
-    <!-- THE GRID STARTS HERE -->
     <div class="tool-grid">
-        <!-- Card 1 -->
+        <!-- Loop this card structure for all 100 tools -->
         <div class="tool-card">
-            <h3>Claude</h3>
-            <p>Excellent for summarizing long documents and natural writing.</p>
-            <a href="#" class="tool-link">Visit Tool →</a>
-        </div>
-        <!-- Card 2 -->
-        <div class="tool-card">
-            <h3>Gemini</h3>
-            <p>Google's powerful AI for up-to-date info and search integration.</p>
-            <a href="#" class="tool-link">Visit Tool →</a>
-        </div>
-        <!-- Card 3 -->
-        <div class="tool-card">
-            <h3>QuillBot</h3>
-            <p>The best tool for paraphrasing and professional rewriting.</p>
-            <a href="#" class="tool-link">Visit Tool →</a>
-        </div>
-        <!-- Card 4 -->
-        <div class="tool-card">
-            <h3>Grammarly</h3>
-            <p>Catch mistakes and adjust tone for perfect writing.</p>
-            <a href="#" class="tool-link">Visit Tool →</a>
-        </div>
-        <!-- Card 5 -->
-        <div class="tool-card">
-            <h3>Leonardo.ai</h3>
-            <p>Full creative suite for high-quality image generation.</p>
-            <a href="#" class="tool-link">Visit Tool →</a>
-        </div>
-        <!-- Card 6 -->
-        <div class="tool-card">
+            <span class="category-label">Writing</span>
             <h3>ChatGPT</h3>
-            <p>The versatile industry standard for conversational AI.</p>
+            <p>The most versatile partner for any writer. Its ability to understand context is unmatched.</p>
+            <a href="#" class="tool-link">Visit Tool →</a>
+        </div>
+
+        <div class="tool-card">
+            <span class="category-label">Writing</span>
+            <h3>Claude</h3>
+            <p>Truly human and less "robotic." Excellent at summarizing long documents perfectly.</p>
+            <a href="#" class="tool-link">Visit Tool →</a>
+        </div>
+
+        <div class="tool-card">
+            <span class="category-label">Writing</span>
+            <h3>Gemini</h3>
+            <p>Perfect for up-to-date info. Connects directly to Google Search for accuracy.</p>
+            <a href="#" class="tool-link">Visit Tool →</a>
+        </div>
+        
+        <div class="tool-card">
+            <span class="category-label">Writing</span>
+            <h3>QuillBot</h3>
+            <p>A lifesaver for paraphrasing. Helps you say the same thing in a more professional way.</p>
+            <a href="#" class="tool-link">Visit Tool →</a>
+        </div>
+
+        <div class="tool-card">
+            <span class="category-label">Writing</span>
+            <h3>Grammarly</h3>
+            <p>Catches those tiny mistakes even the best writers miss and suggests tone adjustments.</p>
+            <a href="#" class="tool-link">Visit Tool →</a>
+        </div>
+
+        <div class="tool-card">
+            <span class="category-label">Writing</span>
+            <h3>Hemingway</h3>
+            <p>My secret weapon for clear communication. Highlights "heavy" sentences that are hard to read.</p>
             <a href="#" class="tool-link">Visit Tool →</a>
         </div>
     </div>
@@ -138,10 +155,7 @@
         function closePortal() {
             const portal = document.getElementById('welcomePortal');
             portal.style.opacity = '0';
-            setTimeout(() => { 
-                portal.style.display = 'none'; 
-                document.body.style.overflow = 'auto'; 
-            }, 800);
+            setTimeout(() => { portal.style.display = 'none'; }, 600);
         }
     </script>
 </body>
