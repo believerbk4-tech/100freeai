@@ -121,100 +121,44 @@
 
  <!-- PROFESSIONAL RATE US SYSTEM -->
 <style>
-    /* 1. The Main Button - Locked to Bottom Left */
-    .rate-trigger {
-        position: fixed !important;
-        bottom: 25px !important;
-        left: 25px !important;
-        background: #ffffff !important;
-        color: #111 !important;
-        padding: 10px 22px !important;
-        border-radius: 12px !important; /* Modern rounded corners, not a pill */
-        font-weight: 700 !important;
-        font-size: 13px !important;
-        text-transform: uppercase !important;
-        border: 1px solid #ddd !important;
-        cursor: pointer !important;
-        z-index: 9999 !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-        transition: 0.3s !important;
-    }
-
-    /* 2. The Rating Modal (Hidden by default) */
-    .rating-modal {
-        display: none;
-        position: fixed;
-        z-index: 10000;
-        left: 0; top: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8);
-        backdrop-filter: blur(5px);
-        align-items: center; justify-content: center;
-    }
-
-    .rating-card {
-        background: #1a1a1a;
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        border: 1px solid #333;
-        width: 90%; max-width: 350px;
-    }
-
-    /* 3. Interactive Stars */
-    .star-group {
-        font-size: 35px;
-        color: #444;
-        margin: 20px 0;
-        cursor: pointer;
-    }
-
-    .star-group span:hover,
-    .star-group span.active {
-        color: #ffcc00;
-    }
-</style>
-
-<!-- The Button -->
-<div class="rate-trigger" onclick="toggleRatingModal(true)">
-    Rate Us! ★★★★★
-</div>
-
-<!-- RATING MODAL (HIDDEN BY DEFAULT) -->
-<div id="rateModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1a1a1a; padding: 30px; border-radius: 15px; border: 1px solid #333; z-index: 10000001; text-align: center; color: white; box-shadow: 0 0 50px rgba(0,0,0,0.8);">
+ <!-- 1. INTERACTIVE RATING MODAL -->
+<div id="rateModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 30px; border-radius: 20px; border: 1px solid #333; z-index: 10000001; text-align: center; color: white; box-shadow: 0 0 50px rgba(0,0,0,0.9); width: 300px; font-family: sans-serif;">
     <h3 style="margin-bottom: 10px;">Enjoying 100FreeAI?</h3>
-    <p style="color: #ccc; margin-bottom: 20px;">Your feedback helps me improve the directory.</p>
-    <div style="font-size: 24px; color: #ffcc00; margin-bottom: 20px;">★★★★★</div>
-    <button onclick="document.getElementById('rateModal').style.display='none'" style="background: #333; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer;">Close</button>
+    <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Click a star to rate us!</p>
+    
+    <!-- Star Rating Row -->
+    <div style="font-size: 30px; margin-bottom: 25px; cursor: pointer;">
+        <span onclick="submitRate(1)" onmouseover="highlight(1)" class="star">★</span>
+        <span onclick="submitRate(2)" onmouseover="highlight(2)" class="star">★</span>
+        <span onclick="submitRate(3)" onmouseover="highlight(3)" class="star">★</span>
+        <span onclick="submitRate(4)" onmouseover="highlight(4)" class="star">★</span>
+        <span onclick="submitRate(5)" onmouseover="highlight(5)" class="star">★</span>
+    </div>
+
+    <button onclick="closeRate()" style="background: transparent; color: #666; border: none; cursor: pointer; font-size: 13px; text-decoration: underline;">Maybe Later</button>
 </div>
 
-<!-- Update your Bottom-Left "Rate Us" button to show this modal -->
-<a href="javascript:void(0)" onclick="document.getElementById('rateModal').style.display='block'" style="position: fixed !important; bottom: 25px !important; left: 25px !important; background: rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 12px 24px !important; border-radius: 12px !important; font-weight: 800 !important; text-decoration: none !important; z-index: 9999998 !important; border: 1px solid rgba(255,255,255,0.2) !important; backdrop-filter: blur(10px) !important; font-family: sans-serif !important;">
+<!-- 2. FIXED RATE US BUTTON (BOTTOM LEFT) -->
+<div onclick="openRate()" style="position: fixed !important; bottom: 25px !important; left: 25px !important; background: rgba(255, 255, 255, 0.05) !important; color: white !important; padding: 12px 20px !important; border-radius: 12px !important; font-weight: 800 !important; cursor: pointer !important; z-index: 9999998 !important; border: 1px solid rgba(255,255,255,0.1) !important; backdrop-filter: blur(10px) !important; font-family: sans-serif !important; font-size: 13px !important; transition: 0.3s !important;">
     RATE US! ★★★★★
-</a>
-
-        <button onclick="toggleRatingModal(false)" style="background:transparent; border:none; color:#555; cursor:pointer;">Close</button>
-    </div>
 </div>
 
 <script>
-    function toggleRatingModal(show) {
-        document.getElementById('rateModal').style.display = show ? 'flex' : 'none';
+    function openRate() { document.getElementById('rateModal').style.display = 'block'; }
+    function closeRate() { document.getElementById('rateModal').style.display = 'none'; }
+    function highlight(n) {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach((s, i) => s.style.color = i < n ? '#ffcc00' : '#444');
     }
-
-    function setRating(n) {
-        // Visual feedback
-        const stars = document.getElementById('starContainer').getElementsByTagName('span');
-        for (let i = 0; i < 5; i++) {
-            stars[i].style.color = (i < n) ? "#ffcc00" : "#444";
-        }
-        
-        // Success Message
-        setTimeout(() => {
-            alert("Thanks for the " + n + " star rating, bro! It means a lot.");
-            toggleRatingModal(false);
-        }, 300);
+    function submitRate(n) {
+        alert("Thanks for the " + n + " star rating, partner!");
+        closeRate();
     }
 </script>
+
+<style>
+    .star { color: #444; transition: 0.2s; padding: 0 5px; }
+    .star:hover { transform: scale(1.2); display: inline-block; }
 </style>
 
     <!-- 1. CONTACT US STICKER (TOP RIGHT) -->
