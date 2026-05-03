@@ -3,21 +3,19 @@
   <!-- Main Directory Page -->
   <url>
     <loc>https://100freeai.netlify.app/</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-03</lastmod>
     <priority>1.00</priority>
   </url>
-
-  <!-- Privacy Policy Page -->
+  <!-- Privacy Policy -->
   <url>
     <loc>https://100freeai.netlify.app/privacy-policy.html</loc>
-    <lastmod>2026-05-02</lastmod>
-    <priority>0.80</priority>
+    <lastmod>2026-05-03</lastmod>
+    <priority>0.50</priority>
   </url>
-
-  <!-- Terms of Service Page -->
+  <!-- Terms of Service -->
   <url>
     <loc>https://100freeai.netlify.app/terms.html</loc>
-    <lastmod>2026-05-02</lastmod>
-    <priority>0.80</priority>
+    <lastmod>2026-05-03</lastmod>
+    <priority>0.50</priority>
   </url>
 </urlset>
