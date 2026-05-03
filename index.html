@@ -40,8 +40,9 @@
         .green-link { color: #00ff88; text-decoration: none; font-weight: bold; margin-top: auto; }
     </style>
 </head>
-<body>
+ <body>
 
+    <!-- 1. Welcome Modal (Stays exactly as you want it) -->
     <div id="welcome" class="modal">
         <div class="modal-box">
             <h1 style="font-size: 2rem; margin-bottom: 15px;">Welcome, Future Pro! 🚀</h1>
@@ -50,29 +51,46 @@
         </div>
     </div>
 
-    <header>
-        <!-- ... (Existing Welcome Modal Code) ... -->
-
+    <!-- 2. Header with Search and Filter Buttons (RESTORING THESE) -->
     <header>
         <h1>AI Library for Beginners</h1>
         <p>Master the future with 100+ free tools.</p>
         <div class="controls">
-            <!-- Your search and filter buttons -->
+            <input type="text" id="searchBar" placeholder="Search for a tool..." onkeyup="searchTools()">
+            <br>
+            <button class="filter-btn active" onclick="filterSelection('all', this)">All (100)</button>
+            <button class="filter-btn" onclick="filterSelection('writing', this)">Writing (33)</button>
+            <button class="filter-btn" onclick="filterSelection('design', this)">Design (34)</button>
+            <button class="filter-btn" onclick="filterSelection('video', this)">Video (33)</button>
         </div>
     </header>
 
-    <!-- PASTE THE FEATURED TOOL CODE HERE -->
+    <!-- 3. Featured Tool Section (With Pro Tip & Your Image) -->
     <div style="max-width: 1400px; margin: 20px auto; padding: 0 40px;">
-        <!-- ... the rest of the featured tool code ... -->
+        <div style="background: linear-gradient(90deg, #121212 0%, #1a1a1a 100%); border: 2px solid var(--primary); border-radius: 20px; padding: 30px; display: flex; align-items: center; gap: 30px; flex-wrap: wrap; box-shadow: 0 0 20px rgba(0,255,136,0.15);">
+            <div style="flex: 1; min-width: 300px;">
+                <span style="background: var(--primary); color: #000; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 12px; text-transform: uppercase;">Partner's Pick 🚀</span>
+                <h2 style="margin: 15px 0 10px 0; font-size: 28px;">Leonardo.ai</h2>
+                <p style="color: #ccc; line-height: 1.6; font-size: 16px;">
+                    "Since you're a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite."
+                </p>
+                <div style="background: rgba(0,255,136,0.1); border-left: 3px solid var(--primary); padding: 10px 15px; margin: 15px 0; border-radius: 5px;">
+                    <p style="margin: 0; font-size: 14px; color: var(--primary);"><strong>Partner's Pro Tip:</strong> Use the 'PhotoReal' model for project backgrounds. It gives way more control over lighting and vibe than other free tools!</p>
+                </div>
+                <div style="margin-top: 20px;">
+                    <a href="https://leonardo.ai" class="start-btn" style="text-decoration: none; display: inline-block;">Try Leonardo for Free →</a>
+                </div>
+            </div>
+            <div style="flex: 0 1 300px; text-align: center;">
+                <img src="marketing-preview.png" alt="Featured Tool" style="width: 100%; border-radius: 15px; border: 1px solid #333;">
+            </div>
+        </div>
     </div>
 
-    <main id="toolGrid">
-        <!-- Your 100 tools go here -->
-        </div>
-    </header>
-
-    <div class="tool-grid" id="toolGrid">
-        <!-- WRITING (1-33) -->
+    <!-- 4. The Main Tool Grid -->
+    <main class="tool-grid" id="toolGrid">
+        <!-- Your writing, video, and design cards continue here... -->
+    
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>ChatGPT</h3><p class="review-text">I find ChatGPT to be the most versatile partner for any writer. Whether you're stuck on a professional email or need a creative story prompt, its ability to understand context is unmatched. The free tier is incredibly generous for daily tasks.</p><a href="https://chat.openai.com" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Claude</h3><p class="review-text">If you want writing that sounds truly human and less "robotic," Claude is my go-to choice. It has a very warm, conversational tone and is excellent at summarizing long documents without losing the important details.</p><a href="https://claude.ai" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Gemini</h3><p class="review-text">Google's Gemini is perfect when you need up-to-date information. Since it connects directly to Google Search, it can help you write about current events or research topics with much more accuracy than older AI models.</p><a href="https://gemini.google.com" class="green-link">Visit Tool →</a></div>
