@@ -78,23 +78,49 @@
     </style>
 </head>
  <body>
+<!-- Top Right: CONTACT US (WhatsApp) -->
+<div class="floating-nav">
+    <a href="https://wa.me/923175006728" target="_blank" class="pill-btn contact-btn">
+        CONTACT US
+    </a>
+</div>
 
-    <!-- 1. Floating Feedback Button (Added as requested) -->
-    <a href="mailto:believerbk4@Gmail.com?subject=100FreeAI Website Feedback" class="feedback-btn">Feedback</a>
+<!-- Bottom Right: FEEDBACK (Email) -->
+<a href="mailto:believerbk4@Gmail.com?subject=Website%20Feedback" class="pill-btn feedback-btn">
+    FEEDBACK
+</a>
 
+<!-- Bottom Left: RATE US (Stars) -->
+<div class="pill-btn rate-btn" onclick="openRating()">
+    RATE US!
+    <div class="star-rating">★★★★★</div>
+</div>
+     
     <!-- 2. Welcome Modal (Stays exactly as you want it) -->
-    <div id="welcome" class="modal">
-        <div class="modal-box">
-            <h1 style="font-size: 2rem; margin-bottom: 15px;">Welcome, Future Pro! 🚀</h1>
-            <p style="color: #aaa;">Explore 100 Free AI tools curated specifically for your success.</p>
-            <button class="start-btn" onclick="document.getElementById('welcome').style.display='none'">Start Exploring</button>
-        </div>
+    <!-- Upgraded Welcome Modal -->
+<div id="welcomeModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+    <div style="background: #111; border: 1px solid #333; padding: 40px; border-radius: 24px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0, 255, 136, 0.2);">
+        <div style="font-size: 3rem; margin-bottom: 20px;">🚀</div>
+        <h2 style="color: #fff; font-size: 2rem; margin-bottom: 10px;">Ready to Build?</h2>
+        <p style="color: #aaa; line-height: 1.6; margin-bottom: 30px;">
+            You’ve just unlocked access to <strong>100+ elite AI tools</strong> curated specifically for design, writing, and video. No more searching—just creating.
+        </p>
+        <button onclick="document.getElementById('welcomeModal').style.display='none'" 
+                style="background: #00ff88; color: #000; border: none; padding: 15px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);">
+            Enter the Library
+        </button>
+        <p style="margin-top: 20px; font-size: 0.8rem; color: #555;">Free forever. No login required.</p>
     </div>
+</div>
 
     <!-- 3. Header with Search and Filter Buttons (RESTORING THESE) -->
     <header>
-        <h1 style="margin-top: 20px;">AI Library for Beginners</h1>
-        <p>Master the future with 100+ free tools.</p>
+        <h1 style="font-size: 3rem; font-weight: 800; background: linear-gradient(90deg, #fff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    The Ultimate AI Toolkit
+</h1>
+<p style="font-size: 1.2rem; color: #888; margin-top: 10px; letter-spacing: 1px;">
+    Level up your workflow with 100+ hand-picked free AI tools.
+</p>
         <div class="controls">
             <input type="text" id="searchBar" placeholder="Search for a tool..." onkeyup="searchTools()">
             <br>
