@@ -120,46 +120,50 @@
 </a>
 
  <!-- PROFESSIONAL RATE US SYSTEM -->
-<style>
- <!-- 1. INTERACTIVE RATING MODAL -->
-<div id="rateModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 30px; border-radius: 20px; border: 1px solid #333; z-index: 10000001; text-align: center; color: white; box-shadow: 0 0 50px rgba(0,0,0,0.9); width: 300px; font-family: sans-serif;">
-    <h3 style="margin-bottom: 10px;">Enjoying 100FreeAI?</h3>
-    <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Click a star to rate us!</p>
+
+<!-- 1. THE HIDDEN RATING PANEL -->
+<div id="rateModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 35px; border-radius: 24px; border: 1px solid #333; z-index: 10000001; text-align: center; color: white; box-shadow: 0 20px 60px rgba(0,0,0,0.9); width: 320px; font-family: sans-serif; backdrop-filter: blur(15px);">
+    <h3 style="margin-bottom: 8px; font-size: 1.4rem;">Enjoying 100FreeAI?</h3>
+    <p style="color: #888; font-size: 14px; margin-bottom: 25px;">How would you rate your experience?</p>
     
-    <!-- Star Rating Row -->
-    <div style="font-size: 30px; margin-bottom: 25px; cursor: pointer;">
-        <span onclick="submitRate(1)" onmouseover="highlight(1)" class="star">★</span>
-        <span onclick="submitRate(2)" onmouseover="highlight(2)" class="star">★</span>
-        <span onclick="submitRate(3)" onmouseover="highlight(3)" class="star">★</span>
-        <span onclick="submitRate(4)" onmouseover="highlight(4)" class="star">★</span>
-        <span onclick="submitRate(5)" onmouseover="highlight(5)" class="star">★</span>
+    <!-- INTERACTIVE STARS -->
+    <div style="font-size: 35px; margin-bottom: 30px; display: flex; justify-content: center; gap: 8px;">
+        <span onclick="submitRate(1)" onmouseover="glow(1)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
+        <span onclick="submitRate(2)" onmouseover="glow(2)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
+        <span onclick="submitRate(3)" onmouseover="glow(3)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
+        <span onclick="submitRate(4)" onmouseover="glow(4)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
+        <span onclick="submitRate(5)" onmouseover="glow(5)" onmouseout="resetGlow()" class="star-icon" style="cursor: pointer; transition: 0.3s; color: #444;">★</span>
     </div>
 
-    <button onclick="closeRate()" style="background: transparent; color: #666; border: none; cursor: pointer; font-size: 13px; text-decoration: underline;">Maybe Later</button>
+    <button onclick="closeRate()" style="background: transparent; color: #666; border: none; cursor: pointer; font-size: 13px; text-decoration: underline; font-weight: 600;">CLOSE</button>
 </div>
 
-<!-- 2. FIXED RATE US BUTTON (BOTTOM LEFT) -->
-<div onclick="openRate()" style="position: fixed !important; bottom: 25px !important; left: 25px !important; background: rgba(255, 255, 255, 0.05) !important; color: white !important; padding: 12px 20px !important; border-radius: 12px !important; font-weight: 800 !important; cursor: pointer !important; z-index: 9999998 !important; border: 1px solid rgba(255,255,255,0.1) !important; backdrop-filter: blur(10px) !important; font-family: sans-serif !important; font-size: 13px !important; transition: 0.3s !important;">
+<!-- 2. THE TRIGGER BUTTON (BOTTOM LEFT) -->
+<div onclick="openRate()" style="position: fixed !important; bottom: 25px !important; left: 25px !important; background: rgba(255, 255, 255, 0.08) !important; color: white !important; padding: 14px 22px !important; border-radius: 12px !important; font-weight: 800 !important; cursor: pointer !important; z-index: 9999998 !important; border: 1px solid rgba(255,255,255,0.1) !important; backdrop-filter: blur(12px) !important; font-family: sans-serif !important; font-size: 12px !important; letter-spacing: 1px !important; transition: 0.3s !important; text-transform: uppercase !important;">
     RATE US! ★★★★★
 </div>
 
 <script>
+    const stars = document.querySelectorAll('.star-icon');
     function openRate() { document.getElementById('rateModal').style.display = 'block'; }
     function closeRate() { document.getElementById('rateModal').style.display = 'none'; }
-    function highlight(n) {
-        const stars = document.querySelectorAll('.star');
-        stars.forEach((s, i) => s.style.color = i < n ? '#ffcc00' : '#444');
+    
+    function glow(n) {
+        stars.forEach((s, i) => {
+            s.style.color = i < n ? '#FFD700' : '#444';
+            s.style.textShadow = i < n ? '0 0 15px rgba(255, 215, 0, 0.6)' : 'none';
+        });
     }
+
+    function resetGlow() {
+        stars.forEach(s => { s.style.color = '#444'; s.style.textShadow = 'none'; });
+    }
+
     function submitRate(n) {
-        alert("Thanks for the " + n + " star rating, partner!");
+        alert("Success! You gave us " + n + " stars. Thanks, partner!");
         closeRate();
     }
 </script>
-
-<style>
-    .star { color: #444; transition: 0.2s; padding: 0 5px; }
-    .star:hover { transform: scale(1.2); display: inline-block; }
-</style>
 
     <!-- 1. CONTACT US STICKER (TOP RIGHT) -->
 <a href="https://wa.me/923175006728" target="_blank" style="position: fixed !important; top: 25px !important; right: 25px !important; display: flex !important; align-items: center !important; background: #0047FF !important; color: white !important; padding: 12px 28px !important; border-radius: 50px !important; text-decoration: none !important; font-weight: 900 !important; font-family: 'Arial Black', sans-serif !important; border: 4px solid white !important; box-shadow: 6px 6px 0px rgba(0,0,0,0.3) !important; z-index: 9999999 !important;">
