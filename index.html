@@ -179,19 +179,18 @@
     Rate Us! ★★★★★
 </div>
 
-<!-- The Interactive Modal -->
-<div id="rateModal" class="rating-modal">
-    <div class="rating-card">
-        <h3 style="color:white; margin-bottom:10px;">Enjoying 100FreeAI?</h3>
-        <p style="color:#888; font-size:14px;">Your feedback helps me improve the directory.</p>
-        
-        <div class="star-group" id="starContainer">
-            <span onclick="setRating(1)">★</span>
-            <span onclick="setRating(2)">★</span>
-            <span onclick="setRating(3)">★</span>
-            <span onclick="setRating(4)">★</span>
-            <span onclick="setRating(5)">★</span>
-        </div>
+<!-- RATING MODAL (HIDDEN BY DEFAULT) -->
+<div id="rateModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1a1a1a; padding: 30px; border-radius: 15px; border: 1px solid #333; z-index: 10000001; text-align: center; color: white; box-shadow: 0 0 50px rgba(0,0,0,0.8);">
+    <h3 style="margin-bottom: 10px;">Enjoying 100FreeAI?</h3>
+    <p style="color: #ccc; margin-bottom: 20px;">Your feedback helps me improve the directory.</p>
+    <div style="font-size: 24px; color: #ffcc00; margin-bottom: 20px;">★★★★★</div>
+    <button onclick="document.getElementById('rateModal').style.display='none'" style="background: #333; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer;">Close</button>
+</div>
+
+<!-- Update your Bottom-Left "Rate Us" button to show this modal -->
+<a href="javascript:void(0)" onclick="document.getElementById('rateModal').style.display='block'" style="position: fixed !important; bottom: 25px !important; left: 25px !important; background: rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 12px 24px !important; border-radius: 12px !important; font-weight: 800 !important; text-decoration: none !important; z-index: 9999998 !important; border: 1px solid rgba(255,255,255,0.2) !important; backdrop-filter: blur(10px) !important; font-family: sans-serif !important;">
+    RATE US! ★★★★★
+</a>
 
         <button onclick="toggleRatingModal(false)" style="background:transparent; border:none; color:#555; cursor:pointer;">Close</button>
     </div>
