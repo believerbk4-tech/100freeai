@@ -52,81 +52,94 @@
             h3 { font-size: 16px; margin: 5px 0; }
             header { padding: 40px 10px; }
             .modal-box h1 { font-size: 1.5rem; }
-        }
 
-        <!-- ==========================================
-     FLOATING BUTTONS (Contact, Feedback, Rate)
-     ========================================== -->
 <style>
-    /* Base style for the pill-shaped buttons */
-    .floating-pill {
+    /* Professional Pill Styling */
+    .btn-pill {
         position: fixed;
         padding: 12px 28px;
         border-radius: 50px;
         font-weight: 800;
         text-decoration: none;
         text-transform: uppercase;
-        font-size: 14px;
-        z-index: 9999;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-size: 13px;
+        z-index: 10000;
+        transition: all 0.3s ease;
+        letter-spacing: 1px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        letter-spacing: 1px;
     }
 
-    .floating-pill:hover {
-        transform: scale(1.05);
-    }
-
-    /* TOP RIGHT: CONTACT US (WhatsApp) */
-    .contact-us-float {
-        top: 20px;
-        right: 20px;
+    /* 1. TOP RIGHT: CONTACT US (WhatsApp) */
+    .nav-contact {
+        top: 25px;
+        right: 25px;
         background: #1a1a1a;
         color: #ffffff;
-        border: 2px solid #ff6600;
-        box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
+        border: 2px solid #ff6600; /* Professional Orange */
+        box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
     }
 
-    /* BOTTOM RIGHT: FEEDBACK (Email) */
-    .feedback-float {
-        bottom: 20px;
-        right: 20px;
-        background: #3b71ca;
+    /* 2. BOTTOM RIGHT: FEEDBACK (Email) */
+    .nav-feedback {
+        bottom: 25px;
+        right: 25px;
+        background: #3b71ca; /* Professional Blue */
         color: #ffffff;
-        border: 1px solid rgba(255,255,255,0.3);
-        box-shadow: 0 4px 15px rgba(59, 113, 202, 0.4);
+        border: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 0 4px 15px rgba(59, 113, 202, 0.3);
     }
 
-    /* BOTTOM LEFT: RATE US (Stars) */
-    .rate-us-float {
-        bottom: 20px;
-        left: 20px;
+    /* 3. BOTTOM LEFT: RATE US (Stars) */
+    .nav-rate {
+        bottom: 25px;
+        left: 25px;
         background: #ffffff;
-        color: #1a1a1a;
+        color: #111;
         border: 1px solid #ddd;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         cursor: pointer;
     }
 
-    .star-row {
+    .stars {
         color: #ffcc00;
-        font-size: 16px;
+        font-size: 14px;
         margin-top: 2px;
     }
 
-    /* Orbital decoration to match your reference images */
-    .pill-decoration {
-        position: absolute;
-        width: 110%;
-        height: 125%;
-        border: 1px solid currentColor;
-        border-radius: 60px;
-        opacity: 0.2;
-        pointer-events: none;
+    .btn-pill:hover {
+        transform: translateY(-3px);
+        filter: brightness(1.1);
     }
+</style>
+
+<!-- Top Right Button -->
+<a href="https://wa.me/923175006728" target="_blank" class="btn-pill nav-contact">
+    CONTACT US
+</a>
+
+<!-- Bottom Right Button -->
+<a href="mailto:believerbk4@Gmail.com?subject=Feedback%20for%20100FreeAI" class="btn-pill nav-feedback">
+    FEEDBACK
+</a>
+
+<!-- Bottom Left Button -->
+<div class="btn-pill nav-rate" onclick="handleRateClick()">
+    RATE US!
+    <div class="stars">★★★★★</div>
+</div>
+
+<script>
+    function handleRateClick() {
+        let val = prompt("How many stars would you give 100FreeAI? (1-5)", "5");
+        if (val >= 1 && val <= 5) {
+            alert("Thanks for the " + val + " stars, bro! I appreciate the support.");
+        }
+    }
+</script>
+
 </style>
 
 <!-- HTML Elements -->
