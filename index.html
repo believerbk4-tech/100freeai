@@ -72,48 +72,181 @@
         font-family: sans-serif !important;
     }
 
-    /* 1. TOP RIGHT: CONTACT US */
-    .top-right-contact {
-        top: 20px !important;
-        right: 20px !important;
-        background-color: #1a1a1a !important;
+  <!-- STEP 3: PROFESSIONAL CONTACT US BUTTON -->
+<style>
+    /* The Contact Button - Locked to Top Right */
+    .contact-trigger {
+        position: fixed !important;
+        top: 25px !important;
+        right: 25px !important;
+        background: #1a1a1a !important; /* Dark Premium Background */
         color: #ffffff !important;
-        border: 2px solid #ff6600 !important;
-        box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3) !important;
-    }
-
-    /* 2. BOTTOM RIGHT: FEEDBACK */
-    .bottom-right-feedback {
-        bottom: 20px !important;
-        right: 20px !important;
-        background-color: #3b71ca !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(255,255,255,0.2) !important;
-        box-shadow: 0 5px 15px rgba(59, 113, 202, 0.3) !important;
-    }
-
-    /* 3. BOTTOM LEFT: RATE US */
-    .bottom-left-rate {
-        bottom: 20px !important;
-        left: 20px !important;
-        background-color: #ffffff !important;
-        color: #111111 !important;
-        border: 1px solid #dddddd !important;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+        padding: 10px 22px !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        text-transform: uppercase !important;
+        border: 2px solid #ff6600 !important; /* Professional Orange Border */
+        text-decoration: none !important;
         cursor: pointer !important;
+        z-index: 9999 !important;
+        box-shadow: 0 4px 12px rgba(255, 102, 0, 0.2) !important;
+        transition: 0.3s !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-family: sans-serif !important;
+        letter-spacing: 1px !important;
     }
 
-    .star-box {
-        color: #ffcc00 !important;
-        font-size: 14px !important;
-        margin-top: 2px !important;
-        font-weight: bold !important;
-    }
-
-    .corner-btn:hover {
+    .contact-trigger:hover {
         transform: translateY(-3px) !important;
-        filter: brightness(1.2) !important;
+        background: #252525 !important;
+        box-shadow: 0 6px 15px rgba(255, 102, 0, 0.4) !important;
     }
+</style>
+
+<!-- The Button (Links to your WhatsApp) -->
+<a href="https://wa.me/923175006728" target="_blank" class="contact-trigger">
+    Contact Us
+</a>
+    }
+
+   <!-- STEP 2: PROFESSIONAL FEEDBACK BUTTON -->
+<style>
+    /* The Feedback Button - Locked to Bottom Right */
+    .feedback-trigger {
+        position: fixed !important;
+        bottom: 25px !important;
+        right: 25px !important;
+        background: #3b71ca !important; /* Professional "Action" Blue */
+        color: #ffffff !important;
+        padding: 10px 22px !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        text-transform: uppercase !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        z-index: 9999 !important;
+        box-shadow: 0 4px 12px rgba(59, 113, 202, 0.3) !important;
+        transition: 0.3s !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-family: sans-serif !important;
+    }
+
+    .feedback-trigger:hover {
+        transform: translateY(-3px) !important;
+        background: #3462b3 !important;
+        box-shadow: 0 6px 15px rgba(59, 113, 202, 0.4) !important;
+    }
+</style>
+
+<!-- The Button (Links to your email) -->
+<a href="mailto:believerbk4@Gmail.com?subject=Feedback%20for%20100FreeAI" class="feedback-trigger">
+    Feedback
+</a>
+
+ <!-- PROFESSIONAL RATE US SYSTEM -->
+<style>
+    /* 1. The Main Button - Locked to Bottom Left */
+    .rate-trigger {
+        position: fixed !important;
+        bottom: 25px !important;
+        left: 25px !important;
+        background: #ffffff !important;
+        color: #111 !important;
+        padding: 10px 22px !important;
+        border-radius: 12px !important; /* Modern rounded corners, not a pill */
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        text-transform: uppercase !important;
+        border: 1px solid #ddd !important;
+        cursor: pointer !important;
+        z-index: 9999 !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+        transition: 0.3s !important;
+    }
+
+    /* 2. The Rating Modal (Hidden by default) */
+    .rating-modal {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0; top: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(5px);
+        align-items: center; justify-content: center;
+    }
+
+    .rating-card {
+        background: #1a1a1a;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        border: 1px solid #333;
+        width: 90%; max-width: 350px;
+    }
+
+    /* 3. Interactive Stars */
+    .star-group {
+        font-size: 35px;
+        color: #444;
+        margin: 20px 0;
+        cursor: pointer;
+    }
+
+    .star-group span:hover,
+    .star-group span.active {
+        color: #ffcc00;
+    }
+</style>
+
+<!-- The Button -->
+<div class="rate-trigger" onclick="toggleRatingModal(true)">
+    Rate Us! ★★★★★
+</div>
+
+<!-- The Interactive Modal -->
+<div id="rateModal" class="rating-modal">
+    <div class="rating-card">
+        <h3 style="color:white; margin-bottom:10px;">Enjoying 100FreeAI?</h3>
+        <p style="color:#888; font-size:14px;">Your feedback helps me improve the directory.</p>
+        
+        <div class="star-group" id="starContainer">
+            <span onclick="setRating(1)">★</span>
+            <span onclick="setRating(2)">★</span>
+            <span onclick="setRating(3)">★</span>
+            <span onclick="setRating(4)">★</span>
+            <span onclick="setRating(5)">★</span>
+        </div>
+
+        <button onclick="toggleRatingModal(false)" style="background:transparent; border:none; color:#555; cursor:pointer;">Close</button>
+    </div>
+</div>
+
+<script>
+    function toggleRatingModal(show) {
+        document.getElementById('rateModal').style.display = show ? 'flex' : 'none';
+    }
+
+    function setRating(n) {
+        // Visual feedback
+        const stars = document.getElementById('starContainer').getElementsByTagName('span');
+        for (let i = 0; i < 5; i++) {
+            stars[i].style.color = (i < n) ? "#ffcc00" : "#444";
+        }
+        
+        // Success Message
+        setTimeout(() => {
+            alert("Thanks for the " + n + " star rating, bro! It means a lot.");
+            toggleRatingModal(false);
+        }, 300);
+    }
+</script>
 </style>
 
 <!-- Top Right Button -->
