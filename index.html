@@ -1,111 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Technical Setup -->
     <meta charset="UTF-8">
-    <!-- FIX: Updated to control zoom and ensure fixed scale on mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="google-site-verification" content="CzYHYF3rOiwMdGmGs6lAqJRtMkd6mPJxutV8TdbKVjM" />
-
-    <!-- SEO Optimized Title & Description -->
-    <title>100+ Free AI Tools Directory | Hand-Picked with Personal Reviews</title>
-    <meta name="description" content="Discover 100+ hand-picked free AI tools for writing, design, and video. Every tool is personally reviewed to help you find the best 'human-touch' AI for your creative projects.">
-    <meta name="keywords" content="free ai tools, writing ai, design ai, video ai, ai directory, 100freeai, ai reviews">
-
-    <!-- Open Graph (Makes your links look beautiful on Facebook/Instagram) -->
-    <meta property="og:title" content="100+ Free AI Tools Directory | Curated for Creators">
-    <meta property="og:description" content="Stop searching and start creating. Explore my personally reviewed list of the best free AI tools available today.">
-    <meta property="og:image" content="https://100freeai.netlify.app/marketing-preview.png"> 
-    <meta property="og:url" content="https://100freeai.netlify.app/">
-
+    <title>100+ Free AI Tools Directory</title>
+    
     <style>
         :root { --primary: #00ff88; --dark: #000000; --card: #121212; --text: #ffffff; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--dark); color: var(--text); margin: 0; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-        header { padding: 60px 20px; text-align: center; background: linear-gradient(135deg, #000000 0%, #0a0a1a 100%); }
-        .controls { text-align: center; margin-bottom: 40px; }
-        #searchBar { padding: 15px; width: 320px; max-width: 90%; border-radius: 25px; border: 1px solid #333; outline: none; font-size: 16px; background: #111; color: white; margin-bottom: 20px; }
-        .filter-btn { background: none; border: 1px solid var(--primary); color: var(--primary); padding: 8px 20px; margin: 5px; cursor: pointer; border-radius: 20px; transition: 0.3s; font-weight: bold; font-size: 14px;}
-        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: #000; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--dark); color: var(--text); margin: 0; overflow-x: hidden; }
         
-        /* FIX: Responsive tool grid, 3-wide on PC, 2-wide on Mobile */
-        .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 20px; max-width: 1400px; margin: auto; }
-        .tool-card { background: var(--card); padding: 15px; border-radius: 12px; border-left: 5px solid var(--primary); transition: 0.3s; display: flex; flex-direction: column; min-width: 0;}
-        .tool-card:hover { transform: translateY(-8px); box-shadow: 0 10px 20px rgba(0,255,136,0.1); }
-        .category-tag { font-size: 11px; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .review-text { font-size: 14px; color: #ccc; line-height: 1.5; margin: 10px 0; flex-grow: 1; }
-        
-        /* Modal Styles */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-box { background: #1a1a1a; padding: 30px; border-radius: 25px; text-align: center; border: 2px solid #333; max-width: 90%; width: 400px; }
-        .start-btn { background: var(--primary); color: #000; padding: 12px 35px; border-radius: 25px; border: none; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
-        
-        /* Footer Styles */
-        footer { margin-top: 80px; padding: 40px 20px; background: #000; text-align: center; border-top: 1px solid #222; }
-        footer p { margin: 8px 0; font-size: 14px; color: #fff; }
-        .green-link { color: #00ff88; text-decoration: none; font-weight: bold; margin-top: auto; font-size: 14px; }
+        /* 1. WELCOME PORTAL - MATCHING SCREENSHOT (100) */
+        #welcomePortal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #2a0e5a 0%, #0f0524 100%);
+            z-index: 9999999; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center;
+        }
+        #welcomePortal h1 {
+            font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 900; 
+            color: white; margin: 0; letter-spacing: -2px;
+        }
+        #welcomePortal p {
+            font-size: 1.5rem; color: #b3b3b3; margin: 20px 0 40px; font-weight: 300;
+        }
+        .explore-btn {
+            background: #8e2de2; background: linear-gradient(to right, #8e2de2, #4a00e0);
+            color: white; padding: 20px 60px; border: none; border-radius: 15px;
+            font-size: 1.2rem; font-weight: 800; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(142, 45, 226, 0.5); transition: 0.3s;
+        }
 
-        /* FIX: Mobile Optimization Rules */
-        @media (max-width: 900px) {
-            .tool-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 10px; }
-            .tool-card { padding: 10px; border-left-width: 3px; }
-            .review-text { font-size: 12px; margin: 5px 0; }
-            h3 { font-size: 16px; margin: 5px 0; }
-            header { padding: 40px 10px; }
-            .modal-box h1 { font-size: 1.5rem; }
-<!-- Final Fixed Professional Corner Buttons -->
-<style>
-   {
-</script>
-       
-<!-- 100FREEAI MASTER UI LAYER -->
-<div id="ironclad-ui-wrapper" style="font-family: sans-serif !important;">
+        /* 2. CONTACT US - MATCHING SCREENSHOT (104) BLUE PILL */
+        .contact-pill {
+            position: fixed; top: 30px; right: 30px;
+            background: #0052ff; color: white; padding: 8px 24px 8px 8px;
+            border-radius: 50px; text-decoration: none; font-weight: 900;
+            display: flex; align-items: center; z-index: 1000;
+            border: 2px solid rgba(255,255,255,0.2); font-size: 14px;
+        }
+        .phone-circle {
+            background: #000; color: #ff3b3b; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin-right: 12px; font-size: 16px;
+        }
 
-    <!-- 1. WELCOME SCREEN (MATCHING PURPLE GRADIENT IMAGE) -->
-    <div id="welcomePortal" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: linear-gradient(135deg, #0f0524 0%, #2a0e5a 50%, #0f0524 100%) !important; z-index: 2147483647 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; transition: 0.6s ease-in-out !important;">
-        <h1 style="color: white !important; font-size: clamp(2.5rem, 8vw, 5rem) !important; font-weight: 900 !important; margin-bottom: 20px !important; letter-spacing: 2px !important; text-transform: uppercase !important;">WELCOME TO 100FREEAI</h1>
-        <p style="color: rgba(255,255,255,0.7) !important; font-size: 1.2rem !important; margin-bottom: 40px !important; font-weight: 300 !important;">Explore the 100+ Elite AI Tools</p>
-        <button onclick="closePortal()" style="background: linear-gradient(90deg, #8a2be2, #bf40bf) !important; color: white !important; padding: 18px 45px !important; border: none !important; border-radius: 12px !important; cursor: pointer !important; font-weight: 800 !important; font-size: 16px !important; text-transform: uppercase !important; box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4) !important; transition: 0.3s !important;">EXPLORE AI TOOLS</button>
+        /* 3. FEEDBACK - MATCHING SCREENSHOT (104) BLUE BLOCK */
+        .feedback-btn {
+            position: fixed; bottom: 100px; right: 30px;
+            background: #4176ff; color: white; padding: 12px 25px;
+            border-radius: 8px; text-decoration: none; font-weight: 800;
+            z-index: 1000; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 4. RATE US - MATCHING SCREENSHOT (104) DARK CARD */
+        .rate-card {
+            position: fixed; bottom: 100px; left: 30px;
+            background: #111; color: white; padding: 15px 25px;
+            border-radius: 12px; border: 1px solid #333;
+            z-index: 1000; font-weight: 700; cursor: pointer;
+        }
+
+        /* MAIN CONTENT STYLING */
+        header { padding: 100px 20px; text-align: center; }
+        h1.main-title { color: var(--primary); font-size: 3.5rem; margin-bottom: 10px; }
+        .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
+        @media (max-width: 768px) { .tool-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <!-- WELCOME SCREEN -->
+    <div id="welcomePortal">
+        <h1>WELCOME TO 100FREEAI</h1>
+        <p>Explore the 100+ Elite AI Tools</p>
+        <button class="explore-btn" onclick="startApp()">EXPLORE AI TOOLS</button>
     </div>
 
-    <!-- 2. CONTACT US BUTTON (TOP RIGHT PILL STYLE) -->
-    <a href="https://wa.me/923175006728" target="_blank" style="position: fixed !important; top: 30px !important; right: 30px !important; background: #0047FF !important; color: white !important; padding: 10px 25px !important; border-radius: 50px !important; text-decoration: none !important; font-weight: 900 !important; border: 3px solid rgba(255,255,255,0.4) !important; z-index: 1000000 !important; display: flex !important; align-items: center !important; font-size: 14px !important; letter-spacing: 1px !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;">
-        <span style="background: black !important; color: white !important; width: 24px !important; height: 24px !important; border-radius: 50% !important; margin-right: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 12px !important;">📞</span>
+    <!-- UI LAYER -->
+    <a href="https://wa.me/923175006728" class="contact-pill">
+        <div class="phone-circle">📞</div>
         CONTACT US!
     </a>
 
-    <!-- 3. FEEDBACK BUTTON (BOTTOM RIGHT BLUE RECTANGLE) -->
-    <a href="mailto:believerbk4@gmail.com" style="position: fixed !important; bottom: 30px !important; right: 30px !important; background: #3b71ca !important; color: white !important; padding: 12px 28px !important; border-radius: 8px !important; text-decoration: none !important; font-weight: 800 !important; z-index: 1000000 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 1px !important; box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;">
-        FEEDBACK
-    </a>
+    <a href="mailto:believerbk4@gmail.com" class="feedback-btn">FEEDBACK</a>
 
-    <!-- 4. RATE US BUTTON (BOTTOM LEFT DARK GLASS STYLE) -->
-    <div onclick="openRate()" style="position: fixed !important; bottom: 30px !important; left: 30px !important; background: #1a1a1a !important; color: white !important; padding: 12px 28px !important; border-radius: 12px !important; cursor: pointer !important; z-index: 1000000 !important; border: 1px solid #333 !important; font-weight: 800 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 1px !important;">
+    <div class="rate-card" onclick="alert('Thanks for your support!')">
         RATE US! ★★★★★
     </div>
 
-    <!-- 5. INTERACTIVE RATING MODAL (HIDDEN) -->
-    <div id="rateModal" style="display: none; position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; background: #0a0a0a !important; padding: 40px !important; border-radius: 20px !important; border: 1px solid #222 !important; z-index: 2147483647 !important; text-align: center !important; color: white !important; width: 300px !important; box-shadow: 0 0 100px rgba(0,0,0,1) !important;">
-        <h3 style="margin-bottom: 10px !important;">Enjoying 100FreeAI?</h3>
-        <p style="color: #666 !important; margin-bottom: 25px !important;">Your feedback helps us improve!</p>
-        <div style="font-size: 40px !important; color: #FFD700 !important; margin-bottom: 25px !important; cursor: pointer !important;">
-            <span onclick="alert('Thanks for the 5 stars, partner!'); closeRate()">★★★★★</span>
-        </div>
-        <button onclick="closeRate()" style="background:none !important; border:none !important; color:#444 !important; cursor:pointer !important; text-decoration:underline !important; font-size:12px !important;">CLOSE</button>
+    <!-- MAIN WEBSITE -->
+    <header>
+        <h1 class="main-title">The Ultimate AI Toolkit</h1>
+        <p style="color: #888; font-size: 1.2rem;">Level up your workflow with 100+ hand-picked free AI tools.</p>
+    </header>
+
+    <div class="tool-grid">
+        <!-- Add your tool cards here -->
     </div>
 
-</div>
-
-<script>
-    function closePortal() {
-        var p = document.getElementById('welcomePortal');
-        p.style.opacity = '0';
-        setTimeout(function(){ p.style.display = 'none'; }, 600);
-    }
-    function openRate() { document.getElementById('rateModal').style.display = 'block'; }
-    function closeRate() { document.getElementById('rateModal').style.display = 'none'; }
-</script>
-       
- <body>
+    <script>
+        function startApp() {
+            const portal = document.getElementById('welcomePortal');
+            portal.style.opacity = '0';
+            portal.style.transition = '0.5s';
+            setTimeout(() => { portal.style.display = 'none'; }, 500);
+        }
+    </script>
+</body>
+</html>
 
 <!-- HIGH-TECH PRO ENTRY PORTAL -->
 <div id="welcomePortal" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: #050505 !important; background-image: radial-gradient(circle at center, #1a0b3b 0%, #050505 100%), linear-gradient(rgba(138, 43, 226, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(138, 43, 226, 0.05) 1px, transparent 1px) !important; background-size: 100% 100%, 50px 50px, 50px 50px !important; z-index: 9999999 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; transition: 0.8s ease !important; font-family: 'Inter', sans-serif !important;">
