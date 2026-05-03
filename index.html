@@ -6,104 +6,87 @@
     <title>100+ Free AI Tools Directory</title>
     
     <style>
-        :root { --primary: #00ff88; --dark: #000000; --card: #121212; --text: #ffffff; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--dark); color: var(--text); margin: 0; overflow-x: hidden; }
+        :root { --primary: #00ff88; --dark: #000000; --text: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: var(--text); margin: 0; overflow: hidden; }
         
-        /* 1. WELCOME PORTAL - MATCHING SCREENSHOT (100) */
+        /* 1. WELCOME SCREEN - MATCHING IMAGE_E11358.JPG EXACTLY */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #2a0e5a 0%, #0f0524 100%);
+            background: radial-gradient(circle at center, #1a083d 0%, #000000 100%);
             z-index: 9999999; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; text-align: center;
+            transition: opacity 0.6s ease;
         }
         #welcomePortal h1 {
-            font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 900; 
-            color: white; margin: 0; letter-spacing: -2px;
+            font-size: clamp(3rem, 12vw, 8rem); font-weight: 900; 
+            color: white; margin: 0; letter-spacing: 2px;
         }
         #welcomePortal p {
-            font-size: 1.5rem; color: #b3b3b3; margin: 20px 0 40px; font-weight: 300;
+            font-size: 1.2rem; color: #d155ff; margin: 10px 0 40px; 
+            font-weight: 600; text-transform: uppercase; letter-spacing: 4px;
         }
-        .explore-btn {
-            background: #8e2de2; background: linear-gradient(to right, #8e2de2, #4a00e0);
-            color: white; padding: 20px 60px; border: none; border-radius: 15px;
-            font-size: 1.2rem; font-weight: 800; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(142, 45, 226, 0.5); transition: 0.3s;
+        /* HOLLOW BUTTON STYLE FROM YOUR IMAGE */
+        .enter-btn {
+            background: transparent; color: white; padding: 15px 50px; 
+            border: 2px solid #5a189a; border-radius: 8px;
+            font-size: 1.1rem; font-weight: 600; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.3s;
         }
+        .enter-btn:hover { background: rgba(90, 24, 154, 0.2); border-color: #d155ff; }
 
-        /* 2. CONTACT US - MATCHING SCREENSHOT (104) BLUE PILL */
+        /* FIXED CORNER BUTTONS - MATCHING IMAGE_E11338.JPG */
         .contact-pill {
-            position: fixed; top: 30px; right: 30px;
-            background: #0052ff; color: white; padding: 8px 24px 8px 8px;
-            border-radius: 50px; text-decoration: none; font-weight: 900;
-            display: flex; align-items: center; z-index: 1000;
-            border: 2px solid rgba(255,255,255,0.2); font-size: 14px;
+            position: fixed; top: 25px; right: 25px; background: #0047FF; 
+            color: white; padding: 8px 20px; border-radius: 50px; 
+            text-decoration: none; font-weight: 900; display: flex; 
+            align-items: center; z-index: 1000; border: 3px solid rgba(255,255,255,0.4);
         }
         .phone-circle {
-            background: #000; color: #ff3b3b; width: 32px; height: 32px;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; margin-right: 12px; font-size: 16px;
+            background: black; color: white; width: 24px; height: 24px; 
+            border-radius: 50%; margin-right: 10px; display: flex; 
+            align-items: center; justify-content: center; font-size: 12px;
         }
-
-        /* 3. FEEDBACK - MATCHING SCREENSHOT (104) BLUE BLOCK */
         .feedback-btn {
-            position: fixed; bottom: 100px; right: 30px;
-            background: #4176ff; color: white; padding: 12px 25px;
-            border-radius: 8px; text-decoration: none; font-weight: 800;
-            z-index: 1000; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: fixed; bottom: 25px; right: 25px; background: #3b71ca; 
+            color: white; padding: 12px 25px; border-radius: 8px; 
+            text-decoration: none; font-weight: 800; z-index: 1000;
         }
-
-        /* 4. RATE US - MATCHING SCREENSHOT (104) DARK CARD */
         .rate-card {
-            position: fixed; bottom: 100px; left: 30px;
-            background: #111; color: white; padding: 15px 25px;
-            border-radius: 12px; border: 1px solid #333;
-            z-index: 1000; font-weight: 700; cursor: pointer;
+            position: fixed; bottom: 25px; left: 25px; background: #1a1a1a; 
+            color: white; padding: 12px 25px; border-radius: 10px; 
+            z-index: 1000; border: 1px solid #333; font-weight: 800;
         }
-
-        /* MAIN CONTENT STYLING */
-        header { padding: 100px 20px; text-align: center; }
-        h1.main-title { color: var(--primary); font-size: 3.5rem; margin-bottom: 10px; }
-        .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
-        @media (max-width: 768px) { .tool-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <!-- WELCOME SCREEN -->
     <div id="welcomePortal">
-        <h1>WELCOME TO 100FREEAI</h1>
-        <p>Explore the 100+ Elite AI Tools</p>
-        <button class="explore-btn" onclick="startApp()">EXPLORE AI TOOLS</button>
+        <h1>100FREEAI</h1>
+        <p>THE ULTIMATE AI TOOLKIT</p>
+        <button class="enter-btn" onclick="enterDirectory()">ENTER DIRECTORY</button>
     </div>
 
-    <!-- UI LAYER -->
-    <a href="https://wa.me/923175006728" class="contact-pill">
-        <div class="phone-circle">📞</div>
-        CONTACT US!
-    </a>
-
+    <!-- UI BUTTONS -->
+    <a href="https://wa.me/923175006728" class="contact-pill"><div class="phone-circle">📞</div> CONTACT US!</a>
     <a href="mailto:believerbk4@gmail.com" class="feedback-btn">FEEDBACK</a>
+    <div class="rate-card">RATE US! ★★★★★</div>
 
-    <div class="rate-card" onclick="alert('Thanks for your support!')">
-        RATE US! ★★★★★
-    </div>
-
-    <!-- MAIN WEBSITE -->
-    <header>
-        <h1 class="main-title">The Ultimate AI Toolkit</h1>
-        <p style="color: #888; font-size: 1.2rem;">Level up your workflow with 100+ hand-picked free AI tools.</p>
-    </header>
-
-    <div class="tool-grid">
-        <!-- Add your tool cards here -->
+    <!-- MAIN CONTENT -->
+    <div style="padding-top: 100px; text-align: center;">
+        <h2 style="color: var(--primary); font-size: 3rem;">The Ultimate AI Toolkit</h2>
+        <p>Level up your workflow with 100+ hand-picked free AI tools.</p>
     </div>
 
     <script>
-        function startApp() {
+        function enterDirectory() {
             const portal = document.getElementById('welcomePortal');
             portal.style.opacity = '0';
-            portal.style.transition = '0.5s';
-            setTimeout(() => { portal.style.display = 'none'; }, 500);
+            setTimeout(() => { 
+                portal.style.display = 'none'; 
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
+            }, 600);
         }
     </script>
 </body>
