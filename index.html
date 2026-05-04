@@ -75,6 +75,19 @@
             .rate-container, .feedback-btn { position: relative; bottom: 0; left: 0; right: 0; margin: 20px auto; width: 90%; }
         }
     </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "100+ Free AI Tools Directory",
+  "description": "A curated directory of over 100 elite AI tools for design, development, and productivity.",
+  "url": "https://100freeai.netlify.app/",
+  "publisher": {
+    "@type": "Person",
+    "name": "Fahad Khan"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -707,6 +720,44 @@
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     }
 </script>
+    <!-- ... all your tool cards and footer content ... -->
+
+    <script>
+        // Paste your Session Storage fix here
+        window.addEventListener('DOMContentLoaded', () => {
+            const portal = document.getElementById('welcomePortal');
+            if (sessionStorage.getItem('hasVisitedPortal')) {
+                if (portal) {
+                    portal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+
+        function closePortal() {
+            const portal = document.getElementById('welcomePortal');
+            if (portal) {
+                portal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                sessionStorage.setItem('hasVisitedPortal', 'true');
+            }
+        }
+
+        // Include your other functions (scrollToTop, filterSearch) here too
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterSearch() {
+            let val = document.getElementById('searchBar').value.toLowerCase();
+            document.querySelectorAll('.tool-card').forEach(c => {
+                let name = c.querySelector('h3').innerText.toLowerCase();
+                let desc = c.querySelector('p').innerText.toLowerCase();
+                c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
+            });
+        }
+    </script>
+           
 </body>
 </html>
        <!-- 6. Legal & Information Section (Restoring what you fixed) -->
