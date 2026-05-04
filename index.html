@@ -108,7 +108,7 @@
             <span class="badge">Partner's Pick 🚀</span>
             <h2>Leonardo AI: Pro Tip</h2>
             <p>"As a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite for your professional projects."</p>
-            <a href="https://leonardo.ai" class="tool-link" style="max-width: 200px;">Visit Leonardo →</a>
+            <a href="https://leonardo.ai" class="tool-link" style="max-width: 50px;">Visit Leonardo →</a>
         </div>
         <div class="leonardo-preview">
             <img src="marketing-preview.png" alt="Leonardo UI Preview">
@@ -222,7 +222,7 @@
         <div class="tool-card" data-cat="video"><h3>Supercreator</h3><p>AI tool for ultra-fast short-form video creation.</p><a href="https://supercreator.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
         <div class="tool-card" data-cat="video"><h3>Maverick</h3><p>AI video for e-commerce to personalize post-purchase.</p><a href="https://trymaverick.com" class="tool-link" target="_blank">Visit Tool →</a></div>
 
-    </main>
+   </main>
 
     <div class="rate-container">
         <div style="font-size: 10px; color: #888; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Rate Us!</div>
@@ -231,7 +231,8 @@
         </div>
     </div>
 
-<button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
+    <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
+
     <footer>
         <a href="#welcomePortal" onclick="openPortal()">Privacy Policy</a>
         <a href="#welcomePortal" onclick="openPortal()">Terms of Services</a>
@@ -257,7 +258,6 @@
             stars.forEach((s, i) => {
                 s.classList.toggle('active', i < n);
             });
-            // You can add an alert or small text here
             console.log("Rated: " + n);
         }
 
@@ -268,7 +268,7 @@
         // FILTER LOGIC
         function filterCat(cat) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            if (event) event.currentTarget.classList.add('active');
             
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(c => {
@@ -288,14 +288,15 @@
                 let desc = c.querySelector('p').innerText.toLowerCase();
                 c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
             });
-            
+        } // Fixed missing closing brace here
+
+        // FEEDBACK EMAIL LOGIC
         function sendFeedback() {
-    window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
-}
+            window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
+        }
     </script>
 </body>
 </html>
-
         <!-- Writing Tools (33) -->
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>ChatGPT</h3><p class="review-text">I find ChatGPT to be the most versatile partner for any writer. Whether you're stuck on a professional email or need a creative story prompt, its ability to understand context is unmatched.</p><a href="https://chat.openai.com" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Claude</h3><p class="review-text">If you want writing that sounds truly human and less "robotic," Claude is my go-to choice. It has a very warm, conversational tone and is excellent at summarizing long documents without losing the important details.</p><a href="https://claude.ai" class="green-link">Visit Tool →</a></div>
