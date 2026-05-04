@@ -102,49 +102,7 @@
             <button class="filter-btn" onclick="filterCat('video')">Video (33)</button>
         </div>
     </header>
-    .pro-tip-box {
-    display: flex;
-    align-items: center; /* Vertically centers the text with the image */
-    justify-content: space-between;
-    background: #0a0a0a;
-    border: 1px solid #222;
-    border-radius: 15px;
-    padding: 25px;
-    margin: 20px auto;
-    max-width: 1000px;
-    gap: 30px;
-}
-
-.tip-text {
-    flex: 2; /* Takes up 2/3 of the space */
-    text-align: left;
-}
-
-.leonardo-preview {
-    flex: 1; /* Takes up 1/3 of the space */
-    max-width: 250px; /* Keeps the image small and professional */
-}
-
-.leonardo-preview img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    border: 1px solid #333;
-    display: block;
-}
-
-/* Mobile Fix to keep them side-by-side but smaller */
-@media (max-width: 600px) {
-    .pro-tip-box {
-        padding: 15px;
-        gap: 15px;
-    }
-    .leonardo-preview {
-        max-width: 100px; /* Makes image even smaller on phones */
-    }
-    .tip-text h2 { font-size: 1.2rem; }
-    .tip-text p { font-size: 0.85rem; }
-}
+      }
     <div class="pro-tip-box">
     <div class="tip-text">
         <span class="badge">Partner's Pick 🚀</span>
@@ -156,7 +114,7 @@
         <img src="marketing-preview.png" alt="Leonardo UI Preview">
     </div>
 </div>
-    
+      }
     <main class="tool-grid" id="toolGrid">
         <!-- WRITING (1-33) -->
         <div class="tool-card" data-cat="writing"><h3>ChatGPT</h3><p>Industry standard for text, logic, and coding assistance.</p><a href="https://chat.openai.com" class="tool-link" target="_blank">Visit Tool →</a></div>
