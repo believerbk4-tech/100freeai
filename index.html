@@ -658,7 +658,8 @@
 </div>
 
 </main>
-<!-- 1. Interactive Elements -->
+
+    <!-- 1. Interactive Elements -->
     <div class="rate-container" id="rateBox">
         <div id="rateContent">
             <div style="font-size: 10px; color: #888; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Rate Us!</div>
@@ -670,14 +671,7 @@
 
     <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
 
-    <!-- 2. Legal & Information Section -->
-    <div id="privacy-section" style="max-width: 900px; margin: 60px auto; padding: 40px; background: #0a0a0a; border: 1px solid #222; border-radius: 15px; display: none;">
-        <h2 style="color: #00ff88;">Privacy Policy & Terms</h2>
-        <p style="color: #ccc; line-height: 1.8;">Your privacy is respected. This directory provides external links and does not directly monetize your visit.</p>
-        <button class="start-btn" style="background:#00ff88; border:none; padding:10px 20px; cursor:pointer;" onclick="document.getElementById('privacy-section').style.display='none'">Close</button>
-    </div>
-
-    <!-- 3. About Us Section -->
+    <!-- 2. About Us Section -->
     <section id="about" style="padding: 40px 20px; margin-top: 20px; text-align: center; background-color: #111; color: #fff; border-top: 1px solid #333;">
         <div style="max-width: 800px; margin: 0 auto;">
             <h2 style="color: #00ff88; margin-bottom: 20px;">About 100FreeAI</h2>
@@ -693,27 +687,23 @@
         </div>
     </section>
 
-   <!-- 4. Footer -->
-<footer style="padding: 40px 20px; text-align: center; border-top: 1px solid #333; background: #000;">
-    <p><strong>Owner: Fahad Khan S/O Wahid Sher</strong></p>
-    <p>Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
-    <p>
-        <a href="javascript:void(0)" 
-           onclick="event.preventDefault(); const sec = document.getElementById('privacy-section'); sec.style.display='block'; sec.scrollIntoView({behavior: 'smooth'});" 
-           style="color: #00ff88; text-decoration: none;">Privacy Policy</a> | 
-        <a href="javascript:void(0)" 
-           onclick="event.preventDefault(); const sec = document.getElementById('privacy-section'); sec.style.display='block'; sec.scrollIntoView({behavior: 'smooth'});" 
-           style="color: #00ff88; text-decoration: none;">Terms of Service</a>
-    </p>
-    <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">© 2026 AI Hub - Curated with a human touch.</p>
-</footer>
+    <!-- 3. Footer -->
+    <footer style="padding: 40px 20px; text-align: center; border-top: 1px solid #333; background: #000;">
+        <p><strong>Owner: Fahad Khan S/O Wahid Sher</strong></p>
+        <p>Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
+        <p>
+            <!-- Fixed: Links now navigate to separate pages as seen in Screenshot (128).png -->
+            <a href="privacy-policy.html" style="color: #00ff88; text-decoration: none;">Privacy Policy</a> | 
+            <a href="terms.html" style="color: #00ff88; text-decoration: none;">Terms of Service</a>
+        </p>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">© 2026 AI Hub - Curated with a human touch.</p>
+    </footer>
 
-    <!-- 5. Centralized JavaScript Logic -->
+    <!-- 4. Centralized JavaScript Logic -->
     <script>
         // Welcome Modal & Session Handling
         window.addEventListener('DOMContentLoaded', () => {
             const portal = document.getElementById('welcomePortal');
-            // Using a specific key to ensure it matches your portal logic
             if (sessionStorage.getItem('hasVisitedPortal')) {
                 if (portal) {
                     portal.style.display = 'none';
