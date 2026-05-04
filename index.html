@@ -84,74 +84,90 @@
             max-width: 1200px;
             margin: 0 auto 100px;
         }
+/* 1. THE GRID: FORCED 3-COLUMNS EVERYWHERE */
+.tool-grid {
+    display: grid;
+    /* Force 3 columns on Laptop, Tablet, and Mobile */
+    grid-template-columns: repeat(3, 1fr) !important; 
+    gap: 12px; /* Tightened for mobile space */
+    padding: 0 15px;
+    max-width: 1200px;
+    margin: 0 auto 100px;
+}
 
-        /* Responsive Grid Adjustments */
-        @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; } }
-        @media (max-width: 768px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 480px) { .tool-grid { grid-template-columns: repeat(1, 1fr); } }
-
-     /* UPDATED CARD STYLE FOR HIGH PROFESSIONALISM */
+/* 2. PROFESSIONAL CARD (Matching Screenshot 110) */
 .tool-card {
     background: #0d0d0d; 
     border: 1px solid #1a1a1a; 
-    padding: 30px; /* More breathing room like the image */
+    padding: 20px; /* Adjusted padding to fit 3-wide on mobile */
     border-radius: 16px;
     text-align: left;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    justify-content: space-between;
 }
 
 .category-label { 
-    color: #666; /* Muted gray for the category */
-    font-size: 11px; 
+    color: #666;
+    font-size: 10px; /* Slightly smaller for mobile 3-wide */
     text-transform: uppercase; 
-    letter-spacing: 1.5px;
-    margin-bottom: 12px; 
+    letter-spacing: 1px;
+    margin-bottom: 8px; 
 }
 
 .tool-card h3 { 
-    margin: 0 0 15px 0; 
-    color: var(--primary); /* Bright Green */
-    font-size: 1.6rem; 
+    margin: 0 0 10px 0; 
+    color: #00ff88; /* Your primary green */
+    font-size: clamp(1rem, 4vw, 1.4rem); /* Dynamic size so it doesn't overflow */
     font-weight: 800;
 }
 
 .tool-card p { 
-    font-size: 0.95rem; 
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem); /* Shrinks slightly on small screens */
     color: #eee; 
-    line-height: 1.6; 
-    margin-bottom: 25px; 
-    flex-grow: 1; 
+    line-height: 1.4; 
+    margin-bottom: 20px; 
 }
 
-/* THE PROFESSIONAL BOXED BUTTON (Matching your image) */
+/* 3. THE HIGH-PROFESSIONAL BUTTON (Matching Screenshot 110) */
 .tool-link { 
-    color: var(--primary) !important; 
-    text-decoration: none; 
+    color: #00ff88 !important; 
+    text-decoration: none !important; 
     font-weight: 900; 
-    font-size: 14px; 
+    font-size: 11px; /* Matching the clean, small look in 110 */
     text-transform: uppercase;
     letter-spacing: 1px;
     
-    /* The Box Style */
     display: block;
     width: 100%;
-    padding: 15px 0;
+    padding: 12px 0;
     text-align: center;
-    border: 1px solid rgba(0, 255, 136, 0.15); /* Subtle green border */
-    background: rgba(255, 255, 255, 0.03); /* Very slight lift */
+    border: 1px solid rgba(0, 255, 136, 0.1); /* Very subtle green border */
+    background: #111; /* Dark background for the button box */
     border-radius: 8px;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .tool-link:hover { 
     background: rgba(0, 255, 136, 0.1); 
-    border-color: var(--primary);
-    transform: translateY(-2px);
+    border-color: #00ff88;
 }
-        }
-        .tool-link:hover { background: rgba(0, 255, 136, 0.1); }
+
+/* 4. MOBILE-SPECIFIC TWEAKS FOR 3-WIDE */
+@media (max-width: 600px) {
+    .tool-grid {
+        gap: 8px; /* Extra tight gap for small screens */
+        padding: 0 8px;
+    }
+    .tool-card {
+        padding: 12px; /* Less padding so text fits */
+    }
+    .tool-link {
+        font-size: 9px; /* Ensures text doesn't wrap on small phones */
+        padding: 10px 0;
+    }
+}
 
         /* 6. UI BUTTONS (Working Properly) */
         .contact-pill {
