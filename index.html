@@ -12,95 +12,92 @@
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: var(--text); margin: 0; overflow-x: hidden; width: 100%; }
 
-        /* 2. WELCOME PORTAL POP-UP STYLE */
+        /* 2. WELCOME PORTAL (Updated to Fourth Image Style) */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            background: linear-gradient(180deg, #1a0033 0%, #000000 100%);
             z-index: 10000; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; text-align: center;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
         }
-        .portal-content { transform: scale(1); transition: 0.5s; }
-        .enter-btn { background: var(--accent); color: white; padding: 18px 50px; border-radius: 12px; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4); }
+        .portal-content h1 { font-size: clamp(2rem, 10vw, 5rem); font-weight: 900; margin-bottom: 10px; letter-spacing: 2px; }
+        .portal-content p { color: #ccc; font-size: 1.2rem; margin-bottom: 40px; }
+        .enter-btn { background: #8a2be2; color: white; padding: 18px 60px; border-radius: 12px; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 0 10px 30px rgba(138, 43, 226, 0.5); font-size: 1rem; }
 
         /* 3. HEADER & FILTERS */
         header { padding: 120px 20px 40px; text-align: center; }
         .main-h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0; letter-spacing: -2px; }
         .sub-header { color: #888; margin: 15px 0 30px; font-size: 1.1rem; }
-        
         #searchBar { width: 90%; max-width: 500px; padding: 16px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; outline: none; margin-bottom: 30px; }
 
         .filter-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 50px; }
         .filter-btn { padding: 12px 24px; border-radius: 50px; border: 1px solid #222; background: #0a0a0a; color: #fff; cursor: pointer; font-weight: 600; transition: 0.3s; }
         .filter-btn.active { background: var(--primary); color: black; border-color: var(--primary); }
 
-        /* 4. PRO TIP SECTION (Restored with Visit Tool) */
-        .pro-tip-box {
-            max-width: 1000px; margin: 0 auto 60px; padding: 40px;
-            background: #050505; border: 1px solid #1a1a1a; border-radius: 24px;
-            display: flex; align-items: center; justify-content: space-between; gap: 40px;
-        }
-        .badge { background: var(--primary); color: black; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 900; }
-        .pro-tip-box h2 { font-size: 2rem; margin: 15px 0; }
-        .pro-tip-box p { color: #aaa; line-height: 1.6; margin-bottom: 25px; }
-        .leonardo-preview img { width: 180px; border-radius: 15px; border: 1px solid #333; }
-
-        /* 5. TOOL GRID (Responsive 3x3) */
+        /* 4. TOOL GRID (Stuck Together/Glue Style) */
         .tool-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px; padding: 0 20px; max-width: 1200px; margin: 0 auto 100px;
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); /* 3x3 for Desktop */
+            gap: 1px; /* The "Glue" line effect */
+            background: #1a1a1a; /* Glue color */
+            padding: 1px;
+            max-width: 1300px; margin: 0 auto 100px;
+            border: 1px solid #1a1a1a;
         }
-        .tool-card {
-            background: #0a0a0a; border: 1px solid #1a1a1a; padding: 25px;
-            border-radius: 20px; display: flex; flex-direction: column; height: 100%;
-        }
-        .category-label { color: #555; font-size: 12px; font-weight: 700; text-transform: uppercase; }
-        .tool-card h3 { color: var(--primary); margin: 10px 0; font-size: 1.5rem; }
-        .tool-card p { color: #888; font-size: 0.95rem; flex-grow: 1; }
-        
-        .tool-link {
-            color: var(--primary) !important; text-decoration: none !important; font-weight: 900; 
-            font-size: 12px; text-transform: uppercase; display: block; width: 100%;
-            padding: 15px 0; text-align: center; border: 1px solid rgba(0, 255, 136, 0.2);
-            background: #111; border-radius: 12px; transition: 0.3s; margin-top: 20px;
-        }
-        .tool-link:hover { background: var(--primary); color: black !important; }
 
-        /* 6. UI BUTTONS (Restored Positions) */
-        .contact-pill { position: fixed; top: 25px; right: 25px; background: #0052ff; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 900; z-index: 5000; font-size: 13px; box-shadow: 0 4px 15px rgba(0,82,255,0.3); }
+        .tool-card {
+            background: #000; /* Card background */
+            padding: 40px 30px;
+            display: flex; flex-direction: column;
+            min-height: 350px;
+        }
+
+        .category-label { color: #888; font-size: 13px; font-weight: 500; margin-bottom: 10px; }
+        .tool-card h3 { color: var(--primary); margin: 0 0 20px; font-size: 1.8rem; font-weight: 800; }
+        .tool-card p { color: #777; font-size: 1rem; line-height: 1.6; flex-grow: 1; margin-bottom: 30px; }
+
+        /* Unified Visit Tool Style */
+        .tool-link {
+            color: var(--primary); text-decoration: none; font-weight: 700; 
+            font-size: 13px; text-transform: capitalize; 
+            display: inline-block; transition: 0.3s;
+        }
+        .tool-link:hover { opacity: 0.7; }
+
+        /* 5. UI ELEMENTS */
+        .contact-pill { position: fixed; top: 25px; right: 25px; background: #0052ff; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 900; z-index: 5000; font-size: 13px; }
         .feedback-btn { position: fixed; bottom: 25px; right: 25px; background: #3b71ca; color: white; padding: 15px 25px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; z-index: 5000; }
         
-        /* 7. STAR RATING SYSTEM (Left Corner) */
+        /* 6. STAR RATING SYSTEM */
         .rate-container { position: fixed; bottom: 25px; left: 25px; background: #111; padding: 15px 20px; border-radius: 16px; border: 1px solid #222; z-index: 5000; text-align: center; }
         .stars { display: flex; gap: 5px; cursor: pointer; justify-content: center; margin-top: 5px; }
         .star { font-size: 20px; color: #333; transition: 0.2s; }
-        .star.active { color: #ffcc00; text-shadow: 0 0 10px rgba(255,204,0,0.5); }
+        .star.active { color: #ffcc00; }
         #rateMsg { color: var(--primary); font-size: 11px; font-weight: 800; margin-top: 8px; display: none; }
 
+        @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
-            .pro-tip-box { flex-direction: column; text-align: center; padding: 25px; }
             .tool-grid { grid-template-columns: 1fr; }
             .main-h1 { font-size: 2.8rem; }
             .contact-pill { top: 15px; right: 15px; padding: 10px 18px; }
         }
     </style>
 </head>
-<body>
+<body style="overflow: hidden;">
 
-    <!-- Welcome Pop-up -->
+    <!-- Welcome Pop-up (Style from 4th Image) -->
     <div id="welcomePortal">
         <div class="portal-content">
-            <h1 style="font-size: 3rem; margin-bottom: 10px;">100FREEAI</h1>
-            <p style="color: #888; margin-bottom: 30px;">Premium Tools. Zero Cost. High Velocity.</p>
-            <button class="enter-btn" onclick="closePortal()">Explore AI Tools</button>
+            <h1>WELCOME TO 100FREEAI</h1>
+            <p>Explore the 100+ Elite AI Tools</p>
+            <button class="enter-btn" onclick="closePortal()">EXPLORE AI TOOLS</button>
         </div>
     </div>
 
-    <!-- UI Elements -->
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
-    <button class="feedback-btn" onclick="handleFeedback()">FEEDBACK</button>
+    <button class="feedback-btn" id="feedbackBtn" onclick="handleFeedback()">FEEDBACK</button>
     
-    <div class="rate-container">
+    <div class="rate-container" id="rateSection">
         <div style="font-size: 11px; font-weight: 900; color: #666;">RATE US!</div>
         <div class="stars" id="starGroup">
             <span class="star" data-v="1">★</span>
@@ -109,15 +106,12 @@
             <span class="star" data-v="4">★</span>
             <span class="star" data-v="5">★</span>
         </div>
-        <div id="rateMsg">THANKS FOR RATING! ❤️</div>
     </div>
 
     <header>
         <h1 class="main-h1">The Ultimate AI Toolkit</h1>
         <p class="sub-header">Curated directory for professional designers and developers.</p>
-        
         <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools...">
-
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all')">All (100)</button>
             <button class="filter-btn" onclick="filterCat('writing')">Writing (33)</button>
@@ -126,24 +120,12 @@
         </div>
     </header>
 
-    <div class="pro-tip-box">
-        <div class="tip-text">
-            <span class="badge">Partner's Pick 🚀</span>
-            <h2>Leonardo AI: Pro Tip</h2>
-            <p>"As your partner in design, I recommend Leonardo for its unique model training. It's the best free alternative for professional UI assets."</p>
-            <a href="https://leonardo.ai" class="tool-link" style="max-width: 200px;">Visit Leonardo →</a>
-        </div>
-        <div class="leonardo-preview">
-            <img src="marketing-preview.png" alt="AI Preview">
-        </div>
-    </div>
-
-    <div class="tool-grid" id="toolGrid">
+    <main class="tool-grid" id="toolGrid">
         <!-- Writing -->
         <div class="tool-card" data-cat="writing">
             <span class="category-label">Writing</span>
             <h3>ChatGPT</h3>
-            <p>Industry standard for text generation and logic tasks.</p>
+            <p>Industry standard for text generation and logic tasks. Perfect for drafting content and code.</p>
             <a href="https://chat.openai.com" class="tool-link">Visit Tool →</a>
         </div>
         
@@ -151,7 +133,7 @@
         <div class="tool-card" data-cat="design">
             <span class="category-label">Design</span>
             <h3>Canva AI</h3>
-            <p>Magic media tools for fast social media and ad creation.</p>
+            <p>Magic media tools for fast social media and ad creation with automated layout features.</p>
             <a href="https://canva.com" class="tool-link">Visit Tool →</a>
         </div>
 
@@ -159,21 +141,36 @@
         <div class="tool-card" data-cat="video">
             <span class="category-label">Video</span>
             <h3>Runway Gen-2</h3>
-            <p>The most advanced AI video generation platform available today.</p>
+            <p>The most advanced AI video generation platform available today for cinematic results.</p>
             <a href="https://runwayml.com" class="tool-link">Visit Tool →</a>
         </div>
 
-        <!-- Gemini Card -->
+        <!-- Writing 2 -->
         <div class="tool-card" data-cat="writing">
             <span class="category-label">Writing</span>
-            <h3>Gemini</h3>
-            <p>Google's real-time AI with direct web access for research.</p>
-            <a href="https://gemini.google.com" class="tool-link">Visit Tool →</a>
+            <h3>Claude</h3>
+            <p>If you want writing that sounds truly human and less "robotic," Claude is my go-to choice.</p>
+            <a href="https://claude.ai" class="tool-link">Visit Tool →</a>
         </div>
-    </div>
+
+        <!-- Design 2 -->
+        <div class="tool-card" data-cat="design">
+            <span class="category-label">Design</span>
+            <h3>Leonardo AI</h3>
+            <p>The best free alternative for professional UI assets and high-fidelity image generation.</p>
+            <a href="https://leonardo.ai" class="tool-link">Visit Tool →</a>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="tool-card" data-cat="video">
+            <span class="category-label">Video</span>
+            <h3>Pika Labs</h3>
+            <p>Bring your ideas to life with high-quality animation tools via a simple text interface.</p>
+            <a href="https://pika.art" class="tool-link">Visit Tool →</a>
+        </div>
+    </main>
 
     <script>
-        // 1. Welcome Portal Disappear
         function closePortal() {
             const portal = document.getElementById('welcomePortal');
             portal.style.transform = 'translateY(-100%)';
@@ -182,23 +179,16 @@
             setTimeout(() => portal.style.display = 'none', 600);
         }
 
-        // 2. Pro Filter System
         function filterCat(cat) {
             const btns = document.querySelectorAll('.filter-btn');
             btns.forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(c => {
-                if(cat === 'all' || c.getAttribute('data-cat') === cat) {
-                    c.style.display = 'flex';
-                } else {
-                    c.style.display = 'none';
-                }
+                c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
             });
         }
 
-        // 3. Search logic
         function filterSearch() {
             let val = document.getElementById('searchBar').value.toLowerCase();
             document.querySelectorAll('.tool-card').forEach(c => {
@@ -207,31 +197,28 @@
             });
         }
 
-        // 4. Interactive Star Rating
+        // Star Rating Logic
         const stars = document.querySelectorAll('.star');
         stars.forEach((s, idx) => {
-            s.addEventListener('mouseover', () => highlightStars(idx));
-            s.addEventListener('click', () => submitRating(idx));
+            s.addEventListener('mouseover', () => {
+                stars.forEach((star, i) => star.classList.toggle('active', i <= idx));
+            });
+            s.addEventListener('click', () => {
+                // Make the entire rate container disappear
+                const rateSection = document.getElementById('rateSection');
+                rateSection.style.transition = '0.5s';
+                rateSection.style.opacity = '0';
+                rateSection.style.transform = 'translateY(20px)';
+                setTimeout(() => rateSection.style.display = 'none', 500);
+                alert("Thanks for your rating!");
+            });
         });
 
-        function highlightStars(idx) {
-            stars.forEach((s, i) => s.classList.toggle('active', i <= idx));
-        }
-
-        function submitRating(idx) {
-            document.getElementById('rateMsg').style.display = 'block';
-            document.getElementById('starGroup').style.pointerEvents = 'none';
-        }
-
         function handleFeedback() { window.location.href = "mailto:support@100freeai.com"; }
-
-        window.onload = () => document.body.style.overflow = 'hidden';
     </script>
 </body>
 </html>
-    <!-- 5. The Main Tool Grid (FIX: Set to grid with 3x3 PC/2x2 Mobile) -->
-    <main class="tool-grid" id="toolGrid">
-        
+
         <!-- Writing Tools (33) -->
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>ChatGPT</h3><p class="review-text">I find ChatGPT to be the most versatile partner for any writer. Whether you're stuck on a professional email or need a creative story prompt, its ability to understand context is unmatched.</p><a href="https://chat.openai.com" class="green-link">Visit Tool →</a></div>
         <div class="tool-card writing"><span class="category-tag">Writing</span><h3>Claude</h3><p class="review-text">If you want writing that sounds truly human and less "robotic," Claude is my go-to choice. It has a very warm, conversational tone and is excellent at summarizing long documents without losing the important details.</p><a href="https://claude.ai" class="green-link">Visit Tool →</a></div>
