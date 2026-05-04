@@ -12,7 +12,7 @@
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: var(--text); margin: 0; overflow-x: hidden; width: 100%; }
 
-        /* 2. WELCOME PORTAL (Updated to Fourth Image Style) */
+        /* 2. WELCOME PORTAL */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(180deg, #1a0033 0%, #000000 100%);
@@ -34,50 +34,64 @@
         .filter-btn { padding: 12px 24px; border-radius: 50px; border: 1px solid #222; background: #0a0a0a; color: #fff; cursor: pointer; font-weight: 600; transition: 0.3s; }
         .filter-btn.active { background: var(--primary); color: black; border-color: var(--primary); }
 
-        /* 4. TOOL GRID (Stuck Together/Glue Style) */
+        /* 4. PRO TIP SECTION (Side-by-Side Professional) */
+        .pro-tip-box {
+            max-width: 1100px; margin: 0 auto 60px; padding: 40px;
+            background: #080808; border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 24px;
+            display: flex; align-items: center; justify-content: space-between; gap: 40px;
+        }
+        .tip-text { flex: 1; }
+        .badge { background: var(--primary); color: black; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; display: inline-block; margin-bottom: 15px; }
+        .pro-tip-box h2 { font-size: 2rem; margin: 0 0 15px; font-weight: 800; }
+        .pro-tip-box p { color: #aaa; line-height: 1.6; margin-bottom: 25px; font-style: italic; }
+        .leonardo-preview { width: 250px; height: 250px; border-radius: 20px; overflow: hidden; border: 1px solid #333; flex-shrink: 0; }
+        .leonardo-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 5. BALANCED 3x3 GRID */
         .tool-grid {
             display: grid; 
-            grid-template-columns: repeat(3, 1fr); /* 3x3 for Desktop */
-            gap: 1px; /* The "Glue" line effect */
-            background: #1a1a1a; /* Glue color */
-            padding: 1px;
-            max-width: 1300px; margin: 0 auto 100px;
-            border: 1px solid #1a1a1a;
+            grid-template-columns: repeat(3, 1fr); /* Strict 3 columns on Laptop */
+            gap: 25px; /* Professional spacing */
+            padding: 0 20px;
+            max-width: 1200px; margin: 0 auto 100px;
         }
 
         .tool-card {
-            background: #000; /* Card background */
-            padding: 40px 30px;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            padding: 30px;
+            border-radius: 20px;
             display: flex; flex-direction: column;
-            min-height: 350px;
+            transition: transform 0.3s ease;
         }
+        .tool-card:hover { transform: translateY(-5px); border-color: var(--primary); }
 
-        .category-label { color: #888; font-size: 13px; font-weight: 500; margin-bottom: 10px; }
-        .tool-card h3 { color: var(--primary); margin: 0 0 20px; font-size: 1.8rem; font-weight: 800; }
-        .tool-card p { color: #777; font-size: 1rem; line-height: 1.6; flex-grow: 1; margin-bottom: 30px; }
+        .category-label { color: #555; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+        .tool-card h3 { color: var(--primary); margin: 0 0 15px; font-size: 1.5rem; font-weight: 800; }
+        .tool-card p { color: #888; font-size: 0.95rem; line-height: 1.5; flex-grow: 1; margin-bottom: 25px; }
 
-        /* Unified Visit Tool Style */
         .tool-link {
-            color: var(--primary); text-decoration: none; font-weight: 700; 
-            font-size: 13px; text-transform: capitalize; 
-            display: inline-block; transition: 0.3s;
+            color: var(--primary) !important; text-decoration: none !important; font-weight: 900; 
+            font-size: 12px; text-transform: uppercase; display: block; width: 100%;
+            padding: 14px 0; text-align: center; border: 1px solid rgba(0, 255, 136, 0.1);
+            background: #111; border-radius: 10px; transition: 0.3s;
         }
-        .tool-link:hover { opacity: 0.7; }
+        .tool-link:hover { background: var(--primary); color: black !important; }
 
-        /* 5. UI ELEMENTS */
+        /* 6. UI ELEMENTS */
         .contact-pill { position: fixed; top: 25px; right: 25px; background: #0052ff; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 900; z-index: 5000; font-size: 13px; }
         .feedback-btn { position: fixed; bottom: 25px; right: 25px; background: #3b71ca; color: white; padding: 15px 25px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; z-index: 5000; }
-        
-        /* 6. STAR RATING SYSTEM */
         .rate-container { position: fixed; bottom: 25px; left: 25px; background: #111; padding: 15px 20px; border-radius: 16px; border: 1px solid #222; z-index: 5000; text-align: center; }
         .stars { display: flex; gap: 5px; cursor: pointer; justify-content: center; margin-top: 5px; }
         .star { font-size: 20px; color: #333; transition: 0.2s; }
         .star.active { color: #ffcc00; }
-        #rateMsg { color: var(--primary); font-size: 11px; font-weight: 800; margin-top: 8px; display: none; }
 
+        /* 7. RESPONSIVE MEDIA QUERIES */
         @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
             .tool-grid { grid-template-columns: 1fr; }
+            .pro-tip-box { flex-direction: column; text-align: center; padding: 30px; margin: 0 15px 40px; }
+            .leonardo-preview { width: 100%; height: 200px; }
             .main-h1 { font-size: 2.8rem; }
             .contact-pill { top: 15px; right: 15px; padding: 10px 18px; }
         }
@@ -85,7 +99,7 @@
 </head>
 <body style="overflow: hidden;">
 
-    <!-- Welcome Pop-up (Style from 4th Image) -->
+    <!-- Welcome Pop-up -->
     <div id="welcomePortal">
         <div class="portal-content">
             <h1>WELCOME TO 100FREEAI</h1>
@@ -94,8 +108,9 @@
         </div>
     </div>
 
+    <!-- Fixed UI Navigation -->
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
-    <button class="feedback-btn" id="feedbackBtn" onclick="handleFeedback()">FEEDBACK</button>
+    <button class="feedback-btn" onclick="handleFeedback()">FEEDBACK</button>
     
     <div class="rate-container" id="rateSection">
         <div style="font-size: 11px; font-weight: 900; color: #666;">RATE US!</div>
@@ -112,6 +127,7 @@
         <h1 class="main-h1">The Ultimate AI Toolkit</h1>
         <p class="sub-header">Curated directory for professional designers and developers.</p>
         <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools...">
+        
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all')">All (100)</button>
             <button class="filter-btn" onclick="filterCat('writing')">Writing (33)</button>
@@ -120,16 +136,28 @@
         </div>
     </header>
 
+    <!-- Professional Pro-Tip Section -->
+    <div class="pro-tip-box">
+        <div class="tip-text">
+            <span class="badge">Partner's Pick 🚀</span>
+            <h2>Leonardo AI: Pro Tip</h2>
+            <p>"As a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite for your professional projects."</p>
+            <a href="https://leonardo.ai" class="tool-link" style="max-width: 200px;">Visit Leonardo →</a>
+        </div>
+        <div class="leonardo-preview">
+            <img src="marketing-preview.png" alt="Leonardo UI Preview">
+        </div>
+    </div>
+
+    <!-- Balanced Tool Grid -->
     <main class="tool-grid" id="toolGrid">
-        <!-- Writing -->
         <div class="tool-card" data-cat="writing">
             <span class="category-label">Writing</span>
             <h3>ChatGPT</h3>
-            <p>Industry standard for text generation and logic tasks. Perfect for drafting content and code.</p>
+            <p>The industry standard for conversational AI and logic tasks. Perfect for drafting content and code.</p>
             <a href="https://chat.openai.com" class="tool-link">Visit Tool →</a>
         </div>
         
-        <!-- Design -->
         <div class="tool-card" data-cat="design">
             <span class="category-label">Design</span>
             <h3>Canva AI</h3>
@@ -137,7 +165,6 @@
             <a href="https://canva.com" class="tool-link">Visit Tool →</a>
         </div>
 
-        <!-- Video -->
         <div class="tool-card" data-cat="video">
             <span class="category-label">Video</span>
             <h3>Runway Gen-2</h3>
@@ -145,15 +172,13 @@
             <a href="https://runwayml.com" class="tool-link">Visit Tool →</a>
         </div>
 
-        <!-- Writing 2 -->
         <div class="tool-card" data-cat="writing">
             <span class="category-label">Writing</span>
             <h3>Claude</h3>
-            <p>If you want writing that sounds truly human and less "robotic," Claude is my go-to choice.</p>
+            <p>If you want writing that sounds truly human and less robotic, Claude is my go-to choice.</p>
             <a href="https://claude.ai" class="tool-link">Visit Tool →</a>
         </div>
 
-        <!-- Design 2 -->
         <div class="tool-card" data-cat="design">
             <span class="category-label">Design</span>
             <h3>Leonardo AI</h3>
@@ -161,7 +186,6 @@
             <a href="https://leonardo.ai" class="tool-link">Visit Tool →</a>
         </div>
 
-        <!-- Video 2 -->
         <div class="tool-card" data-cat="video">
             <span class="category-label">Video</span>
             <h3>Pika Labs</h3>
@@ -182,7 +206,8 @@
         function filterCat(cat) {
             const btns = document.querySelectorAll('.filter-btn');
             btns.forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            if(event) event.target.classList.add('active');
+
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(c => {
                 c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
@@ -197,20 +222,19 @@
             });
         }
 
-        // Star Rating Logic
+        // Professional Star Rating
         const stars = document.querySelectorAll('.star');
         stars.forEach((s, idx) => {
             s.addEventListener('mouseover', () => {
                 stars.forEach((star, i) => star.classList.toggle('active', i <= idx));
             });
             s.addEventListener('click', () => {
-                // Make the entire rate container disappear
                 const rateSection = document.getElementById('rateSection');
-                rateSection.style.transition = '0.5s';
                 rateSection.style.opacity = '0';
-                rateSection.style.transform = 'translateY(20px)';
-                setTimeout(() => rateSection.style.display = 'none', 500);
-                alert("Thanks for your rating!");
+                setTimeout(() => {
+                    rateSection.innerHTML = "<div style='color:#00ff88; font-size:10px; font-weight:900;'>THANK YOU! ❤️</div>";
+                    rateSection.style.opacity = '1';
+                }, 500);
             });
         });
 
