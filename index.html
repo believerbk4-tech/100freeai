@@ -641,58 +641,70 @@
     <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
     
     <script>
-        function closePortal() {
-            document.getElementById('welcomePortal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
+    // 1. ADDED: Check if the user already visited when the page loads
+    window.addEventListener('DOMContentLoaded', () => {
+        if (sessionStorage.getItem('hasVisitedPortal')) {
+            const portal = document.getElementById('welcomePortal');
+            if (portal) {
+                portal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
         }
+    });
 
-        function openPortal() {
-            document.getElementById('welcomePortal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            window.scrollTo(0, 0);
-        }
+    function closePortal() {
+        document.getElementById('welcomePortal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        // 2. ADDED: Save the visit so the portal stays hidden on "Back"
+        sessionStorage.setItem('hasVisitedPortal', 'true');
+    }
 
-        // UPDATED STAR RATING LOGIC
-        function rate(n) {
-            const stars = document.querySelectorAll('.stars span');
-            stars.forEach((s, i) => {
-                s.classList.toggle('active', i < n);
-            });
-            
-            // Wait a split second so the user sees the stars light up, then swap text
-            setTimeout(() => {
-                const rateBox = document.getElementById('rateBox');
-                rateBox.innerHTML = '<div style="font-size: 16px; font-weight: 800; color: #00ff88; padding: 5px 0;">Thank you! 💖</div>';
-            }, 400);
-        }
+    function openPortal() {
+        document.getElementById('welcomePortal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        window.scrollTo(0, 0);
+    }
 
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+    // UPDATED STAR RATING LOGIC
+    function rate(n) {
+        const stars = document.querySelectorAll('.stars span');
+        stars.forEach((s, i) => {
+            s.classList.toggle('active', i < n);
+        });
+        
+        setTimeout(() => {
+            const rateBox = document.getElementById('rateBox');
+            rateBox.innerHTML = '<div style="font-size: 16px; font-weight: 800; color: #00ff88; padding: 5px 0;">Thank you! 💖</div>';
+        }, 400);
+    }
 
-        function filterCat(cat) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            if (event && event.currentTarget) event.currentTarget.classList.add('active');
-            
-            const cards = document.querySelectorAll('.tool-card');
-            cards.forEach(c => {
-                c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
-            });
-        }
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        function filterSearch() {
-            let val = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.tool-card').forEach(c => {
-                let name = c.querySelector('h3').innerText.toLowerCase();
-                let desc = c.querySelector('p').innerText.toLowerCase();
-                c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
-            });
-        }
+    function filterCat(cat) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach(c => {
+            c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
+        });
+    }
 
-        function sendFeedback() {
-            window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
-        }
-    </script>
+    function filterSearch() {
+        let val = document.getElementById('searchBar').value.toLowerCase();
+        document.querySelectorAll('.tool-card').forEach(c => {
+            let name = c.querySelector('h3').innerText.toLowerCase();
+            let desc = c.querySelector('p').innerText.toLowerCase();
+            c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
+        });
+    }
+
+    function sendFeedback() {
+        window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
+    }
+</script>
 </body>
 </html>
        <!-- 6. Legal & Information Section (Restoring what you fixed) -->
