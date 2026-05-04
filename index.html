@@ -222,12 +222,14 @@
         <div class="tool-card" data-cat="video"><h3>Supercreator</h3><p>AI tool for ultra-fast short-form video creation.</p><a href="https://supercreator.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
         <div class="tool-card" data-cat="video"><h3>Maverick</h3><p>AI video for e-commerce to personalize post-purchase.</p><a href="https://trymaverick.com" class="tool-link" target="_blank">Visit Tool →</a></div>
 
-   </main>
+</main>
 
-    <div class="rate-container">
-        <div style="font-size: 10px; color: #888; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Rate Us!</div>
-        <div class="stars" id="starRating">
-            <span onclick="rate(1)">★</span><span onclick="rate(2)">★</span><span onclick="rate(3)">★</span><span onclick="rate(4)">★</span><span onclick="rate(5)">★</span>
+    <div class="rate-container" id="rateBox">
+        <div id="rateContent">
+            <div style="font-size: 10px; color: #888; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Rate Us!</div>
+            <div class="stars" id="starRating">
+                <span onclick="rate(1)">★</span><span onclick="rate(2)">★</span><span onclick="rate(3)">★</span><span onclick="rate(4)">★</span><span onclick="rate(5)">★</span>
+            </div>
         </div>
     </div>
 
@@ -240,7 +242,6 @@
     </footer>
 
     <script>
-        // INSTANT DISAPPEAR FOR PORTAL
         function closePortal() {
             document.getElementById('welcomePortal').classList.add('hidden');
             document.body.style.overflow = 'auto';
@@ -252,35 +253,34 @@
             window.scrollTo(0, 0);
         }
 
-        // STAR RATING LOGIC
+        // UPDATED STAR RATING LOGIC
         function rate(n) {
             const stars = document.querySelectorAll('.stars span');
             stars.forEach((s, i) => {
                 s.classList.toggle('active', i < n);
             });
-            console.log("Rated: " + n);
+            
+            // Wait a split second so the user sees the stars light up, then swap text
+            setTimeout(() => {
+                const rateBox = document.getElementById('rateBox');
+                rateBox.innerHTML = '<div style="font-size: 16px; font-weight: 800; color: #00ff88; padding: 5px 0;">Thank you! 💖</div>';
+            }, 400);
         }
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // FILTER LOGIC
         function filterCat(cat) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            if (event) event.currentTarget.classList.add('active');
+            if (event && event.currentTarget) event.currentTarget.classList.add('active');
             
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(c => {
-                if (cat === 'all' || c.getAttribute('data-cat') === cat) {
-                    c.style.display = 'flex';
-                } else {
-                    c.style.display = 'none';
-                }
+                c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
             });
         }
 
-        // SEARCH LOGIC
         function filterSearch() {
             let val = document.getElementById('searchBar').value.toLowerCase();
             document.querySelectorAll('.tool-card').forEach(c => {
@@ -288,9 +288,8 @@
                 let desc = c.querySelector('p').innerText.toLowerCase();
                 c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
             });
-        } // Fixed missing closing brace here
+        }
 
-        // FEEDBACK EMAIL LOGIC
         function sendFeedback() {
             window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
         }
