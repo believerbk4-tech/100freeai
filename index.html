@@ -63,9 +63,34 @@
         .tool-card h3 { color: var(--primary); margin: 10px 0; font-weight: 800; }
         .tool-link {
             color: var(--primary) !important; text-decoration: none !important; font-weight: 900; font-size: 11px;
-            text-transform: uppercase; display: block; width: 100%; padding: 12px 0;
+            text-transform: uppercase; display: block; width: 100%; padding: 12px 0
             text-align: center; border: 1px solid rgba(0, 255, 136, 0.1); background: #111; border-radius: 8px;
-        }
+     
+/* This forces the bold, green, boxed button look from your screenshot */
+.tool-link {
+    color: #00ff88 !important; /* The bright green from your image */
+    text-decoration: none !important;
+    font-weight: 900; 
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    text-align: center;
+    background: #111; /* Dark background inside the box */
+    border: 1px solid rgba(0, 255, 136, 0.1); /* Subtle green border */
+    border-radius: 8px;
+    margin-top: auto; /* Keeps the button at the bottom of the card */
+    transition: all 0.3s ease;
+}
+
+.tool-link:hover {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: #00ff88;
+}
+        
 
         /* 6. UI BUTTONS */
         .contact-pill { position: fixed; top: 20px; right: 20px; background: #0052ff; color: white; padding: 8px 16px; border-radius: 50px; text-decoration: none; font-weight: 900; z-index: 1000; font-size: 12px; display: flex; align-items: center; }
@@ -120,38 +145,69 @@
         </div>
     </div>
 
+    <!-- 1. UPDATED TOOL GRID (Matching Screenshot 112) -->
     <div class="tool-grid" id="toolGrid">
+        
+        <!-- ChatGPT Card -->
         <div class="tool-card" data-cat="writing">
             <span class="category-label">Writing</span>
             <h3>ChatGPT</h3>
             <p>The industry standard for conversational AI and content creation.</p>
             <a href="https://chat.openai.com" class="tool-link">Visit Tool →</a>
         </div>
+
+        <!-- Leonardo AI Card (Professional Layout) -->
         <div class="tool-card" data-cat="design">
             <span class="category-label">Design</span>
             <h3>Leonardo AI</h3>
-            <p>High-quality image generation with advanced designer controls.</p>
-            <a href="#" class="tool-link">Visit Tool →</a>
+            <p>High-quality image generation with advanced designer controls and custom models.</p>
+            <a href="https://leonardo.ai" class="tool-link">Visit Tool →</a>
         </div>
-        <!-- More cards here -->
+
+        <!-- Claude Card (Fixed Button Style) -->
+        <div class="tool-card" data-cat="writing">
+            <span class="category-label">Writing</span>
+            <h3>Claude</h3>
+            <p>I find Claude to be an excellent choice for a warm, conversational tone and summarizing long documents.</p>
+            <a href="https://claude.ai" class="tool-link">Visit Tool →</a>
+        </div>
+
+        <!-- Gemini Card (Fixed Button Style) -->
+        <div class="tool-card" data-cat="writing">
+            <span class="category-label">Writing</span>
+            <h3>Gemini</h3>
+            <p>Google's AI is perfect for up-to-date info, as it connects directly to Google Search for real-time data.</p>
+            <a href="https://gemini.google.com" class="tool-link">Visit Tool →</a>
+        </div>
+
+        <!-- ADD MORE TOOLS HERE USING THE SAME 'tool-card' STRUCTURE -->
+
     </div>
 
+    <!-- 2. FINAL OPTIMIZED SCRIPT -->
     <script>
+        // Closes the purple welcome portal
         function closePortal() {
             const portal = document.getElementById('welcomePortal');
             portal.style.opacity = '0';
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // Restores scrolling
             setTimeout(() => { portal.style.display = 'none'; }, 800);
         }
 
+        // Filters cards by category (Writing, Design, etc.)
         function filterCat(cat) {
             const btns = document.querySelectorAll('.filter-btn');
             btns.forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            // Fixes the 'active' class on click
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
 
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(c => {
-                if(cat === 'all' || c.getAttribute('data-cat') === cat) {
+                const cardCat = c.getAttribute('data-cat');
+                if(cat === 'all' || cardCat === cat) {
                     c.style.display = 'flex';
                 } else {
                     c.style.display = 'none';
@@ -159,19 +215,33 @@
             });
         }
 
+        // Real-time Search functionality
         function filterSearch() {
             let input = document.getElementById('searchBar').value.toLowerCase();
             let cards = document.querySelectorAll('.tool-card');
             cards.forEach(c => {
                 let title = c.querySelector('h3').innerText.toLowerCase();
-                c.style.display = title.includes(input) ? "flex" : "none";
+                if(title.includes(input)) {
+                    c.style.display = 'flex';
+                } else {
+                    c.style.display = 'none';
+                }
             });
         }
 
-        function handleFeedback() { window.location.href = "mailto:support@100freeai.com"; }
-        function handleRate() { alert("Thanks for your support!"); }
+        // UI Button Logic
+        function handleFeedback() { 
+            window.location.href = "mailto:support@100freeai.com?subject=User Feedback"; 
+        }
 
-        window.onload = () => { document.body.style.overflow = 'hidden'; };
+        function handleRate() { 
+            alert("Thank you for your rating! We appreciate the support."); 
+        }
+
+        // Locks the scroll while the Welcome Portal is active
+        window.onload = () => { 
+            document.body.style.overflow = 'hidden'; 
+        };
     </script>
 </body>
 </html>
