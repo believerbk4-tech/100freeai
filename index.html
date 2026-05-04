@@ -73,21 +73,39 @@
             .tool-grid { grid-template-columns: 1fr; } 
             header { padding-top: 100px; }
             .rate-container, .feedback-btn { position: relative; bottom: 0; left: 0; right: 0; margin: 20px auto; width: 90%; }
-        }
+   /* ... existing CSS ... */
+    }
     </style>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "100+ Free AI Tools Directory",
-  "description": "A curated directory of over 100 elite AI tools for design, development, and productivity.",
-  "url": "https://100freeai.netlify.app/",
-  "publisher": {
-    "@type": "Person",
-    "name": "Fahad Khan"
+
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "100FreeAI",
+    "url": "https://100freeai.netlify.app/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://100freeai.netlify.app/?s={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "100+ Free AI Tools Directory",
+    "description": "A curated directory of over 100 elite AI tools for design, development, and productivity.",
+    "url": "https://100freeai.netlify.app/",
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "Artificial Intelligence Tools"
+      }
+    ]
   }
-}
+]
 </script>
+
 </head>
 <body>
 
