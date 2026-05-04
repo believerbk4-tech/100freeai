@@ -6,101 +6,78 @@
     <title>100+ Free AI Tools Directory</title>
     
     <style>
-        :root { --primary: #00ff88; --dark: #000000; --text: #ffffff; --accent: #8a2be2; }
+        :root { --primary: #00ff88; --dark: #000000; --text: #ffffff; --accent: #8a2be2; --purple-bg: #1a0033; }
         
-        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: var(--text); margin: 0; overflow-x: hidden; width: 100%; }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--dark); color: var(--text); overflow-x: hidden; width: 100%; }
 
-        /* WELCOME PORTAL */
+        /* WELCOME PORTAL - INSTANT DISAPPEAR */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, #1a0033 0%, #000000 100%);
-            z-index: 10000; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+            background: var(--purple-bg); z-index: 10000; display: flex; 
+            flex-direction: column; align-items: center; justify-content: center; 
+            text-align: center;
         }
-        .portal-content h1 { font-size: clamp(2rem, 10vw, 5rem); font-weight: 900; margin-bottom: 10px; letter-spacing: 2px; }
-        .enter-btn { background: #8a2be2; color: white; padding: 18px 60px; border-radius: 12px; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 0 10px 30px rgba(138, 43, 226, 0.5); }
+        #welcomePortal.hidden { display: none !important; }
+        
+        .portal-content h1 { font-size: clamp(2.2rem, 8vw, 5rem); font-weight: 900; margin: 0 0 10px; color: white; text-transform: uppercase; }
+        .portal-content p { font-size: clamp(1rem, 4vw, 1.3rem); color: #ccc; margin-bottom: 35px; }
+        .enter-btn { background: var(--accent); color: white; padding: 20px 60px; border-radius: 12px; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4); transition: transform 0.2s; }
+        .enter-btn:active { transform: scale(0.95); }
 
-        /* HEADER & FILTERS */
-        header { padding: 120px 20px 40px; text-align: center; }
-        .main-h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0; letter-spacing: -2px; }
-        .sub-header { color: #888; margin: 15px 0 30px; font-size: 1.1rem; }
-        #searchBar { width: 90%; max-width: 500px; padding: 16px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; outline: none; margin-bottom: 30px; }
+        /* HEADER SECTION */
+        header { padding: 120px 20px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
+        .main-h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0 0 15px; line-height: 1.1; }
+        .sub-header { font-size: 1.2rem; color: #888; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
 
-        .filter-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 50px; }
-        .filter-btn { padding: 12px 24px; border-radius: 50px; border: 1px solid #222; background: #0a0a0a; color: #fff; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .filter-btn.active { background: var(--primary); color: black; border-color: var(--primary); }
+        #searchBar { width: 100%; max-width: 500px; padding: 18px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; outline: none; margin-bottom: 35px; font-size: 16px; }
 
-        /* PRO TIP SECTION */
-        .pro-tip-box {
-            max-width: 1100px; margin: 0 auto 60px; padding: 40px;
-            background: #080808; border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 24px;
-            display: flex; align-items: center; justify-content: space-between; gap: 40px;
-        }
-        .tip-text { flex: 1; }
-        .badge { background: var(--primary); color: black; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; display: inline-block; margin-bottom: 15px; }
-        .pro-tip-box h2 { font-size: 2rem; margin: 0 0 15px; font-weight: 800; }
-        .pro-tip-box p { color: #aaa; line-height: 1.6; margin-bottom: 25px; font-style: italic; }
-        .leonardo-preview { width: 250px; height: 250px; border-radius: 20px; overflow: hidden; border: 1px solid #333; flex-shrink: 0; }
-        .leonardo-preview img { width: 100%; height: 100%; object-fit: cover; }
+        /* FILTERS */
+        .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 60px; padding: 0 10px; }
+        .filter-btn { padding: 12px 22px; border-radius: 50px; border: 1px solid #222; background: #0a0a0a; color: #fff; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .filter-btn.active { background: var(--primary); color: black; border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
 
-        /* GRID FIX (Locked to 3 Columns) */
+        /* FULLY RESPONSIVE GRID */
         .tool-grid {
             display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
+            grid-template-columns: repeat(3, 1fr); /* Default 3 columns for Laptop */
             gap: 1px; 
             background: #1a1a1a; 
             padding: 1px;
-            max-width: 1400px; 
+            max-width: 1300px; 
             margin: 0 auto 100px;
-            border: 1px solid #1a1a1a;
         }
 
-        .tool-card {
-            background: #000; 
-            padding: 40px 30px;
-            display: flex; 
-            flex-direction: column;
-            min-height: 350px;
-        }
-
-        .category-label { color: #555; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-        .tool-card h3 { color: var(--primary); margin: 0 0 15px; font-size: 1.5rem; font-weight: 800; }
-        .tool-card p { color: #888; font-size: 0.95rem; line-height: 1.5; flex-grow: 1; margin-bottom: 25px; }
-
-        .tool-link {
-            color: var(--primary) !important; text-decoration: none !important; font-weight: 700; 
-            font-size: 13px; text-transform: uppercase; display: block; width: 100%;
-            padding: 15px 0; text-align: center; border: 1px solid #111;
-            background: #0a0a0a; border-radius: 8px; transition: 0.3s;
-        }
+        .tool-card { background: #000; padding: 40px 25px; display: flex; flex-direction: column; min-height: 300px; }
+        .tool-card h3 { color: var(--primary); margin: 0 0 12px; font-size: 1.4rem; font-weight: 800; }
+        .tool-card p { color: #888; font-size: 0.95rem; flex-grow: 1; line-height: 1.6; margin-bottom: 25px; }
+        .tool-link { color: var(--primary) !important; text-decoration: none; font-weight: 700; padding: 14px 0; text-align: center; border: 1px solid #222; background: #0a0a0a; border-radius: 8px; font-size: 13px; text-transform: uppercase; transition: 0.3s; }
         .tool-link:hover { background: #111; border-color: var(--primary); }
 
-        /* FIXED UI - CONTACT US FIX */
-        .contact-pill { 
-            position: fixed; top: 25px; right: 25px; 
-            background: #0052ff; color: white; padding: 12px 24px; 
-            border-radius: 50px; text-decoration: none; font-weight: 900; 
-            z-index: 9000; font-size: 13px; 
-        }
-        .feedback-btn { position: fixed; bottom: 25px; right: 25px; background: #3b71ca; color: white; padding: 15px 25px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; z-index: 5000; }
-        .rate-container { position: fixed; bottom: 25px; left: 25px; background: #111; padding: 15px 20px; border-radius: 16px; border: 1px solid #222; z-index: 5000; text-align: center; }
-        .stars { display: flex; gap: 5px; cursor: pointer; justify-content: center; margin-top: 5px; }
-        .star { font-size: 20px; color: #333; transition: 0.2s; }
-        .star.active { color: #ffcc00; }
+        /* FLOATING UI */
+        .contact-pill { position: fixed; top: 20px; right: 20px; background: #0052ff; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 900; z-index: 999; font-size: 12px; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4); }
+        .feedback-btn { position: fixed; bottom: 20px; right: 20px; background: #3b71ca; color: white; padding: 15px 25px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; z-index: 999; }
+        .rate-container { position: fixed; bottom: 20px; left: 20px; background: #111; padding: 15px; border-radius: 16px; border: 1px solid #222; z-index: 999; text-align: center; width: 140px; }
+        .stars { color: #444; font-size: 18px; margin-top: 5px; display: flex; justify-content: center; gap: 3px; cursor: pointer; }
+        .stars span.active { color: #ffcc00; }
 
-        /* RESPONSIVE */
+        /* FOOTER */
+        footer { padding: 80px 20px; text-align: center; border-top: 1px solid #111; background: #050505; }
+        footer a { color: #666; text-decoration: none; margin: 0 15px; font-size: 13px; font-weight: 500; }
+        footer a:hover { color: var(--primary); }
+
+        /* RESPONSIVE BREAKPOINTS */
         @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) {
-            .tool-grid { grid-template-columns: 1fr; }
-            .pro-tip-box { flex-direction: column; text-align: center; }
-            .contact-pill { top: 15px; right: 15px; padding: 10px 18px; }
+        @media (max-width: 650px) { 
+            .tool-grid { grid-template-columns: 1fr; } 
+            header { padding-top: 100px; }
+            .rate-container, .feedback-btn { position: relative; bottom: 0; left: 0; right: 0; margin: 20px auto; width: 90%; }
         }
     </style>
 </head>
-<body style="overflow: hidden;">
+<body>
 
+    <!-- WELCOME PORTAL -->
     <div id="welcomePortal">
         <div class="portal-content">
             <h1>WELCOME TO 100FREEAI</h1>
@@ -109,21 +86,15 @@
         </div>
     </div>
 
-    <!-- Contact Us correctly fixed to right corner -->
+    <!-- CONTACT US LINK -->
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
-    <button class="feedback-btn" onclick="handleFeedback()">FEEDBACK</button>
     
-    <div class="rate-container" id="rateSection">
-        <div style="font-size: 11px; font-weight: 900; color: #666;">RATE US!</div>
-        <div class="stars" id="starGroup">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-        </div>
-    </div>
-
     <header>
         <h1 class="main-h1">The Ultimate AI Toolkit</h1>
         <p class="sub-header">Curated directory for professional designers and developers.</p>
+        
         <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools...">
+        
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all')">All (100)</button>
             <button class="filter-btn" onclick="filterCat('writing')">Writing (33)</button>
@@ -131,8 +102,8 @@
             <button class="filter-btn" onclick="filterCat('video')">Video (33)</button>
         </div>
     </header>
-
-    <div class="pro-tip-box">
+    
+  <div class="pro-tip-box">
         <div class="tip-text">
             <span class="badge">Partner's Pick 🚀</span>
             <h2>Leonardo AI: Pro Tip</h2>
@@ -143,60 +114,163 @@
             <img src="marketing-preview.png" alt="Leonardo UI Preview">
         </div>
     </div>
-
+    
     <main class="tool-grid" id="toolGrid">
-        <!-- ALL TOOLS MUST BE INSIDE THIS MAIN TAG -->
-        <div class="tool-card" data-cat="writing">
-            <span class="category-label">Writing</span>
-            <h3>ChatGPT</h3>
-            <p>The industry standard for conversational AI and logic tasks.</p>
-            <a href="https://chat.openai.com" class="tool-link">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-cat="design">
-            <span class="category-label">Design</span>
-            <h3>Canva AI</h3>
-            <p>Magic media tools for fast social media and ad creation.</p>
-            <a href="https://canva.com" class="tool-link">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-cat="video">
-            <span class="category-label">Video</span>
-            <h3>Runway Gen-2</h3>
-            <p>Advanced AI video generation platform for cinematic results.</p>
-            <a href="https://runwayml.com" class="tool-link">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-cat="writing">
-            <span class="category-label">Writing</span>
-            <h3>Claude</h3>
-            <p>Natural sounding human-like writing for complex documentation.</p>
-            <a href="https://claude.ai" class="tool-link">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-cat="design">
-            <span class="category-label">Design</span>
-            <h3>Leonardo AI</h3>
-            <p>Professional UI assets and high-fidelity image generation.</p>
-            <a href="https://leonardo.ai" class="tool-link">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-cat="video">
-            <span class="category-label">Video</span>
-            <h3>Pika Labs</h3>
-            <p>Motion graphics and animation via text interface.</p>
-            <a href="https://pika.art" class="tool-link">Visit Tool →</a>
-        </div>
+        <!-- WRITING (1-33) -->
+        <div class="tool-card" data-cat="writing"><h3>ChatGPT</h3><p>Industry standard for text, logic, and coding assistance.</p><a href="https://chat.openai.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Claude</h3><p>Highly nuanced AI for long-form writing and document analysis.</p><a href="https://claude.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Gemini</h3><p>Google's real-time information engine for research and scripts.</p><a href="https://gemini.google.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Jasper</h3><p>Advanced AI tailored for marketing teams and business copy.</p><a href="https://jasper.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Copy.ai</h3><p>Perfect for generating social media posts and headlines.</p><a href="https://copy.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Writesonic</h3><p>SEO-optimized content generator for blogs and articles.</p><a href="https://writesonic.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Quillbot</h3><p>World-class paraphrasing and summarizing tool for writers.</p><a href="https://quillbot.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Grammarly</h3><p>AI-powered grammar and tone checker for professional work.</p><a href="https://grammarly.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Hemingway</h3><p>Style editor that makes your writing bold and clear.</p><a href="https://hemingwayapp.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Rytr</h3><p>Affordable AI writing assistant for emails and letters.</p><a href="https://rytr.me" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Anyword</h3><p>Predictive AI copy that focuses on high conversion rates.</p><a href="https://anyword.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Sudowrite</h3><p>The ultimate AI tool for creative fiction and novelists.</p><a href="https://sudowrite.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Wordtune</h3><p>AI that rewrites sentences to match your intended tone.</p><a href="https://wordtune.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Frase</h3><p>AI for content research and SEO brief generation.</p><a href="https://frase.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>SurferSEO</h3><p>Data-driven tool to optimize content for search engines.</p><a href="https://surferseo.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Scalenut</h3><p>End-to-end platform for content marketing automation.</p><a href="https://scalenut.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Moonbeam</h3><p>Specifically designed for high-quality long-form essays.</p><a href="https://gomoonbeam.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Hypotenuse</h3><p>High-speed product description generator for e-commerce.</p><a href="https://hypotenuse.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Simplified</h3><p>All-in-one AI app for writing and scheduling posts.</p><a href="https://simplified.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Peppertype</h3><p>AI assistant focused on ideation and blog starters.</p><a href="https://peppercontent.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Bearly</h3><p>Research assistant for summaries and document deep-dives.</p><a href="https://bearly.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>ShortlyAI</h3><p>Distraction-free AI that expands your sentences instantly.</p><a href="https://shortlyai.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Lavender</h3><p>AI email coach that improves response rates for sales.</p><a href="https://lavender.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Regie.ai</h3><p>Automated sales sequences and sequence writing.</p><a href="https://regie.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Writer</h3><p>Enterprise AI platform with custom style guide training.</p><a href="https://writer.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>ContentBot</h3><p>Automated blog and marketing content for agencies.</p><a href="https://contentbot.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>WordHero</h3><p>Massive library of 100+ writing templates for any niche.</p><a href="https://wordhero.co" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Bertha AI</h3><p>AI specialized for WordPress and web content creation.</p><a href="https://bertha.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>GoCharlie</h3><p>Social media content and ad image generator in one.</p><a href="https://gocharlie.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>LongShot</h3><p>Fact-checked AI assistant for creating reliable blogs.</p><a href="https://longshot.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Neuroflash</h3><p>European AI focus for multi-language copy and images.</p><a href="https://neuroflash.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Texti</h3><p>AI companion that lives inside your browser search.</p><a href="https://texti.app" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="writing"><h3>Wordtune Read</h3><p>AI that summarizes long articles so you don't have to.</p><a href="https://wordtune.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+
+        <!-- DESIGN (1-34) -->
+        <div class="tool-card" data-cat="design"><h3>Canva Magic</h3><p>AI-powered design suite for social media and layouts.</p><a href="https://canva.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Leonardo AI</h3><p>High-fidelity image generation for pro designers.</p><a href="https://leonardo.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Midjourney</h3><p>Elite AI art generation with stunning visual aesthetics.</p><a href="https://midjourney.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Adobe Firefly</h3><p>Generative AI integrated directly into Photoshop.</p><a href="https://adobe.com/firefly" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Looka</h3><p>AI logo maker that creates full brand identities.</p><a href="https://looka.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Brandmark</h3><p>Clean, modern AI logo generator and color tools.</p><a href="https://brandmark.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Figma AI</h3><p>Intelligent UI design tools for rapid prototyping.</p><a href="https://figma.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Uizard</h3><p>Design mobile apps by sketching them on paper first.</p><a href="https://uizard.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>DALL-E 3</h3><p>OpenAI's latest image model with precise instruction.</p><a href="https://labs.openai.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Recraft</h3><p>AI specialized in vector art and brand icons.</p><a href="https://recraft.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Photoroom</h3><p>Professional background removal and product staging.</p><a href="https://photoroom.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Flair.ai</h3><p>AI design tool for branded product photography.</p><a href="https://flair.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Fontjoy</h3><p>AI that helps you find the perfect font pairings.</p><a href="https://fontjoy.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Khroma</h3><p>AI color tool that learns which palettes you love.</p><a href="https://khroma.co" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Autodraw</h3><p>Google's AI that turns messy sketches into icons.</p><a href="https://autodraw.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Let's Enhance</h3><p>AI image upscaler and quality improver.</p><a href="https://letsenhance.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>VanceAI</h3><p>Photo enhancement and restoration using AI.</p><a href="https://vanceai.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Magician</h3><p>Figma plugin that generates icons and copy with AI.</p><a href="https://magician.design" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Galileo AI</h3><p>Generate editable UI designs from simple text prompts.</p><a href="https://usegalileo.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Relume</h3><p>AI site-mapper and wireframer for web designers.</p><a href="https://relume.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Krea.ai</h3><p>Real-time visual enhancement for digital artists.</p><a href="https://krea.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Vector Magic</h3><p>Convert bitmaps to clean SVG vectors instantly.</p><a href="https://vectormagic.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>IconScout</h3><p>Generate thousands of matching icons with AI.</p><a href="https://iconscout.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Colormind</h3><p>AI color palette generator for web and UI design.</p><a href="https://colormind.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Design.ai</h3><p>AI suite for logos, videos, and social graphics.</p><a href="https://designs.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Stockimg.ai</h3><p>AI generator for stock photos, book covers, and posters.</p><a href="https://stockimg.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>RoomGPT</h3><p>AI interior design tool—remodel any room instantly.</p><a href="https://roomgpt.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Mockup.ai</h3><p>Professional AI mockup generator for product designs.</p><a href="https://mockup.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Stable Diffusion</h3><p>Open-source powerhouse for custom image generation.</p><a href="https://stability.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Vizcom</h3><p>Turn rough sketches into industrial design renders.</p><a href="https://vizcom.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Microsoft Designer</h3><p>AI design tool for quick social media content creation.</p><a href="https://designer.microsoft.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Pebblely</h3><p>AI product staging tool for e-commerce stores.</p><a href="https://pebblely.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>DeepArt</h3><p>AI that turns your photos into classical paintings.</p><a href="https://deepart.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="design"><h3>Tailor Brands</h3><p>Full-scale AI platform for starting a business brand.</p><a href="https://tailorbrands.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+
+        <!-- VIDEO (1-33) -->
+        <div class="tool-card" data-cat="video"><h3>Runway Gen-2</h3><p>Next-gen AI for generating videos from text prompts.</p><a href="https://runwayml.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Pika Art</h3><p>Advanced cinematic animation for your visual projects.</p><a href="https://pika.art" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>HeyGen</h3><p>AI talking avatars for corporate and marketing videos.</p><a href="https://heygen.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Synthesia</h3><p>Create professional videos with AI presenters in minutes.</p><a href="https://synthesia.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Luma Dream</h3><p>AI-powered cinematic 3D world and video generator.</p><a href="https://lumalabs.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Sora</h3><p>OpenAI's groundbreaking high-fidelity video generator.</p><a href="https://openai.com/sora" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Descript</h3><p>AI video editor that lets you edit video by editing text.</p><a href="https://descript.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Pictory</h3><p>AI tool that turns long blog posts into short videos.</p><a href="https://pictory.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Lumen5</h3><p>Social media video creator for marketing and branding.</p><a href="https://lumen5.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Fliki</h3><p>Convert text scripts into videos with realistic AI voices.</p><a href="https://fliki.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Kaiber</h3><p>AI animation engine used by professional music artists.</p><a href="https://kaiber.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>InVideo</h3><p>Complete online video editor with 5000+ templates.</p><a href="https://invideo.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>CapCut AI</h3><p>Smart editing tools for vertical social media videos.</p><a href="https://capcut.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>D-ID</h3><p>Digital human technology for animated facial videos.</p><a href="https://d-id.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>DeepBrain</h3><p>Hyper-realistic AI avatars for customer service video.</p><a href="https://deepbrain.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Colossyan</h3><p>AI video platform for internal training and onboarding.</p><a href="https://colossyan.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Elai.io</h3><p>Create personalized AI videos at scale for sales.</p><a href="https://elai.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Vidyo.ai</h3><p>Instantly turn long videos into short viral TikTok clips.</p><a href="https://vidyo.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Munch</h3><p>AI that extracts the most engaging moments from video.</p><a href="https://getmunch.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Dubverse</h3><p>AI-powered video dubbing in over 30+ languages.</p><a href="https://dubverse.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Rask.ai</h3><p>One-click video localization and voice cloning.</p><a href="https://rask.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Wonder Dynamics</h3><p>AI that automatically animates CG characters in shots.</p><a href="https://wonderdynamics.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Topaz Video AI</h3><p>Professional video enhancement and frame interpolation.</p><a href="https://topazlabs.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>EbSynth</h3><p>Transform video footage by painting a single frame.</p><a href="https://ebsynth.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Steve.ai</h3><p>Fast AI animation generator for educators and brands.</p><a href="https://steve.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Veed.io</h3><p>Intelligent auto-captioning and online video editing.</p><a href="https://veed.io" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>NeuralSync</h3><p>Elite AI lip-sync technology for translated content.</p><a href="https://neuralsync.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Wondershare Virbo</h3><p>Cross-platform AI avatar video creation tool.</p><a href="https://virbo.wondershare.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Moovly</h3><p>Cloud-based video editor with massive AI asset library.</p><a href="https://moovly.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Hour One</h3><p>AI video platform specialized in virtual news anchors.</p><a href="https://hourone.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Rephrase.ai</h3><p>Hyper-realistic AI videos for personalized messaging.</p><a href="https://rephrase.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Supercreator</h3><p>AI tool for ultra-fast short-form video creation.</p><a href="https://supercreator.ai" class="tool-link" target="_blank">Visit Tool →</a></div>
+        <div class="tool-card" data-cat="video"><h3>Maverick</h3><p>AI video for e-commerce to personalize post-purchase.</p><a href="https://trymaverick.com" class="tool-link" target="_blank">Visit Tool →</a></div>
+
     </main>
 
+    <div class="rate-container">
+        <div style="font-size: 10px; color: #888; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Rate Us!</div>
+        <div class="stars" id="starRating">
+            <span onclick="rate(1)">★</span><span onclick="rate(2)">★</span><span onclick="rate(3)">★</span><span onclick="rate(4)">★</span><span onclick="rate(5)">★</span>
+        </div>
+    </div>
+
+    <button class="feedback-btn" onclick="scrollToTop()">FEEDBACK</button>
+
+    <footer>
+        <a href="#welcomePortal" onclick="openPortal()">Privacy Policy</a>
+        <a href="#welcomePortal" onclick="openPortal()">Terms of Services</a>
+        <a href="https://wa.me/923175006728">Contact Us</a>
+    </footer>
+
     <script>
+        // INSTANT DISAPPEAR FOR PORTAL
         function closePortal() {
-            document.getElementById('welcomePortal').style.transform = 'translateY(-100%)';
+            document.getElementById('welcomePortal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
-        function filterCat(cat) {
-            // Fix: Highlighting the correct button
-            const btns = document.querySelectorAll('.filter-btn');
-            btns.forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+        function openPortal() {
+            document.getElementById('welcomePortal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            window.scrollTo(0, 0);
+        }
 
-            // Fix: Showing ALL items in that category correctly
+        // STAR RATING LOGIC
+        function rate(n) {
+            const stars = document.querySelectorAll('.stars span');
+            stars.forEach((s, i) => {
+                s.classList.toggle('active', i < n);
+            });
+            // You can add an alert or small text here
+            console.log("Rated: " + n);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // FILTER LOGIC
+        function filterCat(cat) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(c => {
                 if (cat === 'all' || c.getAttribute('data-cat') === cat) {
@@ -207,23 +281,15 @@
             });
         }
 
+        // SEARCH LOGIC
         function filterSearch() {
             let val = document.getElementById('searchBar').value.toLowerCase();
             document.querySelectorAll('.tool-card').forEach(c => {
-                let txt = c.querySelector('h3').innerText.toLowerCase();
-                c.style.display = txt.includes(val) ? "flex" : "none";
+                let name = c.querySelector('h3').innerText.toLowerCase();
+                let desc = c.querySelector('p').innerText.toLowerCase();
+                c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
             });
         }
-
-        const stars = document.querySelectorAll('.star');
-        stars.forEach((s, idx) => {
-            s.addEventListener('mouseover', () => stars.forEach((star, i) => star.classList.toggle('active', i <= idx)));
-            s.addEventListener('click', () => {
-                document.getElementById('rateSection').innerHTML = "<div style='color:#00ff88; font-size:10px; font-weight:900;'>THANK YOU! ❤️</div>";
-            });
-        });
-
-        function handleFeedback() { window.location.href = "mailto:support@100freeai.com"; }
     </script>
 </body>
 </html>
