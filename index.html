@@ -21,103 +21,89 @@
         }
 
       <style>
-    /* 1. HIGH-TECH WELCOME PORTAL */
+  <style>
+    /* 1. THE PURPLE WELCOME PORTAL (MATCHING IMAGE 106) */
     #welcomePortal {
         position: fixed !important;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: #000;
-        /* Animated high-tech gradient */
-        background: radial-gradient(circle at 50% 50%, #1a0b3b 0%, #000000 100%);
+        /* Exact background from your reference image */
+        background: radial-gradient(circle at center, #2e0854 0%, #000000 100%);
         z-index: 9999999;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.8s ease;
         padding: 20px;
     }
 
-    /* Catchy, Aggressive Typography */
-    .portal-content {
-        max-width: 800px;
-        animation: fadeInScale 1s ease-out;
-    }
-
+    /* THE MAIN TEXT STYLE */
     #welcomePortal h1 {
-        font-size: clamp(3rem, 12vw, 7rem);
+        color: #ffffff;
+        font-size: clamp(2.5rem, 10vw, 5.5rem); /* Responsive size */
         font-weight: 900;
         margin: 0;
-        color: #fff;
-        line-height: 0.9;
-        letter-spacing: -4px;
         text-transform: uppercase;
+        letter-spacing: -1px;
+        font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    #welcomePortal h1 span {
-        color: var(--primary); /* The Green from your screenshots */
-        display: block;
-    }
-
+    /* THE SUBTITLE STYLE */
     #welcomePortal p {
-        color: #888;
-        font-size: clamp(0.9rem, 3vw, 1.2rem);
-        font-weight: 500;
-        margin: 20px 0 40px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
+        color: #b1b1b1;
+        font-size: clamp(1rem, 3vw, 1.5rem);
+        margin: 15px 0 40px;
+        font-weight: 300;
+        letter-spacing: 1px;
     }
 
-    /* High-Tech Button */
+    /* THE GLOWING PURPLE BUTTON */
     .enter-btn {
-        background: var(--primary);
-        color: #000;
-        padding: 20px 60px;
-        border-radius: 50px;
-        font-size: 1.2rem;
-        font-weight: 900;
+        background: #8a2be2; /* Your signature purple */
+        color: #ffffff;
+        padding: 18px 50px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 800;
         border: none;
         cursor: pointer;
         text-transform: uppercase;
         letter-spacing: 2px;
-        transition: all 0.3s ease;
-        box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-        position: relative;
-        overflow: hidden;
+        transition: 0.3s ease;
+        /* The glow effect seen in image 106 */
+        box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
     }
 
     .enter-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 50px rgba(0, 255, 136, 0.6);
-        background: #fff;
-    }
-
-    /* Subtle Scanline Animation for Tech feel */
-    #welcomePortal::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-        background-size: 100% 2px, 3px 100%;
-        pointer-events: none;
-    }
-
-    @keyframes fadeInScale {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
+        transform: translateY(-3px);
+        box-shadow: 0 0 50px rgba(138, 43, 226, 0.9);
+        background: #a040ff;
     }
 </style>
 
+<!-- THE HTML STRUCTURE -->
 <div id="welcomePortal">
-    <div class="portal-content">
-        <h1>STOP <span>SEARCHING.</span> START <span>CREATING.</span></h1>
-        <p>Access the World's Most Powerful AI Directory — 100% Free.</p>
-        <button class="enter-btn" onclick="closePortal()">Unlock Everything</button>
-    </div>
+    <h1>WELCOME TO 100FREEAI</h1>
+    <p>Explore the 100+ Elite AI Tools</p>
+    <!-- We'll use "EXPLORE AI TOOLS" as seen in your reference -->
+    <button class="enter-btn" onclick="closePortal()">Explore AI Tools</button>
 </div>
+
+<script>
+    function closePortal() {
+        const portal = document.getElementById('welcomePortal');
+        portal.style.opacity = '0';
+        // Allow scrolling once the portal is gone
+        setTimeout(() => { 
+            portal.style.display = 'none'; 
+            document.body.style.overflow = 'auto'; 
+        }, 800);
+    }
+</script>
 
         /* 2. HEADER & SEARCH */
         header { padding: 80px 20px 40px; text-align: center; }
@@ -174,15 +160,6 @@
     </style>
 </head>
 <body>
-
-    <div id="welcomePortal">
-        <h1>100FREEAI</h1>
-        <button class="enter-btn" onclick="closePortal()">Enter Directory</button>
-    </div>
-
-    <a href="https://wa.me/923175006728" class="contact-pill"><div class="phone-circle">📞</div> CONTACT US!</a>
-    <a href="#" class="feedback-btn">FEEDBACK</a>
-    <div class="rate-card">RATE US! ★★★★★</div>
 
     <header>
         <h1 class="main-h1">The Ultimate AI Toolkit</h1>
