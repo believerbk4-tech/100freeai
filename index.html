@@ -90,20 +90,66 @@
         @media (max-width: 768px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 480px) { .tool-grid { grid-template-columns: repeat(1, 1fr); } }
 
-        /* 5. PROFESSIONAL TOOL CARDS */
-        .tool-card {
-            background: #0d0d0d; border: 1px solid #1a1a1a; padding: 20px;
-            border-radius: 12px; text-align: left; display: flex; flex-direction: column;
-        }
-        .category-label { color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 8px; }
-        .tool-card h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 1.2rem; }
-        .tool-card p { font-size: 0.85rem; color: #ccc; line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
-        
-        .tool-link { 
-            color: var(--primary) !important; text-decoration: none; 
-            font-weight: 800; font-size: 13px; text-transform: uppercase;
-            border: 1px solid rgba(0, 255, 136, 0.2); padding: 8px 0;
-            text-align: center; border-radius: 6px; transition: 0.3s;
+     /* UPDATED CARD STYLE FOR HIGH PROFESSIONALISM */
+.tool-card {
+    background: #0d0d0d; 
+    border: 1px solid #1a1a1a; 
+    padding: 30px; /* More breathing room like the image */
+    border-radius: 16px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.category-label { 
+    color: #666; /* Muted gray for the category */
+    font-size: 11px; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px;
+    margin-bottom: 12px; 
+}
+
+.tool-card h3 { 
+    margin: 0 0 15px 0; 
+    color: var(--primary); /* Bright Green */
+    font-size: 1.6rem; 
+    font-weight: 800;
+}
+
+.tool-card p { 
+    font-size: 0.95rem; 
+    color: #eee; 
+    line-height: 1.6; 
+    margin-bottom: 25px; 
+    flex-grow: 1; 
+}
+
+/* THE PROFESSIONAL BOXED BUTTON (Matching your image) */
+.tool-link { 
+    color: var(--primary) !important; 
+    text-decoration: none; 
+    font-weight: 900; 
+    font-size: 14px; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    /* The Box Style */
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    border: 1px solid rgba(0, 255, 136, 0.15); /* Subtle green border */
+    background: rgba(255, 255, 255, 0.03); /* Very slight lift */
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tool-link:hover { 
+    background: rgba(0, 255, 136, 0.1); 
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
         }
         .tool-link:hover { background: rgba(0, 255, 136, 0.1); }
 
