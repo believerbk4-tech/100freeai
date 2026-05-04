@@ -654,9 +654,8 @@
 
     <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
     
- </script>
-        
-    // 1. ADDED: Check if the user already visited when the page loads
+<script>
+    // 1. Check if the user already visited when the page loads
     window.addEventListener('DOMContentLoaded', () => {
         if (sessionStorage.getItem('hasVisitedPortal')) {
             const portal = document.getElementById('welcomePortal');
@@ -668,19 +667,24 @@
     });
 
     function closePortal() {
-        document.getElementById('welcomePortal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
-        // 2. ADDED: Save the visit so the portal stays hidden on "Back"
-        sessionStorage.setItem('hasVisitedPortal', 'true');
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            portal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            // 2. Save the visit so the portal stays hidden on "Back"
+            sessionStorage.setItem('hasVisitedPortal', 'true');
+        }
     }
 
     function openPortal() {
-        document.getElementById('welcomePortal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        window.scrollTo(0, 0);
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            portal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            window.scrollTo(0, 0);
+        }
     }
 
-    // UPDATED STAR RATING LOGIC
     function rate(n) {
         const stars = document.querySelectorAll('.stars span');
         stars.forEach((s, i) => {
@@ -720,7 +724,6 @@
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     }
 </script>
-    <!-- ... all your tool cards and footer content ... -->
 
     <script>
         // Paste your Session Storage fix here
