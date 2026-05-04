@@ -231,8 +231,7 @@
         </div>
     </div>
 
-    <button class="feedback-btn" onclick="scrollToTop()">FEEDBACK</button>
-
+<button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
     <footer>
         <a href="#welcomePortal" onclick="openPortal()">Privacy Policy</a>
         <a href="#welcomePortal" onclick="openPortal()">Terms of Services</a>
@@ -289,7 +288,10 @@
                 let desc = c.querySelector('p').innerText.toLowerCase();
                 c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
             });
-        }
+            
+        function sendFeedback() {
+    window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
+}
     </script>
 </body>
 </html>
