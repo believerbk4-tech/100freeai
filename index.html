@@ -81,7 +81,7 @@
     <div id="welcomePortal">
         <div class="portal-content">
             <h1>WELCOME TO 100FREEAI</h1>
-            <p>Explore the 100+ Elite AI Tools</p>
+            <p>Explore the 100+ Elite AI Tools 🚀</p>
             <button class="enter-btn" onclick="closePortal()">EXPLORE AI TOOLS</button>
         </div>
     </div>
@@ -103,17 +103,86 @@
         </div>
     </header>
     
-  <div class="pro-tip-box">
-        <div class="tip-text">
-            <span class="badge">Partner's Pick 🚀</span>
-            <h2>Leonardo AI: Pro Tip</h2>
-            <p>"As a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite for your professional projects."</p>
-            <a href="https://leonardo.ai" class="tool-link" style="max-width: 50px;">Visit Leonardo →</a>
-        </div>
-        <div class="leonardo-preview">
-            <img src="marketing-preview.png" alt="Leonardo UI Preview">
-        </div>
+.pro-tip-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #1a0033, #000);
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 40px auto;
+    max-width: 1000px;
+    gap: 20px;
+}
+
+.tip-text {
+    flex: 1;
+    text-align: left;
+}
+
+.badge {
+    background: var(--primary);
+    color: black;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.tip-text h2 {
+    margin: 15px 0 10px;
+    color: #fff;
+    font-size: 1.8rem;
+}
+
+.tip-text p {
+    color: #ccc;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.leonardo-preview {
+    flex: 1;
+    max-width: 400px;
+}
+
+.leonardo-preview img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid #444;
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+    .pro-tip-box {
+        flex-direction: column; /* Stacks image under text on mobile */
+        text-align: center;
+        padding: 20px;
+    }
+    .tip-text {
+        text-align: center;
+    }
+    .leonardo-preview {
+        max-width: 100%;
+        margin-top: 20px;
+    }
+}
+    <div class="pro-tip-box">
+    <div class="tip-text">
+        <span class="badge">Partner's Pick 🚀</span>
+        <h2>Leonardo AI: Pro Tip</h2>
+        <p>"As a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite for your professional projects."</p>
+        <a href="https://leonardo.ai" class="tool-link" style="display: inline-block; width: 100%; max-width: 200px;">Visit Leonardo →</a>
     </div>
+    <div class="leonardo-preview">
+        <img src="marketing-preview.png" alt="Leonardo UI Preview">
+    </div>
+</div>
     
     <main class="tool-grid" id="toolGrid">
         <!-- WRITING (1-33) -->
