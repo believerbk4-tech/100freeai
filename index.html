@@ -47,37 +47,67 @@
         .leonardo-preview { width: 250px; height: 250px; border-radius: 20px; overflow: hidden; border: 1px solid #333; flex-shrink: 0; }
         .leonardo-preview img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 5. BALANCED 3x3 GRID */
-        .tool-grid {
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); /* Strict 3 columns on Laptop */
-            gap: 25px; /* Professional spacing */
-            padding: 0 20px;
-            max-width: 1200px; margin: 0 auto 100px;
-        }
+     /* THE GRID FIX */
+.tool-grid {
+    display: grid; 
+    /* Force 3 equal columns on laptop/desktop */
+    grid-template-columns: repeat(3, 1fr); 
+    /* This creates the thin line 'glue' effect between cards */
+    gap: 1px; 
+    background: #1a1a1a; 
+    padding: 1px;
+    max-width: 1400px; 
+    margin: 0 auto 100px;
+    border: 1px solid #1a1a1a;
+}
 
-        .tool-card {
-            background: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            padding: 30px;
-            border-radius: 20px;
-            display: flex; flex-direction: column;
-            transition: transform 0.3s ease;
-        }
-        .tool-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+.tool-card {
+    background: #000; /* Keeps card interior black */
+    padding: 40px 30px;
+    display: flex; 
+    flex-direction: column;
+    min-height: 350px;
+}
 
-        .category-label { color: #555; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-        .tool-card h3 { color: var(--primary); margin: 0 0 15px; font-size: 1.5rem; font-weight: 800; }
-        .tool-card p { color: #888; font-size: 0.95rem; line-height: 1.5; flex-grow: 1; margin-bottom: 25px; }
+/* THE BUTTON FIX (Matches your screenshot) */
+.tool-link {
+    color: var(--primary) !important; 
+    text-decoration: none !important; 
+    font-weight: 700; 
+    font-size: 13px; 
+    text-transform: uppercase; 
+    display: block; 
+    padding: 15px 0;
+    background: #0a0a0a;
+    border: 1px solid #111;
+    border-radius: 8px;
+    text-align: center;
+    transition: 0.3s;
+}
 
-        .tool-link {
-            color: var(--primary) !important; text-decoration: none !important; font-weight: 900; 
-            font-size: 12px; text-transform: uppercase; display: block; width: 100%;
-            padding: 14px 0; text-align: center; border: 1px solid rgba(0, 255, 136, 0.1);
-            background: #111; border-radius: 10px; transition: 0.3s;
-        }
-        .tool-link:hover { background: var(--primary); color: black !important; }
+/* RESPONSIVE RULES */
+@media (max-width: 1024px) { 
+    .tool-grid { grid-template-columns: repeat(2, 1fr); } 
+}
+@media (max-width: 768px) {
+    .tool-grid { grid-template-columns: 1fr; }
+}
+        <main class="tool-grid" id="toolGrid">
+    
+    <!-- Tool 1 -->
+    <div class="tool-card" data-cat="writing">
+        ...
+    </div>
 
+    <!-- Tool 2 -->
+    <div class="tool-card" data-cat="design">
+        ...
+    </div>
+
+    <!-- ADD ALL NEW TOOLS (Gemini, Quillbot, etc.) HERE BEFORE THE TAG BELOW -->
+
+</main> <!-- THIS IS THE END OF THE GRID. DO NOT PUT TOOLS AFTER THIS. -->
+        
         /* 6. UI ELEMENTS */
         .contact-pill { position: fixed; top: 25px; right: 25px; background: #0052ff; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 900; z-index: 5000; font-size: 13px; }
         .feedback-btn { position: fixed; bottom: 25px; right: 25px; background: #3b71ca; color: white; padding: 15px 25px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; z-index: 5000; }
