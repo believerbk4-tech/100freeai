@@ -8,223 +8,135 @@
     <style>
         :root { --primary: #00ff88; --dark: #000000; --text: #ffffff; --accent: #8a2be2; }
         
-        /* 1. CRITICAL MOBILE FIXES */
-        html { 
-            -webkit-text-size-adjust: 100%; 
-            text-size-adjust: 100%; 
-            touch-action: manipulation; /* Prevents double-tap zoom */
-        }
-        
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: var(--dark); 
-            color: var(--text); 
-            margin: 0; 
-            overflow-x: hidden;
-            width: 100%;
-        }
+        /* 1. CORE STYLES */
+        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: manipulation; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: var(--text); margin: 0; overflow-x: hidden; width: 100%; }
 
-        /* 2. PURPLE WELCOME PORTAL (Restored & Fixed) */
+        /* 2. WELCOME PORTAL */
         #welcomePortal {
-            position: fixed !important;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed !important; top: 0; left: 0; width: 100vw; height: 100vh;
             background: radial-gradient(circle at center, #2e0854 0%, #000000 100%);
-            z-index: 9999999;
-            display: flex; flex-direction: column; 
+            z-index: 9999999; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; text-align: center;
-            transition: opacity 0.8s ease;
-            padding: 20px;
-            box-sizing: border-box;
+            transition: opacity 0.8s ease; padding: 20px; box-sizing: border-box;
         }
+        .enter-btn { background: #8a2be2; color: #ffffff; padding: 18px 50px; border-radius: 12px; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 30px rgba(138, 43, 226, 0.6); }
 
-        #welcomePortal h1 {
-            color: #ffffff;
-            font-size: clamp(2rem, 8vw, 5.5rem);
-            font-weight: 900;
-            margin: 0;
-            text-transform: uppercase;
-        }
-
-        #welcomePortal p {
-            color: #b1b1b1;
-            font-size: clamp(0.9rem, 2.5vw, 1.5rem);
-            margin: 15px 0 40px;
-        }
-
-        .enter-btn {
-            background: #8a2be2;
-            color: #ffffff;
-            padding: 18px 50px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
-        }
-
-        /* 3. HEADER & SEARCH (Functional) */
+        /* 3. HEADER & FILTERS (Restored from Screenshot 104) */
         header { padding: 100px 20px 40px; text-align: center; }
-        .main-h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; color: var(--primary); margin: 0; }
+        .main-h1 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; color: var(--primary); margin: 0; }
+        .sub-header { color: #888; margin: 15px 0 30px; font-size: 1.1rem; }
         
-        .search-container { max-width: 500px; margin: 20px auto; position: relative; }
-        #searchBar {
-            width: 100%; padding: 14px 25px; border-radius: 50px; 
-            border: 1px solid #333; background: #0a0a0a; color: white; outline: none;
-            box-sizing: border-box;
-        }
+        .search-container { max-width: 500px; margin: 20px auto; }
+        #searchBar { width: 100%; padding: 14px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; outline: none; }
 
-        /* 4. THE 3x3 GRID (STRICT) */
+        .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 50px; }
+        .filter-btn {
+            padding: 10px 22px; border-radius: 50px; border: 1px solid #1a1a1a;
+            background: transparent; color: var(--primary); cursor: pointer;
+            font-weight: 600; font-size: 14px; transition: 0.3s;
+        }
+        .filter-btn.active { background: var(--primary); color: black; }
+
+        /* 4. PRO TIP SECTION (Leonardo AI) */
+        .pro-tip-box {
+            max-width: 1100px; margin: 0 auto 60px; padding: 30px;
+            background: #080808; border: 1px solid #00ff8833; border-radius: 20px;
+            display: flex; align-items: center; justify-content: space-between; gap: 30px;
+        }
+        .tip-text { flex: 1; }
+        .badge { background: var(--primary); color: black; padding: 5px 15px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; }
+        .pro-tip-box h2 { margin: 15px 0 10px; font-size: 1.5rem; }
+        .pro-tip-box p { color: #ccc; font-style: italic; line-height: 1.6; }
+        .leonardo-preview { width: 150px; height: 150px; border-radius: 15px; background: #111; border: 1px solid #333; }
+
+        /* 5. THE 3x3 GRID */
         .tool-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Forced 3 columns */
-            gap: 15px;
-            padding: 0 15px;
-            max-width: 1200px;
-            margin: 0 auto 100px;
+            display: grid; grid-template-columns: repeat(3, 1fr) !important;
+            gap: 15px; padding: 0 15px; max-width: 1200px; margin: 0 auto 100px;
         }
-/* 1. THE GRID: FORCED 3-COLUMNS EVERYWHERE */
-.tool-grid {
-    display: grid;
-    /* Force 3 columns on Laptop, Tablet, and Mobile */
-    grid-template-columns: repeat(3, 1fr) !important; 
-    gap: 12px; /* Tightened for mobile space */
-    padding: 0 15px;
-    max-width: 1200px;
-    margin: 0 auto 100px;
-}
 
-/* 2. PROFESSIONAL CARD (Matching Screenshot 110) */
-.tool-card {
-    background: #0d0d0d; 
-    border: 1px solid #1a1a1a; 
-    padding: 20px; /* Adjusted padding to fit 3-wide on mobile */
-    border-radius: 16px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.category-label { 
-    color: #666;
-    font-size: 10px; /* Slightly smaller for mobile 3-wide */
-    text-transform: uppercase; 
-    letter-spacing: 1px;
-    margin-bottom: 8px; 
-}
-
-.tool-card h3 { 
-    margin: 0 0 10px 0; 
-    color: #00ff88; /* Your primary green */
-    font-size: clamp(1rem, 4vw, 1.4rem); /* Dynamic size so it doesn't overflow */
-    font-weight: 800;
-}
-
-.tool-card p { 
-    font-size: clamp(0.7rem, 2.5vw, 0.9rem); /* Shrinks slightly on small screens */
-    color: #eee; 
-    line-height: 1.4; 
-    margin-bottom: 20px; 
-}
-
-/* 3. THE HIGH-PROFESSIONAL BUTTON (Matching Screenshot 110) */
-.tool-link { 
-    color: #00ff88 !important; 
-    text-decoration: none !important; 
-    font-weight: 900; 
-    font-size: 11px; /* Matching the clean, small look in 110 */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    
-    display: block;
-    width: 100%;
-    padding: 12px 0;
-    text-align: center;
-    border: 1px solid rgba(0, 255, 136, 0.1); /* Very subtle green border */
-    background: #111; /* Dark background for the button box */
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-}
-
-.tool-link:hover { 
-    background: rgba(0, 255, 136, 0.1); 
-    border-color: #00ff88;
-}
-
-/* 4. MOBILE-SPECIFIC TWEAKS FOR 3-WIDE */
-@media (max-width: 600px) {
-    .tool-grid {
-        gap: 8px; /* Extra tight gap for small screens */
-        padding: 0 8px;
-    }
-    .tool-card {
-        padding: 12px; /* Less padding so text fits */
-    }
-    .tool-link {
-        font-size: 9px; /* Ensures text doesn't wrap on small phones */
-        padding: 10px 0;
-    }
-}
-
-        /* 6. UI BUTTONS (Working Properly) */
-        .contact-pill {
-            position: fixed; top: 20px; right: 20px; background: #0052ff; 
-            color: white; padding: 8px 16px; border-radius: 50px; 
-            text-decoration: none; font-weight: 900; display: flex; 
-            align-items: center; z-index: 1000; font-size: 12px;
+        .tool-card {
+            background: #0d0d0d; border: 1px solid #1a1a1a; padding: 20px;
+            border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between;
         }
-        .phone-circle { background: #000; color: #ff3b3b; width: 20px; height: 20px; border-radius: 50%; margin-right: 8px; display: flex; align-items: center; justify-content: center; }
-        
-        .feedback-btn { 
-            position: fixed; bottom: 20px; right: 20px; background: #3b71ca; 
-            color: white; padding: 12px 20px; border-radius: 8px; 
-            border: none; font-weight: 800; cursor: pointer; z-index: 1000; 
+        .tool-card h3 { color: var(--primary); margin: 10px 0; font-weight: 800; }
+        .tool-link {
+            color: var(--primary) !important; text-decoration: none !important; font-weight: 900; font-size: 11px;
+            text-transform: uppercase; display: block; width: 100%; padding: 12px 0;
+            text-align: center; border: 1px solid rgba(0, 255, 136, 0.1); background: #111; border-radius: 8px;
         }
-        
-        .rate-card { 
-            position: fixed; bottom: 20px; left: 20px; background: #111; 
-            color: white; padding: 12px 20px; border-radius: 12px; 
-            border: 1px solid #333; font-weight: 800; font-size: 12px; cursor: pointer; z-index: 1000; 
+
+        /* 6. UI BUTTONS */
+        .contact-pill { position: fixed; top: 20px; right: 20px; background: #0052ff; color: white; padding: 8px 16px; border-radius: 50px; text-decoration: none; font-weight: 900; z-index: 1000; font-size: 12px; display: flex; align-items: center; }
+        .feedback-btn { position: fixed; bottom: 20px; right: 20px; background: #3b71ca; color: white; padding: 12px 20px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; z-index: 1000; }
+        .rate-card { position: fixed; bottom: 20px; left: 20px; background: #111; color: white; padding: 12px 20px; border-radius: 12px; border: 1px solid #333; font-weight: 800; font-size: 12px; z-index: 1000; }
+
+        @media (max-width: 768px) {
+            .pro-tip-box { flex-direction: column; text-align: center; margin: 0 15px 40px; }
+            .tool-grid { gap: 8px; }
+            .tool-card { padding: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- WELCOME PORTAL -->
     <div id="welcomePortal">
         <h1>WELCOME TO 100FREEAI</h1>
         <p>Explore the 100+ Elite AI Tools</p>
         <button class="enter-btn" onclick="closePortal()">Explore AI Tools</button>
     </div>
 
-    <!-- UI ELEMENTS -->
-    <a href="https://wa.me/923175006728" class="contact-pill"><div class="phone-circle">📞</div> CONTACT US!</a>
+    <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
     <button class="feedback-btn" onclick="handleFeedback()">FEEDBACK</button>
     <button class="rate-card" onclick="handleRate()">RATE US! ★★★★★</button>
 
     <header>
         <h1 class="main-h1">The Ultimate AI Toolkit</h1>
+        <p class="sub-header">Level up your workflow with 100+ hand-picked free AI tools.</p>
+        
         <div class="search-container">
-            <input type="text" id="searchBar" onkeyup="filterTools()" placeholder="Search 100+ tools...">
+            <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools...">
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterCat('all')">All (100)</button>
+            <button class="filter-btn" onclick="filterCat('writing')">Writing (33)</button>
+            <button class="filter-btn" onclick="filterCat('design')">Design (34)</button>
+            <button class="filter-btn" onclick="filterCat('video')">Video (33)</button>
         </div>
     </header>
 
+    <!-- PRO TIP SECTION (RESTORING YOUR SUCCESSFUL CONTENT) -->
+    <div class="pro-tip-box">
+        <div class="tip-text">
+            <span class="badge">Partner's Pick 🚀</span>
+            <h2>Leonardo AI: Pro Tip</h2>
+            <p>"Since I am a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite for your professional projects."</p>
+        </div>
+        <div class="leonardo-preview">
+            <!-- You can put your Leonardo screenshot here -->
+            <img src="leonardo_ui.jpg" alt="Leonardo UI" style="width:100%; height:100%; border-radius:14px; object-fit:cover;">
+        </div>
+    </div>
+
     <div class="tool-grid" id="toolGrid">
-        <!-- Example Tool Card -->
-        <div class="tool-card">
+        <div class="tool-card" data-cat="writing">
             <span class="category-label">Writing</span>
             <h3>ChatGPT</h3>
             <p>The industry standard for conversational AI and content creation.</p>
             <a href="https://chat.openai.com" class="tool-link">Visit Tool →</a>
         </div>
-        <!-- Repeat cards here -->
+        <div class="tool-card" data-cat="design">
+            <span class="category-label">Design</span>
+            <h3>Leonardo AI</h3>
+            <p>High-quality image generation with advanced designer controls.</p>
+            <a href="#" class="tool-link">Visit Tool →</a>
+        </div>
+        <!-- More cards here -->
     </div>
 
     <script>
-        // 1. Close Portal Logic
         function closePortal() {
             const portal = document.getElementById('welcomePortal');
             portal.style.opacity = '0';
@@ -232,33 +144,37 @@
             setTimeout(() => { portal.style.display = 'none'; }, 800);
         }
 
-        // 2. Search Bar Logic (Functional)
-        function filterTools() {
+        function filterCat(cat) {
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach(c => {
+                if(cat === 'all' || c.getAttribute('data-cat') === cat) {
+                    c.style.display = 'flex';
+                } else {
+                    c.style.display = 'none';
+                }
+            });
+        }
+
+        function filterSearch() {
             let input = document.getElementById('searchBar').value.toLowerCase();
-            let cards = document.getElementsByClassName('tool-card');
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].querySelector('h3').innerText.toLowerCase();
-                cards[i].style.display = title.includes(input) ? "flex" : "none";
-            }
+            let cards = document.querySelectorAll('.tool-card');
+            cards.forEach(c => {
+                let title = c.querySelector('h3').innerText.toLowerCase();
+                c.style.display = title.includes(input) ? "flex" : "none";
+            });
         }
 
-        // 3. Feedback Button Logic
-        function handleFeedback() {
-            window.location.href = "mailto:support@100freeai.com?subject=Feedback";
-        }
+        function handleFeedback() { window.location.href = "mailto:support@100freeai.com"; }
+        function handleRate() { alert("Thanks for your support!"); }
 
-        // 4. Rate Us Logic
-        function handleRate() {
-            alert("Thank you for your rating! Redirecting to review page...");
-            // window.open('YOUR_REVIEW_LINK_HERE', '_blank');
-        }
-
-        // Lock scroll on start
         window.onload = () => { document.body.style.overflow = 'hidden'; };
     </script>
 </body>
 </html>
-
     <!-- 5. The Main Tool Grid (FIX: Set to grid with 3x3 PC/2x2 Mobile) -->
     <main class="tool-grid" id="toolGrid">
         
