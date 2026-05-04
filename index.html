@@ -11,24 +11,26 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--dark); color: var(--text); overflow-x: hidden; width: 100%; }
 
-       /* UPGRADED WELCOME PORTAL */
+/* WELCOME PORTAL STYLING */
 #welcomePortal {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%); /* Deep space gradient */
-    z-index: 10000; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
+    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    color: white;
+    padding: 20px;
+    perspective: 1000px;
     overflow: hidden;
 }
 
-/* Background Animation for "Discovery" feel */
+/* Background Texture Animation */
 #welcomePortal::before {
     content: "";
     position: absolute;
@@ -42,33 +44,28 @@
 .portal-content {
     position: relative;
     z-index: 1;
-    padding: 20px;
 }
 
+/* Typography */
 .portal-content h1 { 
     font-size: clamp(2.5rem, 10vw, 6rem); 
     font-weight: 900; 
     margin: 0; 
-    color: #fff; 
     text-transform: uppercase; 
     letter-spacing: -2px;
     line-height: 0.9;
 }
 
-.portal-content .highlight {
-    color: #00ff88; /* Your brand green */
-    display: block;
-}
+.portal-content .highlight { color: #00ff88; }
 
 .portal-content p { 
     font-size: clamp(1rem, 4vw, 1.4rem); 
     color: #888; 
     margin: 20px auto 40px; 
     max-width: 600px;
-    line-height: 1.6;
 }
 
-/* Modern "SaaS" Action Button */
+/* Modern Button */
 .enter-btn { 
     background: #00ff88; 
     color: #000; 
@@ -82,7 +79,6 @@
     letter-spacing: 2px; 
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); 
     transition: all 0.3s ease;
-    position: relative;
 }
 
 .enter-btn:hover { 
@@ -90,8 +86,37 @@
     box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5);
 }
 
+/* Badge Layout */
+.portal-badges {
+    margin-top: 50px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0.6;
+}
+
+.badge {
+    font-size: 0.8rem;
+    border: 1px solid #333;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+/* ANIMATIONS */
+@keyframes popOut {
+    0% { transform: scale(1); opacity: 1; filter: blur(0px); }
+    30% { transform: scale(1.08); opacity: 1; }
+    100% { transform: scale(0.1); opacity: 0; filter: blur(12px); }
+}
+
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+#welcomePortal.disappearing {
+    animation: popOut 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    pointer-events: none;
+}
+        
         /* HEADER SECTION */
         header { padding: 120px 20px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
         .main-h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0 0 15px; line-height: 1.1; }
@@ -174,23 +199,25 @@
 </head>
 <body>
 
-   <div id="welcomePortal">
+  <div id="welcomePortal">
     <div class="portal-content">
-        <!-- Visual Hierarchy: High-contrast headline -->
+        <!-- Visual Hierarchy: Massive high-contrast headline -->
         <h1>100+ FREE <span class="highlight">AI TOOLS</span></h1>
         
-        <!-- Onboarding Guide: Explains utility immediately -->
+        <!-- Onboarding Guide: Explains value immediately -->
         <p>A curated directory for designers, developers, and creators. Hand-picked technology to boost your workflow without the cost.</p>
         
-        <!-- Discovery Gateway -->
+        <!-- Discovery Gateway: Clear Call-to-Action -->
         <button class="enter-btn" onclick="closePortal()">Explore Library</button>
         
-        <div style="margin-top: 50px; display: flex; gap: 20px; justify-content: center; opacity: 0.6;">
-            <span style="font-size: 0.8rem; color: #fff; border: 1px solid #333; padding: 5px 15px; border-radius: 20px;">✓ No Cost</span>
-            <span style="font-size: 0.8rem; color: #fff; border: 1px solid #333; padding: 5px 15px; border-radius: 20px;">✓ Hand-Picked</span>
-            <span style="font-size: 0.8rem; color: #fff; border: 1px solid #333; padding: 5px 15px; border-radius: 20px;">✓ AI-Powered</span>
+        <!-- Social Proof/Utility Badges -->
+        <div class="portal-badges">
+            <span class="badge">✓ No Cost</span>
+            <span class="badge">✓ Hand-Picked</span>
+            <span class="badge">✓ AI-Powered</span>
         </div>
     </div>
+</div>
 </div>
 
     <!-- CONTACT US LINK -->
@@ -776,68 +803,90 @@
         <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">© 2026 AI Hub - Curated with a human touch.</p>
     </footer>
 
-    <!-- 4. Centralized JavaScript Logic -->
-    <script>
-        // Welcome Modal & Session Handling
-        window.addEventListener('DOMContentLoaded', () => {
-            const portal = document.getElementById('welcomePortal');
-            if (sessionStorage.getItem('hasVisitedPortal')) {
-                if (portal) {
-                    portal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            }
-        });
-
-        function closePortal() {
-            const portal = document.getElementById('welcomePortal');
+<!-- 4. Centralized JavaScript Logic -->
+<script>
+    // Welcome Modal & Session Handling
+    window.addEventListener('DOMContentLoaded', () => {
+        const portal = document.getElementById('welcomePortal');
+        
+        // If user visited in this session, hide portal immediately
+        if (sessionStorage.getItem('hasVisitedPortal')) {
             if (portal) {
                 portal.style.display = 'none';
                 document.body.style.overflow = 'auto';
-                sessionStorage.setItem('hasVisitedPortal', 'true');
             }
+        } else {
+            // First time visit: ensure scroll is locked until they "Enter"
+            document.body.style.overflow = 'hidden';
         }
+    });
 
-        // Search & Filtering Logic
-        function filterSearch() {
-            let val = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.tool-card').forEach(c => {
-                let name = c.querySelector('h3').innerText.toLowerCase();
-                let desc = c.querySelector('p').innerText.toLowerCase();
-                c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
-            });
-        }
+    // UPGRADED: Professional "Pop" Disappearance Logic
+    function closePortal() {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            // 1. Add the CSS class that triggers the '@keyframes popOut'
+            portal.classList.add('disappearing');
 
-        function filterCat(cat) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            if (event && event.currentTarget) event.currentTarget.classList.add('active');
-            
-            const cards = document.querySelectorAll('.tool-card');
-            cards.forEach(c => {
-                c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
-            });
-        }
-
-        // Rating System
-        function rate(n) {
-            const stars = document.querySelectorAll('.stars span');
-            stars.forEach((s, i) => {
-                s.classList.toggle('active', i < n);
-            });
-            
+            // 2. Wait 700ms for the "middle-pull" animation to finish
             setTimeout(() => {
-                const rateBox = document.getElementById('rateBox');
+                portal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Unlock site scrolling
+                sessionStorage.setItem('hasVisitedPortal', 'true');
+            }, 700); 
+        }
+    }
+
+    // Search & Filtering Logic
+    function filterSearch() {
+        let val = document.getElementById('searchBar').value.toLowerCase();
+        document.querySelectorAll('.tool-card').forEach(c => {
+            let name = c.querySelector('h3').innerText.toLowerCase();
+            let desc = c.querySelector('p').innerText.toLowerCase();
+            c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
+        });
+    }
+
+    // FIXED: Upgraded filterCat to handle 'event' properly
+    function filterCat(cat, event) {
+        // Remove active class from all buttons
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        } else if (window.event && window.event.target) {
+            window.event.target.classList.add('active');
+        }
+        
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach(c => {
+            c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
+        });
+    }
+
+    // Rating System
+    function rate(n) {
+        const stars = document.querySelectorAll('.stars span');
+        stars.forEach((s, i) => {
+            s.classList.toggle('active', i < n);
+        });
+        
+        setTimeout(() => {
+            const rateBox = document.getElementById('rateBox');
+            if (rateBox) {
                 rateBox.innerHTML = '<div style="font-size: 16px; font-weight: 800; color: #00ff88; padding: 5px 0;">Thank you! 💖</div>';
-            }, 400);
-        }
+            }
+        }, 400);
+    }
 
-        function sendFeedback() {
-            window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
-        }
+    function sendFeedback() {
+        window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
+    }
 
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+   </script>   
 </body>
 </html>
