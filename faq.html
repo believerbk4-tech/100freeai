@@ -19,29 +19,34 @@
         .question { color: #00ff88; font-weight: 800; font-size: 1.2rem; margin-bottom: 10px; }
         .answer { color: #bbb; }
         
+        /* Centered Bottom Button Container */
+        .btn-wrapper {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
         .back-home {
             display: inline-block;
-            margin-bottom: 30px;
             color: #00ff88;
             text-decoration: none;
             font-weight: bold;
             border: 1px solid #00ff88;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 8px;
             transition: 0.3s;
         }
+
         .back-home:hover {
             background: #00ff88;
             color: #000;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Back to Home Button -->
-    <a href="index.html" class="back-home">← Back to Home</a>
-
     <h1>Frequently Asked Questions</h1>
 
     <div class="faq-item">
@@ -64,8 +69,13 @@
         <div class="answer">The AI landscape moves fast. We regularly review the directory to remove outdated tools and add the latest innovations in web programming, design, and marketing.</div>
     </div>
 
+    <!-- Step 1: Moved Button to the Bottom -->
+    <div class="btn-wrapper">
+        <a href="index.html" class="back-home">← Back to Home</a>
+    </div>
+
     <footer style="margin-top: 50px; text-align: center; font-size: 0.9rem; color: #555;">
-        <p>© 2026 AI Hub | Owner: Fahad Khan</p>
+        <p>© 2026 AI Hub | Owner: Fahad Khan S/O Wahid Sher</p>
     </footer>
 </div>
 
