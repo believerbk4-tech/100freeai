@@ -8,29 +8,62 @@
         body {
             background-color: #000;
             color: #fff;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.6;
-            padding: 40px;
-            max-width: 800px;
-            margin: auto;
+            padding: 40px 20px;
+            margin: 0;
         }
         .container {
+            max-width: 800px;
+            margin: auto;
             border: 1px solid #333;
             padding: 30px;
             border-radius: 15px;
             background-color: #0a0a0a;
         }
-        h1 { color: #00ff88; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        h1 { color: #00ff88; border-bottom: 1px solid #333; padding-bottom: 10px; text-align: center; }
         h2 { color: #00ff88; margin-top: 25px; }
+        p { color: #bbb; }
         a { color: #00ff88; text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .footer-link { margin-top: 40px; display: block; color: #888; }
+
+        /* Professional Button Styling */
+        .btn-wrapper {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+        .back-home {
+            display: inline-block;
+            color: #00ff88;
+            text-decoration: none !important;
+            font-weight: bold;
+            border: 1px solid #00ff88;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .back-home:hover {
+            background: #00ff88;
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .footer-text {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Privacy Policy</h1>
-        <p>Last Updated: May 2, 2026</p>
+        <p style="text-align: center;">Last Updated: May 2, 2026</p>
 
         <p>Welcome to <strong>100FreeAI</strong>. This Privacy Policy explains how we handle information when you visit our website at <a href="https://100freeai.netlify.app/">https://100freeai.netlify.app/</a>.</p>
 
@@ -49,7 +82,14 @@
         <p>If you have any questions about this Privacy Policy, please contact the owner, <strong>Fahad Khan</strong>, at: <br>
         Email: <strong>believerbk4@Gmail.com</strong></p>
 
-        <a href="index.html" class="footer-link">← Back to 100FreeAI Home</a>
+        <!-- Centered Bottom Button -->
+        <div class="btn-wrapper">
+            <a href="index.html" class="back-home">← Back to Home</a>
+        </div>
+
+        <div class="footer-text">
+            <p>© 2026 AI Hub | Owner: Fahad Khan S/O Wahid Sher</p>
+        </div>
     </div>
 </body>
 </html>
