@@ -782,60 +782,78 @@
 
 </main>
 
-    <!-- 1. Real-Time Rating Section (Upgraded with Firebase) -->
-    <div id="rating-section" style="text-align: center; margin: 40px auto; padding: 30px; background: #0a0a0a; border: 1px solid #333; border-radius: 15px; max-width: 800px;">
-        <h3 style="color: #00ff88; margin-bottom: 10px; font-weight: 800;">Rate Our Directory</h3>
-        <div id="stars" style="font-size: 35px; cursor: pointer; color: #444; transition: 0.3s;">
+<!-- 1. Fixed Floating Rating Section (Bottom Left) -->
+<div id="rating-widget" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: flex; align-items: center; justify-content: center;">
+    <!-- The Rating Box -->
+    <div id="rating-card" style="background: rgba(10, 10, 10, 0.95); border: 1px solid #333; border-radius: 12px; padding: 12px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); backdrop-filter: blur(5px);">
+        <h4 style="color: #00ff88; margin: 0 0 8px 0; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;">Rate Us!</h4>
+        <div id="stars" style="font-size: 22px; cursor: pointer; color: #444; display: flex; gap: 4px; transition: 0.3s;">
             <span class="star" data-value="1">★</span>
             <span class="star" data-value="2">★</span>
             <span class="star" data-value="3">★</span>
             <span class="star" data-value="4">★</span>
             <span class="star" data-value="5">★</span>
         </div>
-        <p id="rating-stats" style="color: #bbb; margin-top: 15px; font-size: 1rem; font-weight: 500;">Connecting to database...</p>
+        <p id="rating-stats" style="color: #888; margin: 8px 0 0 0; font-size: 0.65rem; display: none;">Updating...</p>
     </div>
 
-    <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
+    <!-- The "Thank you! 💖" Popup (Hidden by default) -->
+    <div id="thanks-popup" style="display: none; position: absolute; background: #0a0a0a; border: 2px solid #00ff88; border-radius: 12px; padding: 15px; text-align: center; min-width: 110px; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); animation: popIn 0.3s ease-out;">
+        <h4 style="color: #00ff88; margin: 0; font-size: 1.1rem; font-weight: 800;">Thank you!</h4>
+        <span style="font-size: 1.2rem;">💖</span>
+    </div>
+</div>
 
-    <!-- 2. About Us Section -->
-    <section id="about" style="padding: 60px 20px; margin-top: 20px; text-align: center; background-color: #050505; color: #fff; border-top: 1px solid #222;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <h2 style="color: #00ff88; margin-bottom: 25px; font-size: 2rem;">About 100FreeAI</h2>
-            <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc;">
-                Welcome to <strong>100FreeAI</strong>, a project curated by <strong>Fahad Khan</strong>. 
-                My mission is to simplify the rapidly growing world of artificial intelligence by hand-picking the 
-                best tools available for free. 
-            </p>
-            <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc; margin-top: 20px;">
-                Whether you are a designer, writer, or video creator, this directory is designed to help you 
-                find the right technology to boost your workflow without the cost.
-            </p>
-        </div>
-    </section>
+<style>
+    /* Popup Animation */
+    @keyframes popIn {
+        0% { transform: scale(0.5); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    
+    /* Responsive adjustment for small phones */
+    @media (max-width: 480px) {
+        #rating-widget { bottom: 10px; left: 10px; }
+        #rating-card { padding: 8px 10px; }
+        #stars { font-size: 18px; }
+    }
+</style>
+
+<button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
+
+<!-- 2. About Us Section -->
+<section id="about" style="padding: 60px 20px; text-align: center; background-color: #050505; color: #fff; border-top: 1px solid #222;">
+    <div style="max-width: 800px; margin: 0 auto;">
+        <h2 style="color: #00ff88; margin-bottom: 25px; font-size: 2rem;">About 100FreeAI</h2>
+        <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc;">
+            Welcome to <strong>100FreeAI</strong>, a project curated by <strong>Fahad Khan</strong>. 
+            My mission is to simplify the rapidly growing world of artificial intelligence by hand-picking the 
+            best tools available for free. 
+        </p>
+    </div>
+</section>
 
 <!-- 3. Footer -->
 <footer style="padding: 50px 20px; text-align: center; border-top: 1px solid #222; background: #000;">
     <p style="margin-bottom: 10px; font-size: 1.1rem;"><strong>Owner: Fahad Khan S/O Wahid Sher</strong></p>
     <p style="color: #888; margin-bottom: 25px;">Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
-    
     <p>
         <a href="faq.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">FAQ</a> | 
         <a href="privacy-policy.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
         <a href="terms.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">Terms of Service</a>
     </p>
-    
     <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
 </footer>
-    
-<!-- 4. Centralized Logic & Firebase Integration -->
+
+<!-- 4. Real-Time Logic (Realtime Database Version) -->
 <script type="module">
-    // --- FIREBASE SETUP ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, onSnapshot, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
         authDomain: "freeai-ratings.firebaseapp.com",
+        databaseURL: "https://freeai-ratings-default-rtdb.firebaseio.com",
         projectId: "freeai-ratings",
         storageBucket: "freeai-ratings.firebasestorage.app",
         messagingSenderId: "735292410645",
@@ -843,114 +861,80 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const statsDoc = doc(db, "ratings", "site-stats");
+    const db = getDatabase(app);
+    const ratingRef = ref(db, 'site-stats');
 
     const starElements = document.querySelectorAll('.star');
+    const ratingCard = document.getElementById('rating-card');
+    const thanksPopup = document.getElementById('thanks-popup');
     const statsText = document.getElementById('rating-stats');
-    
-    let isShowingThankYou = false;
 
-    // Real-Time Listener: Updates stars and text when ANYONE votes
-    onSnapshot(statsDoc, (snapshot) => {
-        // Only update the text if we aren't currently showing the "Thank you" message
-        if (snapshot.exists() && !isShowingThankYou) {
-            const data = snapshot.data();
-            const average = (data.sum / data.count).toFixed(1);
-            statsText.innerHTML = `Current Rating: <span style="color:#00ff88; font-weight:800;">${average} / 5</span> (${data.count} global votes)`;
-            highlightStars(Math.round(average));
-        } else if (!snapshot.exists()) {
-            statsText.innerText = "No ratings yet. Be the first!";
-        }
-    });
-
-    // Handle User Voting
+    // 1. Hover/Drag Visual Logic
     starElements.forEach(star => {
+        star.addEventListener('mouseover', () => highlightStars(star.dataset.value, "#00ff88"));
+        star.addEventListener('mouseout', () => fetchCurrentRating());
+        
         star.addEventListener('click', async () => {
-            if (isShowingThankYou) return; // Prevent double-clicking
+            const val = parseInt(star.dataset.value);
+            
+            // Show processing status
+            statsText.style.display = "block";
+            statsText.innerText = "Sending...";
 
-            const val = parseInt(star.getAttribute('data-value'));
             try {
-                statsText.innerHTML = '<span style="color:#00ff88;">Processing your vote...</span>';
-                
-                await runTransaction(db, async (transaction) => {
-                    const sfDoc = await transaction.get(statsDoc);
-                    if (!sfDoc.exists()) {
-                        transaction.set(statsDoc, { count: 1, sum: val });
+                await runTransaction(ratingRef, (currentData) => {
+                    if (currentData === null) {
+                        return { count: 1, sum: val };
                     } else {
-                        transaction.update(statsDoc, { 
-                            count: sfDoc.data().count + 1, 
-                            sum: sfDoc.data().sum + val 
-                        });
+                        return {
+                            count: (currentData.count || 0) + 1,
+                            sum: (currentData.sum || 0) + val
+                        };
                     }
                 });
 
-                // Show Thank You Message
-                isShowingThankYou = true;
-                statsText.innerHTML = '<div style="font-size: 18px; font-weight: 800; color: #00ff88; padding: 5px 0;">Thank you! 💖</div>';
-                
-                // Return to live stats after 3 seconds
+                // Success: Show Popup and Hide Card
+                ratingCard.style.display = "none";
+                thanksPopup.style.display = "block";
+
+                // Return to normal after 3 seconds
                 setTimeout(() => {
-                    isShowingThankYou = false;
-                    // Trigger a manual refresh of the text from the current DB state
-                    location.reload(); // Simplest way to resync, or let onSnapshot catch next change
+                    thanksPopup.style.display = "none";
+                    ratingCard.style.display = "block";
+                    statsText.style.display = "none";
+                    fetchCurrentRating();
                 }, 3000);
 
-            } catch (e) {
-                console.error("Voting Error: ", e);
-                statsText.innerText = "Error saving vote.";
-                isShowingThankYou = false;
+            } catch (err) {
+                console.error(err);
+                statsText.innerText = "Error!";
             }
         });
     });
 
-    function highlightStars(count) {
+    function highlightStars(count, color) {
         starElements.forEach(s => {
-            s.style.color = s.getAttribute('data-value') <= count ? "#00ff88" : "#444";
+            s.style.color = s.dataset.value <= count ? color : "#444";
         });
     }
 
-    // --- EXISTING SITE LOGIC ---
-    window.closePortal = function() {
-        const portal = document.getElementById('welcomePortal');
-        if (portal) {
-            portal.classList.add('disappearing');
-            setTimeout(() => {
-                portal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                sessionStorage.setItem('hasVisitedPortal', 'true');
-            }, 700); 
-        }
-    };
+    function fetchCurrentRating() {
+        onValue(ratingRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const average = Math.round(data.sum / data.count);
+                highlightStars(average, "#00ff88");
+            }
+        }, { onlyOnce: true });
+    }
 
-    window.filterSearch = function() {
-        let val = document.getElementById('searchBar').value.toLowerCase();
-        document.querySelectorAll('.tool-card').forEach(c => {
-            let name = c.querySelector('h3').innerText.toLowerCase();
-            let desc = c.querySelector('p').innerText.toLowerCase();
-            c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
-        });
-    };
+    // Initialize display
+    fetchCurrentRating();
 
-    window.filterCat = function(cat, event) {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        if (event) event.currentTarget.classList.add('active');
-        document.querySelectorAll('.tool-card').forEach(c => {
-            c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
-        });
-    };
-
-    window.sendFeedback = function() {
+    // Feedback logic
+    window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
-
-    if (sessionStorage.getItem('hasVisitedPortal')) {
-        const portal = document.getElementById('welcomePortal');
-        if (portal) portal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    } else {
-        document.body.style.overflow = 'hidden';
-    }
-</script>   
+</script>
 </body>
 </html>
