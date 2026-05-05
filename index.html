@@ -782,9 +782,8 @@
 
 </main>
 
-<!-- 1. Fixed Floating Rating Section (Bottom Left) -->
+<!-- 1. Fixed Floating Rating Section -->
 <div id="rating-widget" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: flex; align-items: center; justify-content: center;">
-    <!-- The Rating Box -->
     <div id="rating-card" style="background: rgba(10, 10, 10, 0.95); border: 1px solid #333; border-radius: 12px; padding: 12px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); backdrop-filter: blur(5px);">
         <h4 style="color: #00ff88; margin: 0 0 8px 0; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;">Rate Us!</h4>
         <div id="stars" style="font-size: 22px; cursor: pointer; color: #444; display: flex; gap: 4px; transition: 0.3s;">
@@ -797,7 +796,6 @@
         <p id="rating-stats" style="color: #888; margin: 8px 0 0 0; font-size: 0.65rem; display: none;">Updating...</p>
     </div>
 
-    <!-- The "Thank you! 💖" Popup (Hidden by default) -->
     <div id="thanks-popup" style="display: none; position: absolute; background: #0a0a0a; border: 2px solid #00ff88; border-radius: 12px; padding: 15px; text-align: center; min-width: 110px; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); animation: popIn 0.3s ease-out;">
         <h4 style="color: #00ff88; margin: 0; font-size: 1.1rem; font-weight: 800;">Thank you!</h4>
         <span style="font-size: 1.2rem;">💖</span>
@@ -805,13 +803,10 @@
 </div>
 
 <style>
-    /* Popup Animation */
     @keyframes popIn {
         0% { transform: scale(0.5); opacity: 0; }
         100% { transform: scale(1); opacity: 1; }
     }
-    
-    /* Responsive adjustment for small phones */
     @media (max-width: 480px) {
         #rating-widget { bottom: 10px; left: 10px; }
         #rating-card { padding: 8px 10px; }
@@ -827,8 +822,7 @@
         <h2 style="color: #00ff88; margin-bottom: 25px; font-size: 2rem;">About 100FreeAI</h2>
         <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc;">
             Welcome to <strong>100FreeAI</strong>, a project curated by <strong>Fahad Khan</strong>. 
-            My mission is to simplify the rapidly growing world of artificial intelligence by hand-picking the 
-            best tools available for free. 
+            My mission is to simplify the rapidly growing world of artificial intelligence by hand-picking the best tools available for free. 
         </p>
     </div>
 </section>
@@ -845,7 +839,7 @@
     <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
 </footer>
 
-<!-- 4. Real-Time Logic (Realtime Database Version) -->
+<!-- 4. Real-Time Logic (Corrected & Database Fixed) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -869,15 +863,19 @@
     const thanksPopup = document.getElementById('thanks-popup');
     const statsText = document.getElementById('rating-stats');
 
-    // 1. Hover/Drag Visual Logic
+    // Hover effect
     starElements.forEach(star => {
-        star.addEventListener('mouseover', () => highlightStars(star.dataset.value, "#00ff88"));
-        star.addEventListener('mouseout', () => fetchCurrentRating());
+        star.addEventListener('mouseover', () => {
+            const val = star.getAttribute('data-value');
+            highlightStars(val, "#00ff88");
+        });
+        
+        star.addEventListener('mouseout', () => {
+            fetchCurrentRating();
+        });
         
         star.addEventListener('click', async () => {
-            const val = parseInt(star.dataset.value);
-            
-            // Show processing status
+            const val = parseInt(star.getAttribute('data-value'));
             statsText.style.display = "block";
             statsText.innerText = "Sending...";
 
@@ -893,11 +891,9 @@
                     }
                 });
 
-                // Success: Show Popup and Hide Card
                 ratingCard.style.display = "none";
                 thanksPopup.style.display = "block";
 
-                // Return to normal after 3 seconds
                 setTimeout(() => {
                     thanksPopup.style.display = "none";
                     ratingCard.style.display = "block";
@@ -906,7 +902,7 @@
                 }, 3000);
 
             } catch (err) {
-                console.error(err);
+                console.error("Firebase Error:", err);
                 statsText.innerText = "Error!";
             }
         });
@@ -914,24 +910,22 @@
 
     function highlightStars(count, color) {
         starElements.forEach(s => {
-            s.style.color = s.dataset.value <= count ? color : "#444";
+            s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
         });
     }
 
     function fetchCurrentRating() {
         onValue(ratingRef, (snapshot) => {
             const data = snapshot.val();
-            if (data) {
+            if (data && data.count > 0) {
                 const average = Math.round(data.sum / data.count);
                 highlightStars(average, "#00ff88");
             }
         }, { onlyOnce: true });
     }
 
-    // Initialize display
     fetchCurrentRating();
 
-    // Feedback logic
     window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
