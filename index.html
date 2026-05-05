@@ -25,150 +25,202 @@
     <meta property="twitter:image" content="https://100freeai.netlify.app/marketing-preview.png">
 
     <style>
-        :root { --primary: #00ff88; --dark: #000000; --text: #ffffff; --accent: #8a2be2; --purple-bg: #1a0033; }
+        :root { 
+            --primary: #00ff88; 
+            --dark: #000000; 
+            --text: #ffffff; 
+            --card-bg: #0a0a0a;
+            --border: #222;
+        }
         
         * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--dark); color: var(--text); overflow-x: hidden; width: 100%; }
+        
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--dark); 
+            color: var(--text); 
+            overflow-x: hidden; 
+            width: 100%;
+        }
 
-        <!-- STEP 3: VISUAL STYLING & ANIMATIONS -->
-<style>
-    /* WELCOME PORTAL STYLING */
-    #welcomePortal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        padding: 20px;
-        perspective: 1000px;
-        overflow: hidden;
-    }
+        /* RESTORING FLOATING UI ELEMENTS */
+        .contact-pill { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            background: #0052ff; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 900; 
+            z-index: 10001; 
+            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
+            font-size: 14px;
+        }
 
-    /* Background Texture Animation */
-    #welcomePortal::before {
-        content: "";
-        position: absolute;
-        width: 200%;
-        height: 200%;
-        background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-        opacity: 0.1;
-        animation: rotate 100s linear infinite;
-    }
+        .feedback-btn { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            background: #333; 
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            border: 1px solid #444;
+            font-weight: 600; 
+            cursor: pointer; 
+            z-index: 999; 
+            font-size: 12px;
+            text-transform: uppercase;
+        }
 
-    .portal-content {
-        position: relative;
-        z-index: 1;
-    }
+        /* WELCOME PORTAL STYLING */
+        #welcomePortal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            perspective: 1000px;
+            overflow: hidden;
+        }
 
-    /* Typography */
-    .portal-content h1 { 
-        font-size: clamp(2.5rem, 10vw, 6rem); 
-        font-weight: 900; 
-        margin: 0; 
-        text-transform: uppercase; 
-        letter-spacing: -2px;
-        line-height: 0.9;
-    }
+        #welcomePortal::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.1;
+            animation: rotate 100s linear infinite;
+        }
 
-    .portal-content .highlight { color: #00ff88; }
+        .portal-content { position: relative; z-index: 1; }
 
-    .portal-content p { 
-        font-size: clamp(1rem, 4vw, 1.4rem); 
-        color: #888; 
-        margin: 20px auto 40px; 
-        max-width: 600px;
-    }
+        .portal-content h1 { 
+            font-size: clamp(2.5rem, 10vw, 6rem); 
+            font-weight: 900; 
+            margin: 0; 
+            text-transform: uppercase; 
+            letter-spacing: -2px;
+            line-height: 0.9;
+        }
 
-    /* Modern Button */
-    .enter-btn { 
-        background: #00ff88; 
-        color: #000; 
-        padding: 22px 80px; 
-        border-radius: 50px; 
-        font-size: 1.1rem;
-        font-weight: 800; 
-        border: none; 
-        cursor: pointer; 
-        text-transform: uppercase; 
-        letter-spacing: 2px; 
-        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); 
-        transition: all 0.3s ease;
-    }
+        .portal-content .highlight { color: #00ff88; }
 
-    .enter-btn:hover { 
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5);
-    }
+        .portal-content p { 
+            font-size: clamp(1rem, 4vw, 1.4rem); 
+            color: #888; 
+            margin: 20px auto 40px; 
+            max-width: 600px;
+        }
 
-    /* Badge Layout */
-    .portal-badges {
-        margin-top: 50px;
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        flex-wrap: wrap;
-        opacity: 0.6;
-    }
+        .enter-btn { 
+            background: #00ff88; 
+            color: #000; 
+            padding: 22px 80px; 
+            border-radius: 50px; 
+            font-size: 1.1rem;
+            font-weight: 800; 
+            border: none; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); 
+            transition: all 0.3s ease;
+        }
 
-    .badge {
-        font-size: 0.8rem;
-        border: 1px solid #333;
-        padding: 5px 15px;
-        border-radius: 20px;
-    }
+        /* ANIMATIONS */
+        @keyframes popOut {
+            0% { transform: scale(1); opacity: 1; filter: blur(0px); }
+            30% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(0.1); opacity: 0; filter: blur(12px); }
+        }
 
-    /* ANIMATIONS */
-    @keyframes popOut {
-        0% { transform: scale(1); opacity: 1; filter: blur(0px); }
-        30% { transform: scale(1.08); opacity: 1; }
-        100% { transform: scale(0.1); opacity: 0; filter: blur(12px); }
-    }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        #welcomePortal.disappearing {
+            animation: popOut 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            pointer-events: none;
+        }
 
-    #welcomePortal.disappearing {
-        animation: popOut 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        pointer-events: none;
-    }
-            
-    /* HEADER SECTION */
-    header { padding: 120px 20px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
-    .main-h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; color: #00ff88; margin: 0 0 15px; line-height: 1.1; }
-    .sub-header { font-size: 1.2rem; color: #888; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        /* PROFESSIONAL HEADER & SEARCH */
+        header { padding: 120px 20px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
+        .main-h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; color: #00ff88; margin: 0 0 15px; }
+        
+        #searchBar { 
+            width: 100%; max-width: 500px; padding: 18px 25px; 
+            border-radius: 50px; border: 1px solid #333; 
+            background: #0a0a0a; color: white; outline: none; 
+            margin-bottom: 35px; font-size: 16px; 
+        }
 
-    #searchBar { width: 100%; max-width: 500px; padding: 18px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; outline: none; margin-bottom: 35px; font-size: 16px; }
+        /* PROFESSIONAL TOOL GRID & CARDS */
+        .tool-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; 
+            padding: 20px;
+            max-width: 1300px; 
+            margin: 0 auto 100px;
+        }
 
-    /* FILTERS */
-    .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 60px; padding: 0 10px; }
-    .filter-btn { padding: 12px 22px; border-radius: 50px; border: 1px solid #222; background: #0a0a0a; color: #fff; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.3s; }
-    .filter-btn.active { background: #00ff88; color: black; border-color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
 
-    /* FULLY RESPONSIVE GRID */
-    .tool-grid {
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 1px; 
-        background: #1a1a1a; 
-        padding: 1px;
-        max-width: 1300px; 
-        margin: 0 auto 100px;
-    }
+        .tool-card h3 { color: var(--primary); margin: 0 0 10px; font-size: 1.4rem; }
+        .tool-card p { color: #888; font-size: 0.95rem; line-height: 1.6; flex-grow: 1; }
+        
+        .tool-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid #222;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .tool-link:hover { background: #111; border-color: var(--primary); }
 
-    /* Mobile responsiveness for the 3-column grid */
-    @media (max-width: 992px) {
-        .tool-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-        .tool-grid { grid-template-columns: 1fr; }
-    }
-</style>
+        /* ABOUT SECTION FIXES */
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .about-container h2 { color: var(--primary); font-size: 2rem; margin-bottom: 15px; }
+        .about-container p { color: #888; line-height: 1.8; font-size: 1.1rem; }
+
+        /* RESPONSIVENESS */
+        @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { 
+            .tool-grid { grid-template-columns: 1fr; } 
+            header { padding-top: 100px; }
+        }
+    </style>
+</head>
 
         .tool-card { background: #000; padding: 40px 25px; display: flex; flex-direction: column; min-height: 300px; }
         .tool-card h3 { color: var(--primary); margin: 0 0 12px; font-size: 1.4rem; font-weight: 800; }
