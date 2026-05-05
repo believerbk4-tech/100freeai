@@ -782,28 +782,31 @@
 
 </main>
 
-    <!-- 1. Interactive Elements -->
-    <div class="rate-container" id="rateBox">
-        <div id="rateContent">
-            <div style="font-size: 10px; color: #888; margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Rate Us!</div>
-            <div class="stars" id="starRating">
-                <span onclick="rate(1)">★</span><span onclick="rate(2)">★</span><span onclick="rate(3)">★</span><span onclick="rate(4)">★</span><span onclick="rate(5)">★</span>
-            </div>
+    <!-- 1. Real-Time Rating Section (Upgraded with Firebase) -->
+    <div id="rating-section" style="text-align: center; margin: 40px auto; padding: 30px; background: #0a0a0a; border: 1px solid #333; border-radius: 15px; max-width: 800px;">
+        <h3 style="color: #00ff88; margin-bottom: 10px; font-weight: 800;">Rate Our Directory</h3>
+        <div id="stars" style="font-size: 35px; cursor: pointer; color: #444; transition: 0.3s;">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
         </div>
+        <p id="rating-stats" style="color: #bbb; margin-top: 15px; font-size: 1rem; font-weight: 500;">Connecting to database...</p>
     </div>
 
     <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
 
     <!-- 2. About Us Section -->
-    <section id="about" style="padding: 40px 20px; margin-top: 20px; text-align: center; background-color: #111; color: #fff; border-top: 1px solid #333;">
+    <section id="about" style="padding: 60px 20px; margin-top: 20px; text-align: center; background-color: #050505; color: #fff; border-top: 1px solid #222;">
         <div style="max-width: 800px; margin: 0 auto;">
-            <h2 style="color: #00ff88; margin-bottom: 20px;">About 100FreeAI</h2>
-            <p style="line-height: 1.6; font-size: 1.1rem; color: #ccc;">
+            <h2 style="color: #00ff88; margin-bottom: 25px; font-size: 2rem;">About 100FreeAI</h2>
+            <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc;">
                 Welcome to <strong>100FreeAI</strong>, a project curated by <strong>Fahad Khan</strong>. 
                 My mission is to simplify the rapidly growing world of artificial intelligence by hand-picking the 
                 best tools available for free. 
             </p>
-            <p style="line-height: 1.6; font-size: 1.1rem; color: #ccc; margin-top: 15px;">
+            <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc; margin-top: 20px;">
                 Whether you are a designer, writer, or video creator, this directory is designed to help you 
                 find the right technology to boost your workflow without the cost.
             </p>
@@ -811,106 +814,143 @@
     </section>
 
 <!-- 3. Footer -->
-<footer style="padding: 40px 20px; text-align: center; border-top: 1px solid #333; background: #000;">
-    <!-- Ownership Info -->
-    <p style="margin-bottom: 10px;"><strong>Owner: Fahad Khan S/O Wahid Sher</strong></p>
-    <p style="color: #888; margin-bottom: 20px;">Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
+<footer style="padding: 50px 20px; text-align: center; border-top: 1px solid #222; background: #000;">
+    <p style="margin-bottom: 10px; font-size: 1.1rem;"><strong>Owner: Fahad Khan S/O Wahid Sher</strong></p>
+    <p style="color: #888; margin-bottom: 25px;">Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
     
-    <!-- Navigation Links -->
     <p>
-        <a href="faq.html" style="color: #00ff88; text-decoration: none;">FAQ</a> | 
-        <a href="privacy-policy.html" style="color: #00ff88; text-decoration: none;">Privacy Policy</a> | 
-        <a href="terms.html" style="color: #00ff88; text-decoration: none;">Terms of Service</a>
+        <a href="faq.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">FAQ</a> | 
+        <a href="privacy-policy.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+        <a href="terms.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">Terms of Service</a>
     </p>
     
-    <!-- Copyright -->
-    <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">© 2026 AI Hub - Curated with a human touch.</p>
+    <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
 </footer>
     
-<!-- 4. Centralized JavaScript Logic -->
-<script>
-    // Welcome Modal & Session Handling
-    window.addEventListener('DOMContentLoaded', () => {
-        const portal = document.getElementById('welcomePortal');
-        
-        // If user visited in this session, hide portal immediately
-        if (sessionStorage.getItem('hasVisitedPortal')) {
-            if (portal) {
-                portal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        } else {
-            // First time visit: ensure scroll is locked until they "Enter"
-            document.body.style.overflow = 'hidden';
+<!-- 4. Centralized Logic & Firebase Integration -->
+<script type="module">
+    // --- FIREBASE SETUP ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, onSnapshot, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
+        authDomain: "freeai-ratings.firebaseapp.com",
+        projectId: "freeai-ratings",
+        storageBucket: "freeai-ratings.firebasestorage.app",
+        messagingSenderId: "735292410645",
+        appId: "1:735292410645:web:4a79f607dad95b81ec771c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const statsDoc = doc(db, "ratings", "site-stats");
+
+    const starElements = document.querySelectorAll('.star');
+    const statsText = document.getElementById('rating-stats');
+    
+    let isShowingThankYou = false;
+
+    // Real-Time Listener: Updates stars and text when ANYONE votes
+    onSnapshot(statsDoc, (snapshot) => {
+        // Only update the text if we aren't currently showing the "Thank you" message
+        if (snapshot.exists() && !isShowingThankYou) {
+            const data = snapshot.data();
+            const average = (data.sum / data.count).toFixed(1);
+            statsText.innerHTML = `Current Rating: <span style="color:#00ff88; font-weight:800;">${average} / 5</span> (${data.count} global votes)`;
+            highlightStars(Math.round(average));
+        } else if (!snapshot.exists()) {
+            statsText.innerText = "No ratings yet. Be the first!";
         }
     });
 
-    // UPGRADED: Professional "Pop" Disappearance Logic
-    function closePortal() {
+    // Handle User Voting
+    starElements.forEach(star => {
+        star.addEventListener('click', async () => {
+            if (isShowingThankYou) return; // Prevent double-clicking
+
+            const val = parseInt(star.getAttribute('data-value'));
+            try {
+                statsText.innerHTML = '<span style="color:#00ff88;">Processing your vote...</span>';
+                
+                await runTransaction(db, async (transaction) => {
+                    const sfDoc = await transaction.get(statsDoc);
+                    if (!sfDoc.exists()) {
+                        transaction.set(statsDoc, { count: 1, sum: val });
+                    } else {
+                        transaction.update(statsDoc, { 
+                            count: sfDoc.data().count + 1, 
+                            sum: sfDoc.data().sum + val 
+                        });
+                    }
+                });
+
+                // Show Thank You Message
+                isShowingThankYou = true;
+                statsText.innerHTML = '<div style="font-size: 18px; font-weight: 800; color: #00ff88; padding: 5px 0;">Thank you! 💖</div>';
+                
+                // Return to live stats after 3 seconds
+                setTimeout(() => {
+                    isShowingThankYou = false;
+                    // Trigger a manual refresh of the text from the current DB state
+                    location.reload(); // Simplest way to resync, or let onSnapshot catch next change
+                }, 3000);
+
+            } catch (e) {
+                console.error("Voting Error: ", e);
+                statsText.innerText = "Error saving vote.";
+                isShowingThankYou = false;
+            }
+        });
+    });
+
+    function highlightStars(count) {
+        starElements.forEach(s => {
+            s.style.color = s.getAttribute('data-value') <= count ? "#00ff88" : "#444";
+        });
+    }
+
+    // --- EXISTING SITE LOGIC ---
+    window.closePortal = function() {
         const portal = document.getElementById('welcomePortal');
         if (portal) {
-            // 1. Add the CSS class that triggers the '@keyframes popOut'
             portal.classList.add('disappearing');
-
-            // 2. Wait 700ms for the "middle-pull" animation to finish
             setTimeout(() => {
                 portal.style.display = 'none';
-                document.body.style.overflow = 'auto'; // Unlock site scrolling
+                document.body.style.overflow = 'auto';
                 sessionStorage.setItem('hasVisitedPortal', 'true');
             }, 700); 
         }
-    }
+    };
 
-    // Search & Filtering Logic
-    function filterSearch() {
+    window.filterSearch = function() {
         let val = document.getElementById('searchBar').value.toLowerCase();
         document.querySelectorAll('.tool-card').forEach(c => {
             let name = c.querySelector('h3').innerText.toLowerCase();
             let desc = c.querySelector('p').innerText.toLowerCase();
             c.style.display = (name.includes(val) || desc.includes(val)) ? "flex" : "none";
         });
-    }
+    };
 
-    // FIXED: Upgraded filterCat to handle 'event' properly
-    function filterCat(cat, event) {
-        // Remove active class from all buttons
+    window.filterCat = function(cat, event) {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        
-        // Add active class to clicked button
-        if (event && event.currentTarget) {
-            event.currentTarget.classList.add('active');
-        } else if (window.event && window.event.target) {
-            window.event.target.classList.add('active');
-        }
-        
-        const cards = document.querySelectorAll('.tool-card');
-        cards.forEach(c => {
+        if (event) event.currentTarget.classList.add('active');
+        document.querySelectorAll('.tool-card').forEach(c => {
             c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? 'flex' : 'none';
         });
-    }
+    };
 
-    // Rating System
-    function rate(n) {
-        const stars = document.querySelectorAll('.stars span');
-        stars.forEach((s, i) => {
-            s.classList.toggle('active', i < n);
-        });
-        
-        setTimeout(() => {
-            const rateBox = document.getElementById('rateBox');
-            if (rateBox) {
-                rateBox.innerHTML = '<div style="font-size: 16px; font-weight: 800; color: #00ff88; padding: 5px 0;">Thank you! 💖</div>';
-            }
-        }, 400);
-    }
-
-    function sendFeedback() {
+    window.sendFeedback = function() {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
-    }
+    };
 
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (sessionStorage.getItem('hasVisitedPortal')) {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) portal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    } else {
+        document.body.style.overflow = 'hidden';
     }
-   </script>   
+</script>   
 </body>
 </html>
