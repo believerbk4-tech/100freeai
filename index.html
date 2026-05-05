@@ -782,7 +782,7 @@
 
 </main>
 
-<!-- 1. Fixed Floating Rating Section -->
+<!-- 1. Floating Rating Widget (Bottom Left) -->
 <div id="rating-widget" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: flex; align-items: center; justify-content: center;">
     <div id="rating-card" style="background: rgba(10, 10, 10, 0.95); border: 1px solid #333; border-radius: 12px; padding: 12px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); backdrop-filter: blur(5px);">
         <h4 style="color: #00ff88; margin: 0 0 8px 0; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;">Rate Us!</h4>
@@ -796,6 +796,7 @@
         <p id="rating-stats" style="color: #888; margin: 8px 0 0 0; font-size: 0.65rem; display: none;">Updating...</p>
     </div>
 
+    <!-- Thank You Popup -->
     <div id="thanks-popup" style="display: none; position: absolute; background: #0a0a0a; border: 2px solid #00ff88; border-radius: 12px; padding: 15px; text-align: center; min-width: 110px; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); animation: popIn 0.3s ease-out;">
         <h4 style="color: #00ff88; margin: 0; font-size: 1.1rem; font-weight: 800;">Thank you!</h4>
         <span style="font-size: 1.2rem;">💖</span>
@@ -839,7 +840,7 @@
     <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
 </footer>
 
-<!-- 4. Real-Time Logic (Corrected & Database Fixed) -->
+<!-- 4. Real-Time Logic (Realtime Database Corrected) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -863,16 +864,27 @@
     const thanksPopup = document.getElementById('thanks-popup');
     const statsText = document.getElementById('rating-stats');
 
-    // Hover effect
+    // Star Highlighting Logic
+    function highlightStars(count, color) {
+        starElements.forEach(s => {
+            s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
+        });
+    }
+
+    function fetchCurrentRating() {
+        onValue(ratingRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.count > 0) {
+                const average = Math.round(data.sum / data.count);
+                highlightStars(average, "#00ff88");
+            }
+        }, { onlyOnce: true });
+    }
+
+    // Event Listeners for Hover/Click
     starElements.forEach(star => {
-        star.addEventListener('mouseover', () => {
-            const val = star.getAttribute('data-value');
-            highlightStars(val, "#00ff88");
-        });
-        
-        star.addEventListener('mouseout', () => {
-            fetchCurrentRating();
-        });
+        star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-value'), "#00ff88"));
+        star.addEventListener('mouseout', fetchCurrentRating);
         
         star.addEventListener('click', async () => {
             const val = parseInt(star.getAttribute('data-value'));
@@ -891,6 +903,7 @@
                     }
                 });
 
+                // Show Success Popup
                 ratingCard.style.display = "none";
                 thanksPopup.style.display = "block";
 
@@ -907,22 +920,6 @@
             }
         });
     });
-
-    function highlightStars(count, color) {
-        starElements.forEach(s => {
-            s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
-        });
-    }
-
-    function fetchCurrentRating() {
-        onValue(ratingRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.count > 0) {
-                const average = Math.round(data.sum / data.count);
-                highlightStars(average, "#00ff88");
-            }
-        }, { onlyOnce: true });
-    }
 
     fetchCurrentRating();
 
