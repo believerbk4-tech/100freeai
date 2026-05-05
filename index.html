@@ -218,25 +218,21 @@
 </head>
 <body>
 
-  <div id="welcomePortal">
+<!-- 1. The HTML Structure (Fixed) -->
+<div id="welcomePortal">
     <div class="portal-content">
-        <!-- Visual Hierarchy: Massive high-contrast headline -->
-        <h1>100+ FREE <span class="highlight">AI TOOLS</span></h1>
+        <h1>100+ FREE <span class="highlight">AI</span></h1>
+        <p>Curated by Fahad Khan. Your ultimate directory for free AI tools.</p>
         
-        <!-- Onboarding Guide: Explains value immediately -->
-        <p>A curated directory for designers, developers, and creators. Hand-picked technology to boost your workflow without the cost.</p>
+        <!-- The button MUST have onclick="enterSite()" to trigger the animation -->
+        <button class="enter-btn" onclick="enterSite()">Explore Library</button>
         
-        <!-- Discovery Gateway: Clear Call-to-Action -->
-        <button class="enter-btn" onclick="closePortal()">Explore Library</button>
-        
-        <!-- Social Proof/Utility Badges -->
         <div class="portal-badges">
-            <span class="badge">✓ No Cost</span>
-            <span class="badge">✓ Hand-Picked</span>
-            <span class="badge">✓ AI-Powered</span>
+            <span class="badge">No Login Required</span>
+            <span class="badge">100% Free</span>
+            <span class="badge">Updated Daily</span>
         </div>
     </div>
-</div>
 </div>
 
     <!-- CONTACT US LINK -->
@@ -840,8 +836,26 @@
     <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
 </footer>
 
-<!-- 4. Real-Time Logic (Realtime Database Corrected) -->
+<!-- 4. Logic (Welcome Portal + Realtime Database) -->
 <script type="module">
+    // --- STEP 2: WELCOME PORTAL HANDLER ---
+    window.enterSite = function() {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            portal.classList.add('disappearing');
+            document.body.style.overflow = 'auto'; // Unlock scrolling
+            setTimeout(() => {
+                portal.remove();
+            }, 700);
+        }
+    };
+
+    // Lock scroll on load if portal exists
+    if (document.getElementById('welcomePortal')) {
+        document.body.style.overflow = 'hidden';
+    }
+
+    // --- FIREBASE RATING LOGIC ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -864,7 +878,6 @@
     const thanksPopup = document.getElementById('thanks-popup');
     const statsText = document.getElementById('rating-stats');
 
-    // Star Highlighting Logic
     function highlightStars(count, color) {
         starElements.forEach(s => {
             s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
@@ -881,7 +894,6 @@
         }, { onlyOnce: true });
     }
 
-    // Event Listeners for Hover/Click
     starElements.forEach(star => {
         star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-value'), "#00ff88"));
         star.addEventListener('mouseout', fetchCurrentRating);
@@ -903,7 +915,6 @@
                     }
                 });
 
-                // Show Success Popup
                 ratingCard.style.display = "none";
                 thanksPopup.style.display = "block";
 
