@@ -734,20 +734,35 @@
 
 <!-- 4. Logic (Welcome Portal + Realtime Database) -->
 <script type="module">
-    // --- STEP 2: WELCOME PORTAL HANDLER ---
+    // --- STEP 1 FIX: NAVIGATION MEMORY ---
+    function checkNavigation() {
+        if (sessionStorage.getItem('siteEntered') === 'true') {
+            const portal = document.getElementById('welcomePortal');
+            if (portal) {
+                portal.style.display = 'none'; // Kill portal immediately on return
+                document.body.style.overflow = 'auto'; // Ensure scrolling is active
+            }
+        }
+    }
+
+    // Run the check immediately
+    checkNavigation();
+
     window.enterSite = function() {
         const portal = document.getElementById('welcomePortal');
         if (portal) {
             portal.classList.add('disappearing');
-            document.body.style.overflow = 'auto'; // Unlock scrolling
+            // Save state so portal stays hidden when coming back from Privacy/Terms
+            sessionStorage.setItem('siteEntered', 'true'); 
+            document.body.style.overflow = 'auto'; 
             setTimeout(() => {
                 portal.remove();
             }, 700);
         }
     };
 
-    // Lock scroll on load if portal exists
-    if (document.getElementById('welcomePortal')) {
+    // Lock scroll on load ONLY if portal hasn't been cleared yet
+    if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
         document.body.style.overflow = 'hidden';
     }
 
@@ -796,8 +811,10 @@
         
         star.addEventListener('click', async () => {
             const val = parseInt(star.getAttribute('data-value'));
-            statsText.style.display = "block";
-            statsText.innerText = "Sending...";
+            if(statsText) {
+                statsText.style.display = "block";
+                statsText.innerText = "Sending...";
+            }
 
             try {
                 await runTransaction(ratingRef, (currentData) => {
@@ -811,19 +828,19 @@
                     }
                 });
 
-                ratingCard.style.display = "none";
-                thanksPopup.style.display = "block";
+                if(ratingCard) ratingCard.style.display = "none";
+                if(thanksPopup) thanksPopup.style.display = "block";
 
                 setTimeout(() => {
-                    thanksPopup.style.display = "none";
-                    ratingCard.style.display = "block";
-                    statsText.style.display = "none";
+                    if(thanksPopup) thanksPopup.style.display = "none";
+                    if(ratingCard) ratingCard.style.display = "block";
+                    if(statsText) statsText.style.display = "none";
                     fetchCurrentRating();
                 }, 3000);
 
             } catch (err) {
                 console.error("Firebase Error:", err);
-                statsText.innerText = "Error!";
+                if(statsText) statsText.innerText = "Error!";
             }
         });
     });
