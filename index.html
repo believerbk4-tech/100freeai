@@ -39,22 +39,36 @@
             border: none; cursor: pointer; text-transform: uppercase;
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); transition: 0.3s;
         }
+/* Fixed Feedback Button - Bottom Right */
+.feedback-btn { 
+    position: fixed; 
+    bottom: 25px; 
+    right: 25px; 
+    z-index: 9999; /* Ensures it stays on top */
+    background: #111; 
+    color: #fff; 
+    padding: 12px 24px; 
+    border-radius: 12px; 
+    border: 1px solid #333;
+    font-weight: 700; 
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        /* --- FIXED FLOATING UI --- */
-        .feedback-btn { 
-            position: fixed; bottom: 25px; right: 25px; 
-            background: #111; color: #fff; padding: 14px 28px; 
-            border-radius: 14px; border: 1px solid #333;
-            font-weight: 700; cursor: pointer; z-index: 999; font-size: 11px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .contact-pill { 
-            position: fixed; top: 20px; right: 20px; 
-            background: #0052ff; color: white; padding: 12px 24px; 
-            border-radius: 50px; text-decoration: none; font-weight: 800; 
-            z-index: 998; font-size: 13px;
-        }
+/* Fixed Contact Pill - Top Right */
+.contact-pill { 
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    z-index: 9998; 
+    background: #0052ff; 
+    color: white; 
+    padding: 10px 20px; 
+    border-radius: 50px; 
+    text-decoration: none; 
+    font-weight: 800;
+    box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
+}
 
         /* --- PROFESSIONAL 3x3 GRID --- */
         .tool-grid { 
@@ -159,19 +173,32 @@
     </main>
 
     <script>
-        // FIX 1: Navigation Memory
-        function checkNavigation() {
-            if (sessionStorage.getItem('siteEntered') === 'true') {
-                document.getElementById('welcomePortal').style.display = 'none';
-            }
+       // Function to run as soon as the page loads
+function checkNavigation() {
+    // Check if the user has already clicked 'Enter' in this session
+    if (sessionStorage.getItem('siteEntered') === 'true') {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            portal.style.display = 'none'; // Hide portal immediately
         }
+    }
+}
 
-        function enterSite() { 
-            const portal = document.getElementById('welcomePortal');
-            portal.classList.add('portal-hidden');
-            sessionStorage.setItem('siteEntered', 'true');
-            setTimeout(() => { portal.style.display = 'none'; }, 700);
-        }
+// Update your existing Enter function
+function enterSite() { 
+    const portal = document.getElementById('welcomePortal');
+    portal.classList.add('portal-hidden');
+    
+    // Set the "flag" so the browser remembers they are inside
+    sessionStorage.setItem('siteEntered', 'true'); 
+    
+    setTimeout(() => { 
+        portal.style.display = 'none'; 
+    }, 700);
+}
+
+// Make sure your <body> tag looks like this:
+// <body onload="checkNavigation()">
 
         // FIX 2: Correct Filtering Logic
         function filterCat(cat, btn) {
