@@ -66,44 +66,69 @@
             margin: 0 auto; 
         }
 
-        .tool-card { 
-            background: #080808; 
-            border: 1px solid #222; 
-            padding: 30px 25px; 
-            border-radius: 20px; 
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-            min-height: 250px;
-        }
+       /* --- UPGRADED PROFESSIONAL LOOK --- */
+.tool-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+    padding: 20px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
 
-        .tool-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.1);
-        }
+.tool-card { 
+    background: #080808; 
+    border: 1px solid #222; 
+    padding: 30px 25px; 
+    border-radius: 20px; 
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+    min-height: 250px; /* Keeps cards aligned */
+}
 
-        .tool-link-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 14px 24px;
-            background: #111;
-            color: var(--primary);
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: bold;
-            border: 1px solid #333;
-            transition: 0.3s;
-        }
+.tool-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 255, 136, 0.1);
+}
 
-        .tool-link-btn:hover {
-            background: var(--primary);
-            color: #000;
-            border-color: var(--primary);
-        }
+.tool-card h3 {
+    color: var(--primary);
+    margin-top: 0;
+    font-size: 1.4rem;
+}
+
+.tool-card p {
+    color: #bbb;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* The Professional Button Look */
+.tool-link-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: #111;
+    color: var(--primary);
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    border: 1px solid #333;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tool-link-btn:hover {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
 
         /* --- FILTERS --- */
         .filter-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 40px 0; }
@@ -241,19 +266,29 @@
         };
 
         window.filterCat = function(cat, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+    // 1. Highlight the clicked button
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 
-            const cards = document.querySelectorAll('.tool-card');
-            cards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                if (cat === 'all' || cardCategory === cat) {
-                    card.style.display = 'flex'; 
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        };
+    // 2. Select all tools that are already in your HTML
+    const cards = document.querySelectorAll('.tool-card');
+
+    cards.forEach(card => {
+        // Get the category from the card's data-category attribute
+        const cardCategory = card.getAttribute('data-category');
+
+        if (cat === 'all') {
+            card.style.display = 'flex'; // Show everything
+        } else if (cardCategory === cat) {
+            card.style.display = 'flex'; // Show only matching category
+        } else {
+            card.style.display = 'none'; // Hide everything else
+        }
+    });
+    
+    // Smooth scroll back to top of grid so user sees the results
+    window.scrollTo({ top: document.querySelector('header').offsetHeight, behavior: 'smooth' });
+};
         
         window.filterSearch = function() {
             const input = document.getElementById('searchBar').value.toLowerCase();
