@@ -5,24 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100+ Free AI Tools Directory</title>
 
-    <!-- Social Media Preview Tags (Open Graph) -->
+    <!-- Social Media Preview Tags -->
     <meta name="title" content="100+ FREE AI TOOLS - Hand-Picked for Creators">
-    <meta name="description" content="A curated directory for designers, developers, and creators. Boost your workflow with the best free AI technology.">
-    <meta property="fb:app_id" content="961010986335082" />
-    
-    <!-- Open Graph / Facebook / WhatsApp / LinkedIn / Instagram -->
+    <meta name="description" content="A curated directory for designers, developers, and creators.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://100freeai.netlify.app/">
     <meta property="og:title" content="100+ FREE AI TOOLS">
-    <meta property="og:description" content="Hand-picked technology to boost your workflow without the cost.">
+    <meta property="og:description" content="Hand-picked technology to boost your workflow.">
     <meta property="og:image" content="https://100freeai.netlify.app/marketing-preview.png">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://100freeai.netlify.app/">
-    <meta property="twitter:title" content="100+ FREE AI TOOLS">
-    <meta property="twitter:description" content="Hand-picked technology to boost your workflow without the cost.">
-    <meta property="twitter:image" content="https://100freeai.netlify.app/marketing-preview.png">
 
     <style>
         :root { 
@@ -38,187 +28,84 @@
         html, body { 
             margin: 0; 
             padding: 0; 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
             background-color: var(--dark); 
             color: var(--text); 
             overflow-x: hidden; 
             width: 100%;
         }
 
-        /* RESTORING FLOATING UI ELEMENTS */
+        /* Floating UI */
         .contact-pill { 
-            position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            background: #0052ff; 
-            color: white; 
-            padding: 12px 24px; 
-            border-radius: 50px; 
-            text-decoration: none; 
-            font-weight: 900; 
-            z-index: 10001; 
-            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
+            position: fixed; top: 20px; right: 20px; 
+            background: #0052ff; color: white; padding: 12px 24px; 
+            border-radius: 50px; text-decoration: none; font-weight: 900; 
+            z-index: 10001; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
             font-size: 14px;
         }
 
         .feedback-btn { 
-            position: fixed; 
-            bottom: 20px; 
-            right: 20px; 
-            background: #333; 
-            color: white; 
-            padding: 10px 20px; 
-            border-radius: 8px; 
-            border: 1px solid #444;
-            font-weight: 600; 
-            cursor: pointer; 
-            z-index: 999; 
-            font-size: 12px;
-            text-transform: uppercase;
+            position: fixed; bottom: 20px; right: 20px; 
+            background: #333; color: white; padding: 10px 20px; 
+            border-radius: 8px; border: 1px solid #444;
+            font-weight: 600; cursor: pointer; z-index: 999; 
+            font-size: 12px; text-transform: uppercase;
         }
 
-        /* WELCOME PORTAL STYLING */
+        /* Welcome Portal */
         #welcomePortal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 20px;
-            perspective: 1000px;
-            overflow: hidden;
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; padding: 20px; overflow: hidden;
         }
-
-        #welcomePortal::before {
-            content: "";
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-            opacity: 0.1;
-            animation: rotate 100s linear infinite;
-        }
-
-        .portal-content { position: relative; z-index: 1; }
 
         .portal-content h1 { 
-            font-size: clamp(2.5rem, 10vw, 6rem); 
-            font-weight: 900; 
-            margin: 0; 
-            text-transform: uppercase; 
-            letter-spacing: -2px;
-            line-height: 0.9;
+            font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 900; 
+            margin: 0; text-transform: uppercase; letter-spacing: -2px; line-height: 0.9;
         }
 
-        .portal-content .highlight { color: #00ff88; }
-
-        .portal-content p { 
-            font-size: clamp(1rem, 4vw, 1.4rem); 
-            color: #888; 
-            margin: 20px auto 40px; 
-            max-width: 600px;
-        }
+        .portal-content .highlight { color: var(--primary); }
 
         .enter-btn { 
-            background: #00ff88; 
-            color: #000; 
-            padding: 22px 80px; 
-            border-radius: 50px; 
-            font-size: 1.1rem;
-            font-weight: 800; 
-            border: none; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); 
-            transition: all 0.3s ease;
+            background: var(--primary); color: #000; padding: 22px 80px; 
+            border-radius: 50px; font-size: 1.1rem; font-weight: 800; 
+            border: none; cursor: pointer; text-transform: uppercase; 
+            margin-top: 40px; box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
 
-        /* ANIMATIONS */
-        @keyframes popOut {
-            0% { transform: scale(1); opacity: 1; filter: blur(0px); }
-            30% { transform: scale(1.08); opacity: 1; }
-            100% { transform: scale(0.1); opacity: 0; filter: blur(12px); }
-        }
-
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        #welcomePortal.disappearing {
-            animation: popOut 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-            pointer-events: none;
-        }
-
-        /* PROFESSIONAL HEADER & SEARCH */
+        /* Header & Search */
         header { padding: 120px 20px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
-        .main-h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; color: #00ff88; margin: 0 0 15px; }
+        .main-h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0 0 15px; }
         
         #searchBar { 
             width: 100%; max-width: 500px; padding: 18px 25px; 
             border-radius: 50px; border: 1px solid #333; 
-            background: #0a0a0a; color: white; outline: none; 
-            margin-bottom: 35px; font-size: 16px; 
+            background: #0a0a0a; color: white; outline: none; margin-bottom: 35px;
         }
 
-        /* PROFESSIONAL TOOL GRID & CARDS */
+        /* Grid */
         .tool-grid {
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px; 
-            padding: 20px;
-            max-width: 1300px; 
-            margin: 0 auto 100px;
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; padding: 20px; max-width: 1300px; margin: 0 auto 100px;
         }
 
         .tool-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 30px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            text-align: left;
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 30px; border-radius: 12px; display: flex; flex-direction: column;
         }
 
-        .tool-card h3 { color: var(--primary); margin: 0 0 10px; font-size: 1.4rem; }
+        .tool-card h3 { color: var(--primary); margin: 0 0 10px; }
         .tool-card p { color: #888; font-size: 0.95rem; line-height: 1.6; flex-grow: 1; }
         
         .tool-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 700;
-            border: 1px solid #222;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-align: center;
-            transition: 0.3s;
+            display: inline-block; margin-top: 20px; color: var(--primary);
+            text-decoration: none; font-weight: 700; border: 1px solid #222;
+            padding: 10px 20px; border-radius: 8px; text-align: center;
         }
-        .tool-link:hover { background: #111; border-color: var(--primary); }
 
-        /* ABOUT SECTION FIXES */
-        .about-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            text-align: center;
-        }
-        .about-container h2 { color: var(--primary); font-size: 2rem; margin-bottom: 15px; }
-        .about-container p { color: #888; line-height: 1.8; font-size: 1.1rem; }
-
-        /* RESPONSIVENESS */
         @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 650px) { 
-            .tool-grid { grid-template-columns: 1fr; } 
-            header { padding-top: 100px; }
-        }
+        @media (max-width: 650px) { .tool-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 
