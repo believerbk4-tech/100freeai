@@ -173,15 +173,35 @@
             });
         }
 
-        // SEARCH LOGIC
-        function filterSearch() {
-            let input = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.tool-card').forEach(card => {
-                let title = card.querySelector('h3').innerText.toLowerCase();
-                card.style.display = title.includes(input) ? "flex" : "none";
-            });
-        }
+      window.filterCat = function(cat, btn) {
+    // 1. Update Button Styles
+    const allButtons = document.querySelectorAll('.filter-btn');
+    allButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 
+    // 2. Filter the Tools
+    const cards = document.querySelectorAll('.tool-card');
+    
+    cards.forEach(card => {
+        // We look for the 'data-category' attribute you set on each div
+        const cardCategory = card.getAttribute('data-category');
+
+        if (cat === 'all' || cardCategory === cat) {
+            // Using 'flex' ensures the internal card layout (title + button) stays professional
+            card.style.display = 'flex'; 
+            
+            // Trigger a tiny fade-in effect to look high-end
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transition = '0.3s ease-in-out';
+            }, 10);
+        } else {
+            // Completely hide tools that don't match
+            card.style.display = 'none';
+        }
+    });
+};
         // RATING SYSTEM
         function submitRating(stars) {
             document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('selected', i < stars));
