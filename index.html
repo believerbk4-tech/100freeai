@@ -214,21 +214,33 @@
             }
         };
 
-     window.filterCat = function(cat, btn) {
+   // This line is a comment in the middle of a script, 
+// but if there is any stray text or a missing brace, the whole file fails.
+// Replace that entire middle section with this:
+
+window.filterCat = function(cat, btn) {
+    console.log("Filter clicked:", cat); // This will help us debug
+
     // 1. Update Button UI
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
     // 2. Filter the cards
     const cards = document.querySelectorAll('.tool-card');
+    if (cards.length === 0) {
+        console.error("No cards found! Check if your HTML has class='tool-card'");
+        return;
+    }
+
     cards.forEach(card => {
         const cardCategory = card.getAttribute('data-category');
         if (cat === 'all' || cardCategory === cat) {
-            card.style.display = 'flex'; // Use flex to keep your professional layout
+            card.style.display = 'flex'; 
         } else {
             card.style.display = 'none';
         }
     });
+};
 };
         
         window.filterSearch = function() {
