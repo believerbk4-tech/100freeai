@@ -40,11 +40,11 @@
             border: none; cursor: pointer; text-transform: uppercase; margin-top: 30px;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); transition: 0.3s;
         }
+        .enter-btn:hover { background: #fff; transform: scale(1.05); }
 
         /* --- 3x3 TOOL GRID SYSTEM --- */
         .tool-grid { 
             display: grid; 
-            /* Forces 3 columns on both mobile and desktop */
             grid-template-columns: repeat(3, 1fr); 
             gap: 15px; 
             padding: 20px; 
@@ -61,16 +61,25 @@
             transition: 0.3s;
         }
         .tool-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .tool-card h3 { font-size: 14px; margin: 10px 0; }
+        .tool-card h3 { font-size: 14px; margin: 10px 0; font-weight: 800; }
         
         .tool-link-btn {
             display: block; padding: 8px; background: #111; 
             color: var(--primary); text-decoration: none; 
             border-radius: 6px; font-size: 11px; font-weight: bold;
-            border: 1px solid #333;
+            border: 1px solid #333; transition: 0.2s;
+        }
+        .tool-link-btn:hover { background: var(--primary); color: #000; }
+
+        /* --- PRO TIP BOX (Partner's Pick) --- */
+        .pro-tip-box {
+            display: flex; align-items: center; justify-content: space-between; 
+            background: #050505; border: 1px solid var(--border); padding: 30px; 
+            border-radius: 20px; margin: 20px auto; max-width: 1000px; width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        /* --- FLOATING ELEMENTS --- */
+        /* --- FLOATING UI --- */
         .feedback-btn { 
             position: fixed; bottom: 25px; right: 25px; 
             background: #111; color: #fff; padding: 12px 24px; 
@@ -82,14 +91,14 @@
             position: fixed; top: 20px; right: 20px; 
             background: #0052ff; color: white; padding: 10px 20px; 
             border-radius: 50px; text-decoration: none; font-weight: 800; 
-            z-index: 998; font-size: 13px;
+            z-index: 998; font-size: 13px; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
         }
 
         /* --- CATEGORY FILTERS --- */
         .filter-container { margin: 30px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .filter-btn {
             background: #111; border: 1px solid #333; color: #888;
-            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700;
+            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; transition: 0.3s;
         }
         .filter-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
 
@@ -99,14 +108,15 @@
             background: #111; padding: 12px; border-radius: 12px; 
             border: 1px solid #222; z-index: 998; text-align: center;
         }
-        .star { color: #444; font-size: 20px; cursor: pointer; }
+        .star { color: #444; font-size: 20px; cursor: pointer; transition: 0.2s; }
         .star.selected { color: gold; }
 
-        @media (max-width: 600px) {
-            .tool-grid { gap: 8px; padding: 10px; }
-            .tool-card { padding: 10px; }
-            .tool-card h3 { font-size: 11px; }
-            .tool-link-btn { font-size: 9px; padding: 5px; }
+        @media (max-width: 768px) {
+            .pro-tip-box { flex-direction: column; text-align: center; }
+            .tip-text { padding-right: 0 !important; margin-bottom: 20px; }
+            .leonardo-preview img { width: 100% !important; height: auto !important; }
+            .tool-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; }
+            .tool-card h3 { font-size: 10px; }
             .rate-container { bottom: 85px; transform: scale(0.85); left: 10px; }
         }
     </style>
@@ -116,8 +126,8 @@
     <!-- WELCOME PORTAL -->
     <div id="welcomePortal">
         <div class="portal-content">
-            <h1>100+ FREE <span class="highlight">AI</span></h1>
-            <p style="color:#888;">Curated by Fahad Khan. Your ultimate professional toolkit.</p>
+            <h1>100+ FREE <span class="highlight">AI TOOLS</span></h1>
+            <p style="color:#888;">Curated by Fahad Khan. Your professional directory.</p>
             <button class="enter-btn" onclick="enterSite()">Explore Library</button>
         </div>
     </div>
@@ -139,10 +149,10 @@
     </div>
 
     <header style="padding: 120px 20px 20px; text-align: center;">
-        <h1 class="main-h1" style="font-size: clamp(2rem, 7vw, 4rem); color: var(--primary); margin:0;">The Ultimate AI Toolkit</h1>
-        <p style="color:#888;">Hand-picked for professional designers & developers.</p>
+        <h1 style="font-size: clamp(2rem, 7vw, 4rem); color: var(--primary); margin:0; font-weight: 900;">The Ultimate AI Toolkit</h1>
+        <p style="color:#888;">Professional directory for designers & developers.</p>
         
-        <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search tools..." style="width: 90%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; margin-top:20px;">
+        <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools..." style="width: 90%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; margin-top:20px; outline: none;">
 
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
@@ -152,26 +162,41 @@
         </div>
     </header>
 
+    <!-- PARTNER'S PICK BOX -->
+    <div class="pro-tip-box">
+        <div class="tip-text" style="flex: 1; text-align: left; padding-right: 20px;">
+            <span style="background: var(--primary); color: #000; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 4px; text-transform: uppercase;">Partner's Pick 🚀</span>
+            <h2 style="margin: 15px 0 10px; color: #fff;">Leonardo AI: Pro Tip</h2>
+            <p style="color: #ccc; font-style: italic; font-size: 0.9rem; line-height: 1.6;">"As a fellow designer, I hand-picked this for you. It's a full creative suite for professional projects."</p>
+            <a href="https://leonardo.ai" class="tool-link-btn" style="display: inline-block; width: auto; padding: 10px 20px; margin-top: 10px;">Visit Leonardo →</a>
+        </div>
+        <div class="leonardo-preview">
+            <img src="marketing-preview.png" alt="Leonardo Preview" style="width: 200px; height: 200px; border-radius: 12px; object-fit: cover;">
+        </div>
+    </div>
+
     <!-- 3x3 GRID -->
     <main class="tool-grid" id="mainGrid">
-        <!-- Example Tool -->
+        <!-- WRITING TOOLS -->
+        <div class="tool-card" data-category="writing">
+            <h3>ChatGPT</h3>
+            <a href="https://chatgpt.com" class="tool-link-btn">Visit Tool →</a>
+        </div>
+        <!-- DESIGN TOOLS -->
         <div class="tool-card" data-category="design">
             <h3>Leonardo AI</h3>
             <a href="https://leonardo.ai" class="tool-link-btn">Visit Tool →</a>
         </div>
-        <div class="tool-card" data-category="writing">
-            <h3>ChatGPT</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
-        </div>
+        <!-- VIDEO TOOLS -->
         <div class="tool-card" data-category="video">
             <h3>HeyGen</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
+            <a href="https://heygen.com" class="tool-link-btn">Visit Tool →</a>
         </div>
-        <!-- Repeat for all 100 tools... -->
+        <!-- Add your other 97 tools here following the same pattern -->
     </main>
 
     <script>
-        // NAVIGATION FIX: Ensure "Back to Home" skips the portal
+        // NAVIGATION FIX: Prevent portal on "Back to Home"
         function checkNavigation() {
             if (sessionStorage.getItem('siteEntered') === 'true') {
                 document.getElementById('welcomePortal').style.display = 'none';
@@ -181,17 +206,15 @@
         function enterSite() { 
             const portal = document.getElementById('welcomePortal');
             portal.classList.add('portal-hidden');
-            sessionStorage.setItem('siteEntered', 'true');
+            sessionStorage.setItem('siteEntered', 'true'); // Flag for session
             setTimeout(() => { portal.style.display = 'none'; }, 700);
         }
 
-        // FILTER LOGIC
+        // FILTER LOGIC - Fixed to show only selected category
         function filterCat(cat, btn) {
-            // Update buttons
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // Filter tools
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(card => {
                 if (cat === 'all' || card.getAttribute('data-category') === cat) {
@@ -200,27 +223,6 @@
                     card.style.display = 'none';
                 }
             });
-        }
-
-        // RATING SYSTEM (Firebase Ready)
-        function submitRating(stars) {
-            const starElements = document.querySelectorAll('.star');
-            starElements.forEach((s, index) => {
-                s.classList.toggle('selected', index < stars);
-            });
-
-            // DATA TO FIREBASE (Placeholder - Replace with your Firebase SDK call)
-            console.log("Saving to Firebase: " + stars + " stars.");
-            
-            document.getElementById('starGroup').style.display = 'none';
-            document.getElementById('thanksMsg').style.display = 'block';
-
-            // Disappear after 3 seconds
-            setTimeout(() => {
-                document.getElementById('rateBox').style.transition = '0.5s';
-                document.getElementById('rateBox').style.opacity = '0';
-                setTimeout(() => { document.getElementById('rateBox').style.display = 'none'; }, 500);
-            }, 3000);
         }
 
         // SEARCH LOGIC
@@ -232,60 +234,33 @@
                 card.style.display = title.includes(input) ? "block" : "none";
             });
         }
-    </script>
 
+        // RATING SYSTEM (Real Stars + 3s disappear)
+        function submitRating(stars) {
+            const starElements = document.querySelectorAll('.star');
+            starElements.forEach((s, index) => {
+                s.classList.toggle('selected', index < stars);
+            });
+
+            // LOGIC: Add your Firebase push here
+            // Example: db.ref('ratings').push({score: stars});
+            console.log("Star Rating sent to Firebase: " + stars);
+
+            document.getElementById('starGroup').style.display = 'none';
+            document.getElementById('thanksMsg').style.display = 'block';
+
+            // Disappear after 3 seconds as requested
+            setTimeout(() => {
+                const box = document.getElementById('rateBox');
+                box.style.transition = '0.8s';
+                box.style.opacity = '0';
+                box.style.transform = 'translateY(20px)';
+                setTimeout(() => { box.style.display = 'none'; }, 800);
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
-
-<!-- 1. The HTML Structure (Fixed) -->
-<div id="welcomePortal">
-    <div class="portal-content">
-        <h1>100+ FREE <span class="highlight">AI</span></h1>
-        <p>Curated by Fahad Khan. Your ultimate directory for free AI tools.</p>
-        
-        <!-- The button MUST have onclick="enterSite()" to trigger the animation -->
-        <button class="enter-btn" onclick="enterSite()">Explore Library</button>
-        
-        <div class="portal-badges">
-            <span class="badge">No Login Required</span>
-            <span class="badge">100% Free</span>
-            <span class="badge">Updated Daily</span>
-        </div>
-    </div>
-</div>
-
-    <!-- CONTACT US LINK -->
-    <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
-    
-    <header>
-        <h1 class="main-h1">The Ultimate AI Toolkit</h1>
-        <p class="sub-header">Curated directory for professional designers and developers.</p>
-        
-        <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools...">
-        
-        <div class="filter-container">
-            <button class="filter-btn active" onclick="filterCat('all')">All (100)</button>
-            <button class="filter-btn" onclick="filterCat('writing')">Writing (33)</button>
-            <button class="filter-btn" onclick="filterCat('design')">Design (34)</button>
-            <button class="filter-btn" onclick="filterCat('video')">Video (33)</button>
-        </div>
-    </header>
-   <div class="pro-tip-box" style="display: flex; align-items: center; justify-content: space-between; background: #000; border: 1px solid #222; padding: 20px; border-radius: 12px; margin: 20px auto; max-width: 1000px;">
-    
-    <!-- Text on the Left Side 👈 -->
-    <div class="tip-text" style="flex: 1; text-align: left; padding-right: 10px;">
-        <span class="badge" style="background: #00ff88; color: #000; padding: 2px 8px; font-size: 10px; font-weight: 800; border-radius: 4px; text-transform: uppercase;">Partner's Pick 🚀</span>
-        <h2 style="margin: 10px 0; color: #fff; font-size: 1.5rem;">Leonardo AI: Pro Tip</h2>
-        <p style="color: #ccc; font-style: italic; font-size: 0.9rem; margin-bottom: 15px;">"As a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite for your professional projects."</p>
-        <a href="https://leonardo.ai" class="tool-link" style="display: inline-block; padding: 10px 20px; background: #0a0a0a; border: 1px solid #333; color: #00ff88; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold;">Visit Leonardo →</a>
-    </div>
-
-    <!-- Image on the Right Side 👉 (10px wide, 20px high) -->
-    <div class="leonardo-preview" style="flex-shrink: 0;">
-        <img src="marketing-preview.png" alt="Leonardo UI Preview" style="width: 200px !important; height: 200px !important; display: block; object-fit: cover; border-radius: 2px;">
-    </div>
-
-</div>
     
     <main class="tool-grid" id="toolGrid">
         <!-- WRITING (1-33) -->
