@@ -12,7 +12,6 @@
             --text: #ffffff; 
             --card-bg: #0a0a0a;
             --border: #222;
-            --accent-blue: #0052ff;
         }
         
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -22,10 +21,9 @@
             font-family: 'Segoe UI', Roboto, sans-serif; 
             background-color: var(--dark); color: var(--text); 
             overflow-x: hidden; width: 100%;
-            touch-action: manipulation;
         }
 
-        /* --- ONE-CLICK PROFESSIONAL PORTAL --- */
+        /* --- PROFESSIONAL PORTAL (One-Click Fix) --- */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
@@ -33,135 +31,115 @@
             text-align: center; color: white; padding: 20px;
             transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .portal-hidden { transform: scale(1.5); opacity: 0; pointer-events: none; visibility: hidden; }
+        .portal-hidden { transform: scale(1.2); opacity: 0; pointer-events: none; visibility: hidden; }
 
         .enter-btn { 
             background: var(--primary); color: #000; padding: 20px 60px; 
             border-radius: 50px; font-size: 1.1rem; font-weight: 800; 
-            border: none; cursor: pointer; text-transform: uppercase; margin-top: 30px;
+            border: none; cursor: pointer; text-transform: uppercase;
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); transition: 0.3s;
         }
-        .enter-btn:hover { background: #fff; transform: translateY(-3px); }
 
-        /* --- HEADER & NAVIGATION --- */
-        header { padding: 120px 20px 40px; text-align: center; }
-        
-        #searchBar {
-            width: 90%; max-width: 550px; padding: 18px 30px; 
-            border-radius: 50px; border: 1px solid var(--border); 
-            background: #0a0a0a; color: white; font-size: 1rem;
-            margin-bottom: 30px; transition: 0.3s;
-        }
-        #searchBar:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); }
-
-        .filter-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-        .filter-btn {
-            background: #111; border: 1px solid #333; color: #888;
-            padding: 12px 24px; border-radius: 50px; cursor: pointer; 
-            font-weight: 700; font-size: 0.9rem; transition: 0.3s;
-        }
-        .filter-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
-
-        /* --- PROFESSIONAL 3x3 GRID --- */
-        .tool-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px; 
-            padding: 20px; 
-            max-width: 1100px; 
-            margin: 0 auto 100px; 
-        }
-
-        .tool-card { 
-            background: #080808; 
-            border: 1px solid var(--border); 
-            padding: 25px 15px; 
-            border-radius: 16px; 
-            text-align: center;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .tool-card:hover { border-color: var(--primary); transform: translateY(-8px); background: #0c0c0c; }
-        
-        .tool-card h3 { font-size: 16px; margin: 0 0 15px; color: #fff; letter-spacing: 0.5px; }
-        
-        .tool-link-btn {
-            display: inline-block; padding: 10px 15px; background: transparent; 
-            color: var(--primary); text-decoration: none; 
-            border-radius: 8px; font-size: 12px; font-weight: 800;
-            border: 1px solid #222; transition: 0.3s;
-        }
-        .tool-card:hover .tool-link-btn { background: var(--primary); color: #000; border-color: var(--primary); }
-
-        /* --- FLOATING ELEMENTS --- */
+        /* --- FIXED FLOATING UI --- */
         .feedback-btn { 
             position: fixed; bottom: 25px; right: 25px; 
             background: #111; color: #fff; padding: 14px 28px; 
             border-radius: 14px; border: 1px solid #333;
             font-weight: 700; cursor: pointer; z-index: 999; font-size: 11px;
-            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-        .feedback-btn:hover { color: var(--primary); border-color: var(--primary); transform: translateY(-3px); }
 
         .contact-pill { 
             position: fixed; top: 20px; right: 20px; 
-            background: var(--accent-blue); color: white; padding: 12px 24px; 
+            background: #0052ff; color: white; padding: 12px 24px; 
             border-radius: 50px; text-decoration: none; font-weight: 800; 
-            z-index: 998; font-size: 13px; box-shadow: 0 10px 20px rgba(0, 82, 255, 0.3);
+            z-index: 998; font-size: 13px;
         }
 
+        /* --- PROFESSIONAL 3x3 GRID --- */
+        .tool-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; 
+            padding: 20px; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+        }
+
+        .tool-card { 
+            background: #080808; 
+            border: 1px solid var(--border); 
+            padding: 20px 10px; 
+            border-radius: 12px; 
+            text-align: center;
+            transition: 0.3s;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        
+        .tool-card h3 { font-size: 14px; margin: 0 0 12px; color: var(--primary); }
+        
+        .tool-link-btn {
+            display: block; padding: 10px; background: transparent; 
+            color: #fff; text-decoration: none; border-radius: 8px; 
+            font-size: 11px; font-weight: bold; border: 1px solid #333;
+        }
+        .tool-card:hover { border-color: var(--primary); background: #0c0c0c; }
+        .tool-card:hover .tool-link-btn { background: var(--primary); color: #000; border-color: var(--primary); }
+
+        /* --- FILTER SYSTEM --- */
+        .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 30px 0; }
+        .filter-btn {
+            background: #111; border: 1px solid #333; color: #888;
+            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700;
+        }
+        .filter-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+
+        /* --- RATE SYSTEM --- */
         .rate-container { 
             position: fixed; bottom: 25px; left: 25px; 
             background: #111; padding: 15px; border-radius: 16px; 
             border: 1px solid #222; z-index: 998; text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .star { color: #333; font-size: 22px; cursor: pointer; margin: 0 2px; transition: 0.2s; }
-        .star.selected { color: gold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .star { color: #333; font-size: 22px; cursor: pointer; }
+        .star.selected { color: gold; }
 
-        /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 768px) {
-            .tool-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; }
-            .tool-card { padding: 15px 10px; }
-            .tool-card h3 { font-size: 11px; }
-            .tool-link-btn { font-size: 10px; padding: 8px 5px; }
-            .rate-container { bottom: 90px; left: 15px; transform: scale(0.9); }
+            .tool-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .tool-card h3 { font-size: 10px; }
+            .rate-container { bottom: 90px; transform: scale(0.8); left: 10px; }
         }
     </style>
 </head>
 <body onload="checkNavigation()">
 
-    <!-- WELCOME PORTAL -->
+    <!-- PORTAL -->
     <div id="welcomePortal">
         <div class="portal-content">
-            <h1 style="font-size: 3.5rem; margin-bottom: 10px;">100+ FREE <span style="color: var(--primary);">AI</span></h1>
-            <p style="color:#888; font-size: 1.1rem;">Professional Tool Directory by Fahad Khan</p>
-            <button class="enter-btn" onclick="enterSite()">Explore Library</button>
+            <h1 style="font-size: 3rem; margin-bottom: 20px;">100+ FREE <span style="color: var(--primary);">AI TOOLS</span></h1>
+            <button class="enter-btn" onclick="enterSite()">Enter Directory</button>
         </div>
     </div>
 
-    <!-- FLOATING UI -->
+    <!-- UI ELEMENTS -->
     <button class="feedback-btn" onclick="window.location.href='mailto:believerbk4@gmail.com'">Feedback</button>
-    <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
+    <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT</a>
 
     <div class="rate-container" id="rateBox">
-        <span style="font-size: 11px; font-weight: 800; color: var(--primary); display: block; margin-bottom: 8px;">RATE US (4.8/5.0)</span>
-        <div id="starGroup">
+        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">RATE OUR DIRECTORY</span>
+        <div id="starGroup" style="margin-top:5px;">
             <span class="star" onclick="submitRating(1)">★</span>
             <span class="star" onclick="submitRating(2)">★</span>
             <span class="star" onclick="submitRating(3)">★</span>
             <span class="star" onclick="submitRating(4)">★</span>
             <span class="star" onclick="submitRating(5)">★</span>
         </div>
-        <div id="thanksMsg" style="display:none; color:var(--primary); font-size:13px; font-weight:bold; margin-top:5px;">THANK YOU! 💖</div>
+        <div id="thanksMsg" style="display:none; color:var(--primary); font-size:12px; font-weight:bold; margin-top:5px;">THANK YOU! 💖</div>
     </div>
 
-    <header>
-        <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0;">The Ultimate AI Toolkit</h1>
-        <p style="color:#666; margin-top: 10px;">Curated by a fellow professional for your success.</p>
+    <header style="padding: 120px 20px 0; text-align: center;">
+        <h1 style="font-size: clamp(2rem, 7vw, 4rem); font-weight: 900; color: var(--primary);">The Ultimate AI Toolkit</h1>
+        <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search tools..." style="width: 90%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; margin-top: 20px;">
         
-        <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools...">
-
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
             <button class="filter-btn" onclick="filterCat('writing', this)">Writing (33)</button>
@@ -170,54 +148,18 @@
         </div>
     </header>
 
-    <!-- 3x3 GRID -->
-    <main class="tool-grid" id="mainGrid">
-        <!-- Writing Samples -->
-        <div class="tool-card" data-category="writing">
-            <h3>ChatGPT</h3>
-            <a href="https://chat.openai.com" target="_blank" class="tool-link-btn">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-category="writing">
-            <h3>Copy.ai</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-category="writing">
-            <h3>Jasper</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
-        </div>
-
-        <!-- Design Samples -->
+    <main class="tool-grid" id="toolGrid">
+        <!-- KEEP ALL YOUR TOOLS HERE -->
+        <!-- Ensure each tool looks like this: -->
         <div class="tool-card" data-category="design">
             <h3>Leonardo AI</h3>
             <a href="https://leonardo.ai" target="_blank" class="tool-link-btn">Visit Tool →</a>
         </div>
-        <div class="tool-card" data-category="design">
-            <h3>Canva AI</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-category="design">
-            <h3>Midjourney</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
-        </div>
-
-        <!-- Video Samples -->
-        <div class="tool-card" data-category="video">
-            <h3>HeyGen</h3>
-            <a href="https://heygen.com" target="_blank" class="tool-link-btn">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-category="video">
-            <h3>RunwayML</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
-        </div>
-        <div class="tool-card" data-category="video">
-            <h3>Pika Labs</h3>
-            <a href="#" class="tool-link-btn">Visit Tool →</a>
-        </div>
+        <!-- End of your tool list -->
     </main>
 
     <script>
-        // CRITICAL: NAVIGATION FIX
-        // When user returns from Privacy/Terms/FAQ, this checks if they already "Entered"
+        // FIX 1: Navigation Memory
         function checkNavigation() {
             if (sessionStorage.getItem('siteEntered') === 'true') {
                 document.getElementById('welcomePortal').style.display = 'none';
@@ -227,26 +169,46 @@
         function enterSite() { 
             const portal = document.getElementById('welcomePortal');
             portal.classList.add('portal-hidden');
-            sessionStorage.setItem('siteEntered', 'true'); // Save state for this session
+            sessionStorage.setItem('siteEntered', 'true');
             setTimeout(() => { portal.style.display = 'none'; }, 700);
         }
 
-        // FILTER LOGIC: Fixes the category switching
+        // FIX 2: Correct Filtering Logic
         function filterCat(cat, btn) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(card => {
+                // This ensures cards show as 'flex' or 'block' to maintain the 3x3 grid
                 if (cat === 'all' || card.getAttribute('data-category') === cat) {
-                    card.style.display = 'flex'; // Use flex to maintain professional height
+                    card.style.display = 'flex'; 
                 } else {
                     card.style.display = 'none';
                 }
             });
         }
 
-        // SEARCH LOGIC
+        // FIX 3: Professional Rating & Firebase Placeholder
+        function submitRating(stars) {
+            const starElements = document.querySelectorAll('.star');
+            starElements.forEach((s, index) => {
+                s.classList.toggle('selected', index < stars);
+            });
+
+            // Replace this with your Firebase code
+            console.log("Rating saved to Firebase: " + stars);
+
+            document.getElementById('starGroup').style.display = 'none';
+            document.getElementById('thanksMsg').style.display = 'block';
+
+            setTimeout(() => {
+                const box = document.getElementById('rateBox');
+                box.style.opacity = '0';
+                setTimeout(() => box.style.display = 'none', 1000);
+            }, 3000);
+        }
+
         function filterSearch() {
             let input = document.getElementById('searchBar').value.toLowerCase();
             let cards = document.querySelectorAll('.tool-card');
@@ -254,28 +216,6 @@
                 let title = card.querySelector('h3').innerText.toLowerCase();
                 card.style.display = title.includes(input) ? "flex" : "none";
             });
-        }
-
-        // RATING SYSTEM (Firebase Ready + Auto-Hide)
-        function submitRating(stars) {
-            const starElements = document.querySelectorAll('.star');
-            starElements.forEach((s, index) => {
-                s.classList.toggle('selected', index < stars);
-            });
-
-            console.log("Firebase Upload: Rating = " + stars);
-
-            document.getElementById('starGroup').style.display = 'none';
-            document.getElementById('thanksMsg').style.display = 'block';
-
-            // Box disappears after 3 seconds as requested
-            setTimeout(() => {
-                const box = document.getElementById('rateBox');
-                box.style.transition = '1s';
-                box.style.opacity = '0';
-                box.style.transform = 'translateY(20px)';
-                setTimeout(() => { box.style.display = 'none'; }, 1000);
-            }, 3000);
         }
     </script>
 </body>
@@ -790,39 +730,6 @@
 </div>
 
 </main>
-
-<!-- 1. Floating Rating Widget (Bottom Left) -->
-<div id="rating-widget" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: flex; align-items: center; justify-content: center;">
-    <div id="rating-card" style="background: rgba(10, 10, 10, 0.95); border: 1px solid #333; border-radius: 12px; padding: 12px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); backdrop-filter: blur(5px);">
-        <h4 style="color: #00ff88; margin: 0 0 8px 0; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;">Rate Us!</h4>
-        <div id="stars" style="font-size: 22px; cursor: pointer; color: #444; display: flex; gap: 4px; transition: 0.3s;">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-        </div>
-        <p id="rating-stats" style="color: #888; margin: 8px 0 0 0; font-size: 0.65rem; display: none;">Updating...</p>
-    </div>
-
-    <!-- Thank You Popup -->
-    <div id="thanks-popup" style="display: none; position: absolute; background: #0a0a0a; border: 2px solid #00ff88; border-radius: 12px; padding: 15px; text-align: center; min-width: 110px; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); animation: popIn 0.3s ease-out;">
-        <h4 style="color: #00ff88; margin: 0; font-size: 1.1rem; font-weight: 800;">Thank you!</h4>
-        <span style="font-size: 1.2rem;">💖</span>
-    </div>
-</div>
-
-<style>
-    @keyframes popIn {
-        0% { transform: scale(0.5); opacity: 0; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    @media (max-width: 480px) {
-        #rating-widget { bottom: 10px; left: 10px; }
-        #rating-card { padding: 8px 10px; }
-        #stars { font-size: 18px; }
-    }
-</style>
 
 <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
 
