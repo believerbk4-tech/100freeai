@@ -2,17 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Crucial: Fixed viewport to prevent zooming on mobile inputs -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100+ Free AI Tools Directory</title>
-
-    <!-- Social Media Preview Tags -->
-    <meta name="title" content="100+ FREE AI TOOLS - Hand-Picked for Creators">
-    <meta name="description" content="A curated directory for designers, developers, and creators.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://100freeai.netlify.app/">
-    <meta property="og:title" content="100+ FREE AI TOOLS">
-    <meta property="og:description" content="Hand-picked technology to boost your workflow.">
-    <meta property="og:image" content="https://100freeai.netlify.app/marketing-preview.png">
 
     <style>
         :root { 
@@ -23,176 +15,147 @@
             --border: #222;
         }
         
-        * { box-sizing: border-box; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; /* Cleaner mobile interaction */
+        }
         
         html, body { 
             margin: 0; padding: 0; 
             font-family: 'Segoe UI', Roboto, sans-serif; 
             background-color: var(--dark); color: var(--text); 
             overflow-x: hidden; width: 100%;
+            touch-action: manipulation; /* Prevents double-tap zoom */
         }
 
-        /* WELCOME PORTAL */
+        /* --- WELCOME PORTAL FIX --- */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
             z-index: 10000; display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; padding: 20px;
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .portal-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        /* One-click pop out effect */
+        .portal-hidden { 
+            transform: scale(1.2); 
+            opacity: 0; 
+            pointer-events: none; 
+            visibility: hidden;
+        }
 
-        .portal-content h1 { 
-            font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 900; 
-            margin: 0; text-transform: uppercase; line-height: 0.9;
-        }
-        .portal-content .highlight { color: var(--primary); }
+        .portal-content h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; line-height: 1; }
+        .highlight { color: var(--primary); }
 
         .enter-btn { 
-            background: var(--primary); color: #000; padding: 22px 80px; 
+            background: var(--primary); color: #000; padding: 20px 60px; 
             border-radius: 50px; font-size: 1.1rem; font-weight: 800; 
-            border: none; cursor: pointer; text-transform: uppercase; margin-top: 40px;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); transition: 0.3s;
+            border: none; cursor: pointer; text-transform: uppercase; margin-top: 30px;
+            transition: 0.3s;
         }
-        .enter-btn:hover { transform: scale(1.05); }
 
-        /* FLOATING UI ELEMENTS */
+        /* --- FLOATING UI (Feedback & Contact) --- */
+        .feedback-btn { 
+            position: fixed; bottom: 25px; right: 25px; 
+            background: #111; color: #fff; padding: 12px 24px; 
+            border-radius: 12px; border: 1px solid #333;
+            font-weight: 700; cursor: pointer; z-index: 999; 
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: 0.3s;
+        }
+        .feedback-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+
         .contact-pill { 
             position: fixed; top: 20px; right: 20px; 
-            background: #0052ff; color: white; padding: 12px 24px; 
-            border-radius: 50px; text-decoration: none; font-weight: 900; 
-            z-index: 999; font-size: 14px; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
+            background: #0052ff; color: white; padding: 10px 20px; 
+            border-radius: 50px; text-decoration: none; font-weight: 800; 
+            z-index: 998; font-size: 13px; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
         }
 
-        .feedback-btn { 
-            position: fixed; top: 20px; left: 20px; 
-            background: #1a1a1a; color: white; padding: 10px 20px; 
-            border-radius: 8px; border: 1px solid #333;
-            font-weight: 600; cursor: pointer; z-index: 999; 
-            font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        /* RATE BOX - Responsive & Centered Thank You */
         .rate-container { 
             position: fixed; bottom: 25px; left: 25px; 
-            background: #111; padding: 15px; border-radius: 12px; 
-            border: 1px solid #222; z-index: 999; text-align: center; 
-            min-width: 150px; max-width: 180px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .stars { color: #444; font-size: 20px; margin-top: 5px; display: flex; justify-content: center; gap: 4px; cursor: pointer; }
-        .stars span.active { color: #ffcc00; }
-        #thanksMsg { 
-            color: var(--primary); font-weight: 800; display: none; 
-            margin-top: 5px; font-size: 13px; text-align: center;
+            background: #111; padding: 12px; border-radius: 12px; 
+            border: 1px solid #222; z-index: 998; text-align: center;
         }
 
-        /* HEADER */
-        header { padding: 140px 20px 40px; text-align: center; max-width: 1000px; margin: 0 auto; }
-        .main-h1 { font-size: clamp(2rem, 7vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0 0 10px; text-transform: uppercase; }
-        .sub-header { color: #888; font-size: 1.1rem; margin-bottom: 30px; }
+        /* --- RESPONSIVE LAYOUT --- */
+        header { padding: 120px 20px 40px; text-align: center; max-width: 1000px; margin: 0 auto; }
         
-        #searchBar { 
-            width: 100%; max-width: 500px; padding: 18px 25px; 
-            border-radius: 50px; border: 1px solid #333; 
-            background: #0a0a0a; color: white; outline: none; font-size: 16px;
-        }
-
-        /* PRO TIP BOX - Fixed for Mobile */
         .pro-tip-box {
             display: flex; align-items: center; justify-content: space-between; 
-            background: #000; border: 1px solid #222; padding: 25px; 
-            border-radius: 15px; margin: 40px auto; max-width: 1000px; width: 90%;
+            background: #080808; border: 1px solid var(--border); padding: 30px; 
+            border-radius: 20px; margin: 20px auto; max-width: 1000px; width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        /* VISIT TOOL LINK */
         .tool-link-style {
-            display: inline-block; padding: 10px 0; color: var(--primary); 
-            text-decoration: none; font-weight: bold; font-size: 14px;
-            border-bottom: 1px solid transparent; transition: 0.3s;
+            display: inline-block; padding: 10px 20px; color: var(--primary); 
+            text-decoration: none; font-weight: bold; border: 1px solid #333; border-radius: 8px;
         }
-        .tool-link-style:hover { border-bottom: 1px solid var(--primary); }
 
-        /* GRID SYSTEM */
-        .tool-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 25px; padding: 20px; max-width: 1300px; margin: 0 auto; 
-        }
-        .tool-card { background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 15px; }
-
-        /* MOBILE OVERRIDES */
+        /* Responsive Mobile Fixes */
         @media (max-width: 768px) {
             header { padding-top: 100px; }
             .pro-tip-box { flex-direction: column; text-align: center; }
-            .tip-text { padding-right: 0 !important; text-align: center !important; }
-            .leonardo-preview img { width: 100% !important; height: auto !important; margin-top: 20px; }
-            .feedback-btn { top: auto; bottom: 25px; left: auto; right: 25px; }
+            .tip-text { padding-right: 0; margin-bottom: 20px; }
+            .leonardo-preview img { width: 100%; height: auto; }
+            /* Adjust floating UI for mobile so they don't overlap */
+            .rate-container { bottom: 85px; left: 20px; transform: scale(0.9); }
+            .feedback-btn { bottom: 20px; right: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- WELCOME PORTAL -->
+    <!-- PORTAL: Single click 'Explore' triggers the scale-out effect -->
     <div id="welcomePortal">
         <div class="portal-content">
             <h1>100+ FREE <br><span class="highlight">AI TOOLS</span></h1>
-            <p style="color: #888; margin-top: 20px;">Hand-picked by Fahad Khan for your success.</p>
+            <p style="color: #888; margin-top: 15px;">Hand-picked for professional success.</p>
             <button class="enter-btn" onclick="enterSite()">Explore Library</button>
         </div>
     </div>
 
-    <!-- FLOATING UI -->
+    <!-- UI ELEMENTS -->
     <button class="feedback-btn" onclick="window.location.href='mailto:believerbk4@gmail.com'">Feedback</button>
-    <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
+    <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT</a>
 
-    <!-- RATING SYSTEM -->
     <div class="rate-container">
-        <span style="font-size: 10px; font-weight: 800; color: var(--primary); letter-spacing: 1px;">RATE US!</span>
-        <div class="stars" id="starGroup">
-            <span onclick="rate(1)">★</span><span onclick="rate(2)">★</span><span onclick="rate(3)">★</span><span onclick="rate(4)">★</span><span onclick="rate(5)">★</span>
+        <span style="font-size: 10px; font-weight: 800; color: var(--primary);">RATE US!</span>
+        <div id="starGroup" style="cursor:pointer; margin-top:5px; color:#444;">
+            <span onclick="rate()">★</span><span onclick="rate()">★</span><span onclick="rate()">★</span><span onclick="rate()">★</span><span onclick="rate()">★</span>
         </div>
-        <div id="thanksMsg">THANK YOU! 💖</div>
+        <div id="thanksMsg" style="display:none; color:var(--primary); font-size:12px; font-weight:bold;">THANK YOU! 💖</div>
     </div>
 
     <header>
-        <h1 class="main-h1">The Ultimate AI Toolkit</h1>
-        <p class="sub-header">Curated directory for professional designers and developers.</p>
-        <input type="text" id="searchBar" placeholder="Search 100+ tools...">
+        <h1 style="font-size: clamp(2rem, 7vw, 4rem); font-weight: 900; color: var(--primary); margin: 0;">The Ultimate AI Toolkit</h1>
+        <p style="color: #888;">Professional directory for creators.</p>
+        <input type="text" id="searchBar" style="width: 90%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; outline: none; margin-top: 20px;" placeholder="Search tools...">
     </header>
 
-    <!-- PARTNER'S PICK SECTION -->
     <div class="pro-tip-box">
-        <div class="tip-text" style="flex: 1; text-align: left; padding-right: 20px;">
-            <span style="background: #00ff88; color: #000; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 4px; text-transform: uppercase;">Partner's Pick 🚀</span>
-            <h2 style="margin: 15px 0 10px; color: #fff; font-size: 1.6rem;">Leonardo AI: Pro Tip</h2>
-            <p style="color: #ccc; font-style: italic; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">"As a fellow designer, I hand-picked this for you. Leonardo isn't just an image generator; it's a full creative suite for your professional projects."</p>
-            <a href="https://leonardo.ai" class="tool-link-style">Visit Leonardo →</a>
+        <div class="tip-text" style="flex: 1; text-align: left;">
+            <span style="background: var(--primary); color: #000; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 4px;">Partner's Pick 🚀</span>
+            <h2 style="margin: 15px 0 10px; color: #fff;">Leonardo AI</h2>
+            <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6;">"A full creative suite for your professional projects."</p>
+            <a href="https://leonardo.ai" class="tool-link-style">Visit Tool →</a>
         </div>
         <div class="leonardo-preview">
-            <img src="marketing-preview.png" alt="Leonardo UI" style="width: 220px; height: 160px; object-fit: cover; border-radius: 10px; border: 1px solid #333;">
+            <img src="marketing-preview.png" alt="Preview" style="width: 200px; border-radius: 12px; border: 1px solid #333;">
         </div>
     </div>
 
-    <main class="tool-grid">
-        <!-- Example Tool Card -->
-        <div class="tool-card">
-            <h3 style="margin-top:0;">ChatGPT</h3>
-            <p style="color:#888; font-size:0.9rem;">The industry standard for conversational AI and logic tasks.</p>
-            <a href="#" class="tool-link-style">Visit Tool →</a>
-        </div>
-    </main>
-
     <script>
-        function enterSite() {
-            document.getElementById('welcomePortal').classList.add('portal-hidden');
+        // Smooth one-click portal exit
+        function enterSite() { 
+            const portal = document.getElementById('welcomePortal');
+            portal.classList.add('portal-hidden');
+            // Remove from DOM after transition to ensure no click-blocking
+            setTimeout(() => { portal.style.display = 'none'; }, 600);
         }
 
-        function rate(n) {
-            const stars = document.querySelectorAll('.stars span');
-            stars.forEach((s, i) => {
-                if(i < n) s.classList.add('active');
-                else s.classList.remove('active');
-            });
+        function rate() {
             document.getElementById('starGroup').style.display = 'none';
             document.getElementById('thanksMsg').style.display = 'block';
         }
