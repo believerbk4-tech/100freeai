@@ -55,34 +55,43 @@
             z-index: 998; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
         }
 
-        /* --- GRID & CARDS --- */
+        /* --- PROFESSIONAL GRID CONFIG --- */
         .tool-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; padding: 20px; max-width: 1100px; margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; 
+            padding: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            align-items: stretch;
         }
 
         .tool-card { 
             background: #080808; border: 1px solid var(--border); 
-            padding: 20px 10px; border-radius: 12px; text-align: center;
+            padding: 25px 15px; border-radius: 12px; text-align: center;
             display: flex; flex-direction: column; justify-content: space-between;
-            transition: 0.3s;
+            transition: transform 0.3s, border-color 0.3s;
+            min-height: 180px;
         }
-        .tool-card:hover { border-color: var(--primary); }
-        .tool-card h3 { font-size: 14px; margin-bottom: 12px; color: var(--primary); }
+        .tool-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .tool-card h3 { font-size: 16px; margin-bottom: 15px; color: var(--primary); }
         
         .tool-link-btn {
-            display: block; padding: 10px; background: transparent; 
+            display: block; padding: 12px; background: transparent; 
             color: #fff; text-decoration: none; border-radius: 8px; 
-            font-size: 11px; font-weight: bold; border: 1px solid #333;
+            font-size: 12px; font-weight: bold; border: 1px solid #333;
+            transition: 0.3s;
         }
         .tool-card:hover .tool-link-btn { background: var(--primary); color: #000; border-color: var(--primary); }
 
-        .filter-container { display: flex; justify-content: center; gap: 10px; margin: 30px 0; }
+        /* --- FILTERING UI --- */
+        .filter-container { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
         .filter-btn {
             background: #111; border: 1px solid #333; color: #888;
-            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700;
+            padding: 10px 22px; border-radius: 50px; cursor: pointer; font-weight: 700;
+            transition: 0.3s;
         }
-        .filter-btn.active { background: var(--primary); color: #000; }
+        .filter-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
 
         .rate-container { 
             position: fixed; bottom: 25px; left: 25px; 
@@ -92,16 +101,19 @@
         .star { color: #333; font-size: 22px; cursor: pointer; }
         .star.selected { color: gold; }
 
-        @media (max-width: 768px) {
-            .tool-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .tool-card h3 { font-size: 10px; }
-            .rate-container { bottom: 85px; transform: scale(0.8); left: 10px; }
+        /* --- RESPONSIVE FIXES --- */
+        @media (max-width: 900px) {
+            .tool-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .tool-grid { grid-template-columns: 1fr; gap: 15px; }
+            .tool-card h3 { font-size: 14px; }
+            .rate-container { bottom: 90px; transform: scale(0.9); left: 10px; }
         }
     </style>
 </head>
 <body onload="checkNavigation()">
 
-    <!-- WELCOME PORTAL -->
     <div id="welcomePortal">
         <div class="portal-content">
             <h1 style="font-size: 3rem; margin-bottom: 20px;">100+ FREE <span style="color: var(--primary);">AI TOOLS</span></h1>
@@ -109,7 +121,6 @@
         </div>
     </div>
 
-    <!-- FLOATING UI -->
     <button class="feedback-btn" onclick="window.location.href='mailto:believerbk4@gmail.com'">Feedback</button>
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT</a>
 
@@ -142,66 +153,63 @@
             <h3>Leonardo AI</h3>
             <a href="https://leonardo.ai" target="_blank" class="tool-link-btn">Visit Tool →</a>
         </div>
-        <!-- Add your other tools here -->
-    </main>
+        </main>
 
     <script>
-        // STEP 1 FIX: Session Memory for "Back to Home"
+        // STEP 1 FIX: Navigation Memory
         function checkNavigation() {
             if (sessionStorage.getItem('hasEntered') === 'true') {
                 const portal = document.getElementById('welcomePortal');
                 if (portal) {
-                    portal.style.display = 'none'; // Completely kill the portal if already entered
+                    portal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
                 }
+            } else {
+                document.body.style.overflow = 'hidden';
             }
         }
 
         function enterSite() { 
             const portal = document.getElementById('welcomePortal');
             portal.classList.add('portal-hidden');
-            sessionStorage.setItem('hasEntered', 'true'); // Flag this session
+            sessionStorage.setItem('hasEntered', 'true');
+            document.body.style.overflow = 'auto';
             setTimeout(() => { portal.style.display = 'none'; }, 600);
         }
 
-        // FILTER LOGIC
-        function filterCat(cat, btn) {
+        // STEP 2 FIX: Professional Filter Logic
+        window.filterCat = function(cat, btn) {
+            // Update buttons
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(card => {
-                card.style.display = (cat === 'all' || card.dataset.category === cat) ? "flex" : "none";
+                const cardCategory = card.getAttribute('data-category');
+
+                if (cat === 'all' || cardCategory === cat) {
+                    card.style.display = 'flex';
+                    // Visual pop effect
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transition = 'opacity 0.4s ease';
+                    }, 10);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        };
+
+        // SEARCH LOGIC
+        function filterSearch() {
+            let input = document.getElementById('searchBar').value.toLowerCase();
+            document.querySelectorAll('.tool-card').forEach(card => {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = title.includes(input) ? "flex" : "none";
             });
         }
 
-      window.filterCat = function(cat, btn) {
-    // 1. Update Button Styles
-    const allButtons = document.querySelectorAll('.filter-btn');
-    allButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    // 2. Filter the Tools
-    const cards = document.querySelectorAll('.tool-card');
-    
-    cards.forEach(card => {
-        // We look for the 'data-category' attribute you set on each div
-        const cardCategory = card.getAttribute('data-category');
-
-        if (cat === 'all' || cardCategory === cat) {
-            // Using 'flex' ensures the internal card layout (title + button) stays professional
-            card.style.display = 'flex'; 
-            
-            // Trigger a tiny fade-in effect to look high-end
-            card.style.opacity = '0';
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transition = '0.3s ease-in-out';
-            }, 10);
-        } else {
-            // Completely hide tools that don't match
-            card.style.display = 'none';
-        }
-    });
-};
         // RATING SYSTEM
         function submitRating(stars) {
             document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('selected', i < stars));
