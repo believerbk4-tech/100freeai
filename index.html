@@ -23,7 +23,7 @@
             overflow-x: hidden; width: 100%;
         }
 
-        /* --- PROFESSIONAL PORTAL --- */
+        /* --- PORTAL --- */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
@@ -31,42 +31,37 @@
             text-align: center; color: white; padding: 20px;
             transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .portal-hidden { transform: scale(1.2); opacity: 0; pointer-events: none; visibility: hidden; }
+        .disappearing { transform: scale(1.2); opacity: 0; pointer-events: none; visibility: hidden; }
 
         .enter-btn { 
             background: var(--primary); color: #000; padding: 20px 60px; 
             border-radius: 50px; font-size: 1.1rem; font-weight: 800; 
             border: none; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
         }
-        .enter-btn:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5); }
 
-        /* --- FIXED FLOATING UI --- */
+        /* --- PROFESSIONAL FLOATING FEEDBACK --- */
         .feedback-btn { 
             position: fixed; bottom: 25px; right: 25px; 
-            background: rgba(17, 17, 17, 0.8); color: #fff; padding: 14px 28px; 
+            background: rgba(17, 17, 17, 0.85); color: #fff; padding: 14px 28px; 
             border-radius: 14px; border: 1px solid #333;
             font-weight: 700; cursor: pointer; z-index: 999; font-size: 11px;
             text-transform: uppercase; letter-spacing: 1px;
-            backdrop-filter: blur(10px); transition: 0.3s;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
-        .feedback-btn:hover { border-color: var(--primary); background: #111; color: var(--primary); }
 
         .contact-pill { 
             position: fixed; top: 20px; right: 20px; 
             background: #0052ff; color: white; padding: 12px 24px; 
             border-radius: 50px; text-decoration: none; font-weight: 800; 
-            z-index: 998; font-size: 13px; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
-            transition: 0.3s;
+            z-index: 998; font-size: 13px;
         }
-        .contact-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 82, 255, 0.5); }
 
-        /* --- PROFESSIONAL 3x3 GRID --- */
+        /* --- FIXED 3x3 GRID (No more spammy look) --- */
         .tool-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            gap: 20px; 
+            gap: 15px; 
             padding: 20px; 
             max-width: 1100px; 
             margin: 0 auto; 
@@ -75,49 +70,44 @@
         .tool-card { 
             background: #080808; 
             border: 1px solid var(--border); 
-            padding: 25px 15px; 
-            border-radius: 16px; 
+            padding: 20px 10px; 
+            border-radius: 12px; 
             text-align: center;
-            transition: all 0.3s ease;
+            transition: 0.3s;
             display: flex; flex-direction: column; justify-content: space-between;
-            min-height: 180px;
+            min-height: 160px;
         }
         
-        .tool-card h3 { font-size: 16px; margin: 0 0 15px; color: var(--primary); font-weight: 700; }
+        .tool-card h3 { font-size: 14px; margin: 0 0 12px; color: var(--primary); }
         
         .tool-link-btn {
-            display: block; padding: 12px; background: transparent; 
-            color: #fff; text-decoration: none; border-radius: 10px; 
-            font-size: 12px; font-weight: 800; border: 1px solid #333;
-            transition: 0.3s; text-transform: uppercase;
+            display: block; padding: 10px; background: transparent; 
+            color: #fff; text-decoration: none; border-radius: 8px; 
+            font-size: 11px; font-weight: bold; border: 1px solid #333;
         }
-        .tool-card:hover { border-color: var(--primary); background: #0c0c0c; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1); }
+        .tool-card:hover { border-color: var(--primary); background: #0c0c0c; }
         .tool-card:hover .tool-link-btn { background: var(--primary); color: #000; border-color: var(--primary); }
 
-        /* --- FILTER SYSTEM --- */
-        .filter-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 40px 0; }
+        /* --- FILTERS --- */
+        .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 30px 0; }
         .filter-btn {
             background: #111; border: 1px solid #333; color: #888;
-            padding: 12px 24px; border-radius: 50px; cursor: pointer; font-weight: 700; transition: 0.3s;
+            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; transition: 0.3s;
         }
-        .filter-btn:hover { border-color: #555; color: #fff; }
-        .filter-btn.active { background: var(--primary); color: #000; border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
+        .filter-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
 
-        /* --- RATE SYSTEM --- */
+        /* --- RATING BOX --- */
         .rate-container { 
             position: fixed; bottom: 25px; left: 25px; 
-            background: rgba(17, 17, 17, 0.8); padding: 18px; border-radius: 20px; 
+            background: rgba(17, 17, 17, 0.8); padding: 15px; border-radius: 16px; 
             border: 1px solid #222; z-index: 998; text-align: center;
-            backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
         }
-        .star { color: #333; font-size: 24px; cursor: pointer; transition: 0.2s; padding: 0 2px; }
-        .star:hover, .star.selected { color: var(--primary); }
+        .star { color: #444; font-size: 22px; cursor: pointer; transition: 0.2s; }
 
         @media (max-width: 768px) {
-            .tool-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .tool-card { min-height: 150px; padding: 15px; }
-            .tool-card h3 { font-size: 13px; }
-            .rate-container { bottom: 90px; transform: scale(0.85); left: 10px; }
+            .tool-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .rate-container { bottom: 90px; transform: scale(0.8); left: 10px; }
         }
         @media (max-width: 480px) {
             .tool-grid { grid-template-columns: 1fr; }
@@ -128,30 +118,33 @@
 
     <div id="welcomePortal">
         <div class="portal-content">
-            <h1 style="font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; margin-bottom: 25px;">100+ FREE <span style="color: var(--primary);">AI TOOLS</span></h1>
+            <h1 style="font-size: 3rem; margin-bottom: 20px;">100+ FREE <span style="color: var(--primary);">AI TOOLS</span></h1>
             <button class="enter-btn" onclick="enterSite()">Enter Directory</button>
         </div>
     </div>
 
-    <button class="feedback-btn" onclick="window.location.href='mailto:believerbk4@gmail.com?subject=Feedback for 100+ Free AI Tools'">Feedback</button>
+    <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT</a>
 
-    <div class="rate-container" id="rateBox">
-        <span style="font-size: 11px; font-weight: 800; color: var(--primary); letter-spacing: 1px;">RATE OUR DIRECTORY</span>
-        <div id="starGroup" style="margin-top:8px;">
-            <span class="star" onclick="submitRating(1)">★</span>
-            <span class="star" onclick="submitRating(2)">★</span>
-            <span class="star" onclick="submitRating(3)">★</span>
-            <span class="star" onclick="submitRating(4)">★</span>
-            <span class="star" onclick="submitRating(5)">★</span>
+    <div class="rate-container" id="rating-card">
+        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">RATE OUR DIRECTORY</span>
+        <div id="starGroup" style="margin-top:5px;">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
         </div>
-        <div id="thanksMsg" style="display:none; color:var(--primary); font-size:12px; font-weight:bold; margin-top:8px;">THANK YOU! 💖</div>
+        <div id="rating-stats" style="display:none; font-size:10px; color:#888; margin-top:5px;"></div>
+    </div>
+    
+    <div id="thanks-popup" class="rate-container" style="display:none; color:var(--primary); font-weight:bold;">
+        THANK YOU! 💖
     </div>
 
     <header style="padding: 120px 20px 0; text-align: center;">
-        <h1 style="font-size: clamp(2.2rem, 7vw, 4.5rem); font-weight: 900; color: var(--primary); letter-spacing: -1px;">The Ultimate AI Toolkit</h1>
-        <p style="color: #666; margin-top: 10px; font-size: 1.1rem;">Hand-picked resources for creators and developers.</p>
-        <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search tools..." style="width: 90%; max-width: 550px; padding: 18px 30px; border-radius: 50px; border: 1px solid #222; background: #0a0a0a; color: white; margin-top: 30px; font-size: 16px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);">
+        <h1 style="font-size: clamp(2rem, 7vw, 4rem); font-weight: 900; color: var(--primary);">The Ultimate AI Toolkit</h1>
+        <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search tools..." style="width: 90%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; margin-top: 20px;">
         
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
@@ -170,25 +163,49 @@
             <h3>ChatGPT</h3>
             <a href="https://chatgpt.com" target="_blank" class="tool-link-btn">Visit Tool →</a>
         </div>
-        <div class="tool-card" data-category="video">
-            <h3>HeyGen</h3>
-            <a href="https://heygen.com" target="_blank" class="tool-link-btn">Visit Tool →</a>
-        </div>
     </main>
 
-    <footer style="padding: 80px 20px; text-align: center; border-top: 1px solid #111; margin-top: 50px;">
-        <p style="color: #555; margin-bottom: 20px;">© 2026 AI Hub - Curated with precision by Fahad Khan.</p>
-        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-            <a href="faq.html" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 13px;">FAQ</a>
-            <a href="privacy-policy.html" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 13px;">Privacy Policy</a>
-            <a href="terms.html" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 13px;">Terms of Service</a>
+    <section id="about" style="padding: 60px 20px; text-align: center; background-color: #050505; color: #fff; border-top: 1px solid #222;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #00ff88; margin-bottom: 25px; font-size: 2rem;">About 100FreeAI</h2>
+            <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc;">
+                Welcome to <strong>100FreeAI</strong>, a project curated by <strong>Fahad Khan</strong>. 
+                My mission is to simplify the rapidly growing world of artificial intelligence by hand-picking the best tools available for free. 
+            </p>
         </div>
+    </section>
+
+    <footer style="padding: 50px 20px; text-align: center; border-top: 1px solid #222; background: #000;">
+        <p style="margin-bottom: 10px; font-size: 1.1rem;"><strong>Owner: Fahad Khan S/O Wahid Sher</strong></p>
+        <p style="color: #888; margin-bottom: 25px;">Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
+        <p>
+            <a href="faq.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">FAQ</a> | 
+            <a href="privacy-policy.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+            <a href="terms.html" style="color: #00ff88; text-decoration: none; margin: 0 10px;">Terms of Service</a>
+        </p>
+        <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
     </footer>
 
-    <script>
-        // FIX 1: Navigation Memory & Back Button Logic
-        function checkNavigation() {
-            // If the user has already entered the site, keep portal hidden
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
+            authDomain: "freeai-ratings.firebaseapp.com",
+            databaseURL: "https://freeai-ratings-default-rtdb.firebaseio.com",
+            projectId: "freeai-ratings",
+            storageBucket: "freeai-ratings.firebasestorage.app",
+            messagingSenderId: "735292410645",
+            appId: "1:735292410645:web:4a79f607dad95b81ec771c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const ratingRef = ref(db, 'site-stats');
+
+        // --- NAVIGATION MEMORY FIX ---
+        window.checkNavigation = function() {
             if (sessionStorage.getItem('siteEntered') === 'true') {
                 const portal = document.getElementById('welcomePortal');
                 if (portal) {
@@ -198,62 +215,91 @@
             } else {
                 document.body.style.overflow = 'hidden';
             }
-        }
+        };
 
-        function enterSite() { 
+        window.enterSite = function() {
             const portal = document.getElementById('welcomePortal');
-            portal.classList.add('portal-hidden');
-            // This is the "Key" that stops the portal from coming back
-            sessionStorage.setItem('siteEntered', 'true');
-            document.body.style.overflow = 'auto';
-            setTimeout(() => { portal.style.display = 'none'; }, 700);
-        }
+            if (portal) {
+                portal.classList.add('disappearing');
+                sessionStorage.setItem('siteEntered', 'true'); 
+                document.body.style.overflow = 'auto'; 
+                setTimeout(() => { portal.remove(); }, 700);
+            }
+        };
 
-        // FIX 2: Correct Professional Filtering
-        function filterCat(cat, btn) {
+        // --- FILTERING FIX (Maintains Grid) ---
+        window.filterCat = function(cat, btn) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                // Ensure display is 'flex' to keep the grid layout looking perfect
-                if (cat === 'all' || category === cat) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+                const cardCategory = card.getAttribute('data-category');
+                card.style.display = (cat === 'all' || cardCategory === cat) ? 'flex' : 'none';
             });
-        }
+        };
 
-        // FIX 3: Rating UI
-        function submitRating(stars) {
-            const starsSpan = document.querySelectorAll('.star');
-            starsSpan.forEach((s, i) => {
-                s.style.color = (i < stars) ? 'var(--primary)' : '#333';
-            });
-            document.getElementById('starGroup').style.display = 'none';
-            document.getElementById('thanksMsg').style.display = 'block';
-            
-            // Auto-hide rating box after vote
-            setTimeout(() => {
-                document.getElementById('rateBox').style.opacity = '0';
-                setTimeout(() => document.getElementById('rateBox').style.display = 'none', 500);
-            }, 3000);
-        }
-
-        function filterSearch() {
+        window.filterSearch = function() {
             const input = document.getElementById('searchBar').value.toLowerCase();
-            const cards = document.querySelectorAll('.tool-card');
-            cards.forEach(card => {
+            document.querySelectorAll('.tool-card').forEach(card => {
                 const title = card.querySelector('h3').innerText.toLowerCase();
                 card.style.display = title.includes(input) ? "flex" : "none";
             });
+        };
+
+        window.sendFeedback = () => {
+            window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
+        };
+
+        // --- FIREBASE RATING LOGIC ---
+        const starElements = document.querySelectorAll('.star');
+        const ratingCard = document.getElementById('rating-card');
+        const thanksPopup = document.getElementById('thanks-popup');
+        const statsText = document.getElementById('rating-stats');
+
+        function highlightStars(count, color) {
+            starElements.forEach(s => {
+                s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
+            });
         }
+
+        function fetchCurrentRating() {
+            onValue(ratingRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data && data.count > 0) {
+                    const average = Math.round(data.sum / data.count);
+                    highlightStars(average, "#00ff88");
+                }
+            }, { onlyOnce: true });
+        }
+
+        starElements.forEach(star => {
+            star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-value'), "#00ff88"));
+            star.addEventListener('mouseout', fetchCurrentRating);
+            star.addEventListener('click', async () => {
+                const val = parseInt(star.getAttribute('data-value'));
+                if(statsText) { statsText.style.display = "block"; statsText.innerText = "Sending..."; }
+                try {
+                    await runTransaction(ratingRef, (currentData) => {
+                        if (currentData === null) return { count: 1, sum: val };
+                        return { count: (currentData.count || 0) + 1, sum: (currentData.sum || 0) + val };
+                    });
+                    if(ratingCard) ratingCard.style.display = "none";
+                    if(thanksPopup) thanksPopup.style.display = "block";
+                    setTimeout(() => {
+                        if(thanksPopup) thanksPopup.style.display = "none";
+                        if(ratingCard) ratingCard.style.display = "block";
+                        if(statsText) statsText.style.display = "none";
+                        fetchCurrentRating();
+                    }, 3000);
+                } catch (err) { console.error(err); }
+            });
+        });
+
+        checkNavigation();
+        fetchCurrentRating();
     </script>
 </body>
 </html>
-    
     <main class="tool-grid" id="toolGrid">
         <!-- WRITING (1-33) -->
         <!-- WRITING TOOLS -->
