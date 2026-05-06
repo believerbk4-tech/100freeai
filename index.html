@@ -214,25 +214,23 @@
             }
         };
 
-       // Replace your filterCat function with this one
-window.filterCat = function(cat, btn) {
-    // 1. Update Button States
+     window.filterCat = function(cat, btn) {
+    // 1. Update Button UI
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // 2. Filter Cards
+    // 2. Filter the cards
     const cards = document.querySelectorAll('.tool-card');
     cards.forEach(card => {
         const cardCategory = card.getAttribute('data-category');
-        
-        // We use 'flex' here so the internal spacing (justify-content) stays professional
         if (cat === 'all' || cardCategory === cat) {
-            card.style.display = 'flex'; 
+            card.style.display = 'flex'; // Use flex to keep your professional layout
         } else {
             card.style.display = 'none';
         }
     });
 };
+        
         window.filterSearch = function() {
             const input = document.getElementById('searchBar').value.toLowerCase();
             document.querySelectorAll('.tool-card').forEach(card => {
@@ -292,6 +290,21 @@ window.filterCat = function(cat, btn) {
 
         checkNavigation();
         fetchCurrentRating();
+
+        <main class="tool-grid" id="toolGrid">
+    <div class="tool-card" data-category="writing">
+        <h3>ChatGPT</h3>
+        <p>The ultimate AI for writing.</p>
+        <a href="#" class="tool-link-btn">Visit Tool →</a>
+    </div>
+    
+    <div class="tool-card" data-category="design">
+        <h3>Leonardo AI</h3>
+        <p>Top-tier image generation.</p>
+        <a href="#" class="tool-link-btn">Visit Tool →</a>
+    </div>
+</main>
+        
     </script>
 </body>
 </html>
