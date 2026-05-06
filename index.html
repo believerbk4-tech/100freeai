@@ -35,7 +35,7 @@
             width: 100%;
         }
 
-        /* Floating UI */
+        /* FLOATING UI */
         .contact-pill { 
             position: fixed; top: 20px; right: 20px; 
             background: #0052ff; color: white; padding: 12px 24px; 
@@ -46,35 +46,21 @@
 
         .feedback-btn { 
             position: fixed; bottom: 20px; right: 20px; 
-            background: #333; color: white; padding: 10px 20px; 
-            border-radius: 8px; border: 1px solid #444;
-            font-weight: 600; cursor: pointer; z-index: 999; 
-            font-size: 12px; text-transform: uppercase;
+            background: #3b71ca; color: white; padding: 15px 25px; 
+            border-radius: 12px; border: none; font-weight: 800; 
+            cursor: pointer; z-index: 999; 
         }
 
-        /* Welcome Portal */
-        #welcomePortal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
-            z-index: 10000; display: flex; align-items: center; justify-content: center;
-            text-align: center; color: white; padding: 20px; overflow: hidden;
+        .rate-container { 
+            position: fixed; bottom: 20px; left: 20px; 
+            background: #111; padding: 15px; border-radius: 16px; 
+            border: 1px solid #222; z-index: 999; text-align: center; width: 140px; 
         }
 
-        .portal-content h1 { 
-            font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 900; 
-            margin: 0; text-transform: uppercase; letter-spacing: -2px; line-height: 0.9;
-        }
+        .stars { color: #444; font-size: 18px; margin-top: 5px; display: flex; justify-content: center; gap: 3px; cursor: pointer; }
+        .stars span.active { color: #ffcc00; }
 
-        .portal-content .highlight { color: var(--primary); }
-
-        .enter-btn { 
-            background: var(--primary); color: #000; padding: 22px 80px; 
-            border-radius: 50px; font-size: 1.1rem; font-weight: 800; 
-            border: none; cursor: pointer; text-transform: uppercase; 
-            margin-top: 40px; box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-
-        /* Header & Search */
+        /* HEADER & SEARCH */
         header { padding: 120px 20px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
         .main-h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; color: var(--primary); margin: 0 0 15px; }
         
@@ -84,14 +70,52 @@
             background: #0a0a0a; color: white; outline: none; margin-bottom: 35px;
         }
 
-        /* Grid */
+        /* TOOL GRID & CARDS */
         .tool-grid {
             display: grid; grid-template-columns: repeat(3, 1fr); 
             gap: 20px; padding: 20px; max-width: 1300px; margin: 0 auto 100px;
         }
 
-       
+        .tool-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 40px 25px; border-radius: 12px; display: flex; 
+            flex-direction: column; min-height: 300px;
+        }
+
+        .tool-card h3 { color: var(--primary); margin: 0 0 12px; font-size: 1.4rem; font-weight: 800; }
+        .tool-card p { color: #888; font-size: 0.95rem; line-height: 1.6; flex-grow: 1; margin-bottom: 25px; }
+        
+        .tool-link {
+            display: inline-block; color: var(--primary) !important;
+            text-decoration: none; font-weight: 700; border: 1px solid #222;
+            padding: 14px 0; border-radius: 8px; text-align: center;
+            background: #0a0a0a; font-size: 13px; text-transform: uppercase; transition: 0.3s;
+        }
+        .tool-link:hover { background: #111; border-color: var(--primary); }
+
+        /* FOOTER */
+        footer { padding: 80px 20px; text-align: center; border-top: 1px solid #111; background: #050505; }
+        footer a { color: #666; text-decoration: none; margin: 0 15px; font-size: 13px; font-weight: 500; }
+        footer a:hover { color: var(--primary); }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { 
+            .tool-grid { grid-template-columns: 1fr; } 
+            header { padding-top: 100px; }
+            .rate-container, .feedback-btn { position: relative; bottom: 0; left: 0; right: 0; margin: 20px auto; width: 90%; }
+        }
     </style>
+</head>
+<body>
+
+    <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US!</a>
+
+    <header>
+        <h1 class="main-h1">The Ultimate AI Toolkit</h1>
+        <p style="color: #888;">Curated directory for professional designers and developers.</p>
+        <input type="text" id="searchBar" placeholder="Search 100+ tools...">
+    </header>
 
     <!-- SEO SCHEMA MARKUP -->
     <script type="application/ld+json">
