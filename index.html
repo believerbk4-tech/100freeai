@@ -23,76 +23,78 @@
             overflow-x: hidden; width: 100%;
         }
 
-        /* --- PORTAL STYLES --- */
+        /* --- PROFESSIONAL PORTAL (One-Click Fix) --- */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
             z-index: 10000; display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; padding: 20px;
-            transition: all 0.6s ease-in-out;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .portal-hidden { opacity: 0; pointer-events: none; visibility: hidden; transform: scale(1.1); }
+        .portal-hidden { transform: scale(1.2); opacity: 0; pointer-events: none; visibility: hidden; }
 
         .enter-btn { 
-            background: var(--primary); color: #000; padding: 18px 50px; 
+            background: var(--primary); color: #000; padding: 20px 60px; 
             border-radius: 50px; font-size: 1.1rem; font-weight: 800; 
             border: none; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); transition: 0.3s;
         }
 
-        /* --- FIXED FLOATING ELEMENTS --- */
+        /* --- FIXED FLOATING UI --- */
         .feedback-btn { 
             position: fixed; bottom: 25px; right: 25px; 
-            background: #111; color: #fff; padding: 12px 24px; 
-            border-radius: 12px; border: 1px solid #333;
-            font-weight: 700; cursor: pointer; z-index: 999;
+            background: #111; color: #fff; padding: 14px 28px; 
+            border-radius: 14px; border: 1px solid #333;
+            font-weight: 700; cursor: pointer; z-index: 999; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
         .contact-pill { 
             position: fixed; top: 20px; right: 20px; 
-            background: #0052ff; color: white; padding: 10px 20px; 
+            background: #0052ff; color: white; padding: 12px 24px; 
             border-radius: 50px; text-decoration: none; font-weight: 800; 
-            z-index: 998; box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
+            z-index: 998; font-size: 13px;
         }
 
-        /* --- PROFESSIONAL GRID CONFIG --- */
+        /* --- PROFESSIONAL 3x3 GRID --- */
         .tool-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            gap: 20px; 
+            gap: 15px; 
             padding: 20px; 
-            max-width: 1200px; 
+            max-width: 1100px; 
             margin: 0 auto; 
-            align-items: stretch;
         }
 
         .tool-card { 
-            background: #080808; border: 1px solid var(--border); 
-            padding: 25px 15px; border-radius: 12px; text-align: center;
+            background: #080808; 
+            border: 1px solid var(--border); 
+            padding: 20px 10px; 
+            border-radius: 12px; 
+            text-align: center;
+            transition: 0.3s;
             display: flex; flex-direction: column; justify-content: space-between;
-            transition: transform 0.3s, border-color 0.3s;
-            min-height: 180px;
         }
-        .tool-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .tool-card h3 { font-size: 16px; margin-bottom: 15px; color: var(--primary); }
+        
+        .tool-card h3 { font-size: 14px; margin: 0 0 12px; color: var(--primary); }
         
         .tool-link-btn {
-            display: block; padding: 12px; background: transparent; 
+            display: block; padding: 10px; background: transparent; 
             color: #fff; text-decoration: none; border-radius: 8px; 
-            font-size: 12px; font-weight: bold; border: 1px solid #333;
-            transition: 0.3s;
+            font-size: 11px; font-weight: bold; border: 1px solid #333;
         }
+        .tool-card:hover { border-color: var(--primary); background: #0c0c0c; }
         .tool-card:hover .tool-link-btn { background: var(--primary); color: #000; border-color: var(--primary); }
 
-        /* --- FILTERING UI --- */
-        .filter-container { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
+        /* --- FILTER SYSTEM --- */
+        .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 30px 0; }
         .filter-btn {
             background: #111; border: 1px solid #333; color: #888;
-            padding: 10px 22px; border-radius: 50px; cursor: pointer; font-weight: 700;
-            transition: 0.3s;
+            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700;
         }
         .filter-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
 
+        /* --- RATE SYSTEM --- */
         .rate-container { 
             position: fixed; bottom: 25px; left: 25px; 
             background: #111; padding: 15px; border-radius: 16px; 
@@ -101,19 +103,16 @@
         .star { color: #333; font-size: 22px; cursor: pointer; }
         .star.selected { color: gold; }
 
-        /* --- RESPONSIVE FIXES --- */
-        @media (max-width: 900px) {
-            .tool-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 600px) {
-            .tool-grid { grid-template-columns: 1fr; gap: 15px; }
-            .tool-card h3 { font-size: 14px; }
-            .rate-container { bottom: 90px; transform: scale(0.9); left: 10px; }
+        @media (max-width: 768px) {
+            .tool-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .tool-card h3 { font-size: 10px; }
+            .rate-container { bottom: 90px; transform: scale(0.8); left: 10px; }
         }
     </style>
 </head>
 <body onload="checkNavigation()">
 
+    <!-- PORTAL -->
     <div id="welcomePortal">
         <div class="portal-content">
             <h1 style="font-size: 3rem; margin-bottom: 20px;">100+ FREE <span style="color: var(--primary);">AI TOOLS</span></h1>
@@ -121,6 +120,7 @@
         </div>
     </div>
 
+    <!-- UI ELEMENTS -->
     <button class="feedback-btn" onclick="window.location.href='mailto:believerbk4@gmail.com'">Feedback</button>
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT</a>
 
@@ -142,84 +142,80 @@
         
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
-            <button class="filter-btn" onclick="filterCat('writing', this)">Writing</button>
-            <button class="filter-btn" onclick="filterCat('design', this)">Design</button>
-            <button class="filter-btn" onclick="filterCat('video', this)">Video</button>
+            <button class="filter-btn" onclick="filterCat('writing', this)">Writing (33)</button>
+            <button class="filter-btn" onclick="filterCat('design', this)">Design (34)</button>
+            <button class="filter-btn" onclick="filterCat('video', this)">Video (33)</button>
         </div>
     </header>
 
     <main class="tool-grid" id="toolGrid">
+        <!-- KEEP ALL YOUR TOOLS HERE -->
+        <!-- Ensure each tool looks like this: -->
         <div class="tool-card" data-category="design">
             <h3>Leonardo AI</h3>
             <a href="https://leonardo.ai" target="_blank" class="tool-link-btn">Visit Tool →</a>
         </div>
-        </main>
+        <!-- End of your tool list -->
+    </main>
 
     <script>
-        // STEP 1 FIX: Navigation Memory
+        // FIX 1: Navigation Memory
         function checkNavigation() {
-            if (sessionStorage.getItem('hasEntered') === 'true') {
-                const portal = document.getElementById('welcomePortal');
-                if (portal) {
-                    portal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            } else {
-                document.body.style.overflow = 'hidden';
+            if (sessionStorage.getItem('siteEntered') === 'true') {
+                document.getElementById('welcomePortal').style.display = 'none';
             }
         }
 
         function enterSite() { 
             const portal = document.getElementById('welcomePortal');
             portal.classList.add('portal-hidden');
-            sessionStorage.setItem('hasEntered', 'true');
-            document.body.style.overflow = 'auto';
-            setTimeout(() => { portal.style.display = 'none'; }, 600);
+            sessionStorage.setItem('siteEntered', 'true');
+            setTimeout(() => { portal.style.display = 'none'; }, 700);
         }
 
-        // STEP 2 FIX: Professional Filter Logic
-        window.filterCat = function(cat, btn) {
-            // Update buttons
+        // FIX 2: Correct Filtering Logic
+        function filterCat(cat, btn) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-
-                if (cat === 'all' || cardCategory === cat) {
-                    card.style.display = 'flex';
-                    // Visual pop effect
-                    card.style.opacity = '0';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transition = 'opacity 0.4s ease';
-                    }, 10);
+                // This ensures cards show as 'flex' or 'block' to maintain the 3x3 grid
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'flex'; 
                 } else {
                     card.style.display = 'none';
                 }
             });
-        };
-
-        // SEARCH LOGIC
-        function filterSearch() {
-            let input = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.tool-card').forEach(card => {
-                let title = card.querySelector('h3').innerText.toLowerCase();
-                card.style.display = title.includes(input) ? "flex" : "none";
-            });
         }
 
-        // RATING SYSTEM
+        // FIX 3: Professional Rating & Firebase Placeholder
         function submitRating(stars) {
-            document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('selected', i < stars));
+            const starElements = document.querySelectorAll('.star');
+            starElements.forEach((s, index) => {
+                s.classList.toggle('selected', index < stars);
+            });
+
+            // Replace this with your Firebase code
+            console.log("Rating saved to Firebase: " + stars);
+
             document.getElementById('starGroup').style.display = 'none';
             document.getElementById('thanksMsg').style.display = 'block';
+
             setTimeout(() => {
                 const box = document.getElementById('rateBox');
                 box.style.opacity = '0';
                 setTimeout(() => box.style.display = 'none', 1000);
             }, 3000);
+        }
+
+        function filterSearch() {
+            let input = document.getElementById('searchBar').value.toLowerCase();
+            let cards = document.querySelectorAll('.tool-card');
+            cards.forEach(card => {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = title.includes(input) ? "flex" : "none";
+            });
         }
     </script>
 </body>
