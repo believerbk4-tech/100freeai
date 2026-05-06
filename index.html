@@ -67,26 +67,45 @@
             margin: 0 auto; 
         }
 
-        .tool-card { 
-            background: #080808; 
-            border: 1px solid var(--border); 
-            padding: 20px 10px; 
-            border-radius: 12px; 
-            text-align: center;
-            transition: 0.3s;
-            display: flex; flex-direction: column; justify-content: space-between;
-            min-height: 160px;
-        }
-        
-        .tool-card h3 { font-size: 14px; margin: 0 0 12px; color: var(--primary); }
-        
-        .tool-link-btn {
-            display: block; padding: 10px; background: transparent; 
-            color: #fff; text-decoration: none; border-radius: 8px; 
-            font-size: 11px; font-weight: bold; border: 1px solid #333;
-        }
-        .tool-card:hover { border-color: var(--primary); background: #0c0c0c; }
-        .tool-card:hover .tool-link-btn { background: var(--primary); color: #000; border-color: var(--primary); }
+        /* Update your CSS for the tool-card and button */
+.tool-card { 
+    background: #080808; 
+    border: 1px solid #222; 
+    padding: 25px 20px; 
+    border-radius: 16px; 
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+    min-height: 220px; /* Gives a consistent professional height */
+}
+
+.tool-card:hover {
+    border-color: #00ff88;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+}
+
+.tool-link-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: #111;
+    color: #00ff88;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid #333;
+    transition: 0.3s;
+}
+
+.tool-link-btn:hover {
+    background: #00ff88;
+    color: #000;
+    border-color: #00ff88;
+}
 
         /* --- FILTERS --- */
         .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 30px 0; }
@@ -195,17 +214,25 @@
             }
         };
 
-        // --- FILTERING FIX (Maintains Grid) ---
-        window.filterCat = function(cat, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const cards = document.querySelectorAll('.tool-card');
-            cards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                card.style.display = (cat === 'all' || cardCategory === cat) ? 'flex' : 'none';
-            });
-        };
+       // Replace your filterCat function with this one
+window.filterCat = function(cat, btn) {
+    // 1. Update Button States
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 
+    // 2. Filter Cards
+    const cards = document.querySelectorAll('.tool-card');
+    cards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        
+        // We use 'flex' here so the internal spacing (justify-content) stays professional
+        if (cat === 'all' || cardCategory === cat) {
+            card.style.display = 'flex'; 
+        } else {
+            card.style.display = 'none';
+        }
+    });
+};
         window.filterSearch = function() {
             const input = document.getElementById('searchBar').value.toLowerCase();
             document.querySelectorAll('.tool-card').forEach(card => {
