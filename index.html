@@ -396,85 +396,86 @@
         document.body.style.overflow = 'hidden';
     }
 
-    // --- FIREBASE RATING LOGIC ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+   // --- FIREBASE RATING LOGIC ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
-        authDomain: "freeai-ratings.firebaseapp.com",
-        databaseURL: "https://freeai-ratings-default-rtdb.firebaseio.com",
-        projectId: "freeai-ratings",
-        storageBucket: "freeai-ratings.firebasestorage.app",
-        messagingSenderId: "735292410645",
-        appId: "1:735292410645:web:4a79f607dad95b81ec771c"
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
+    authDomain: "freeai-ratings.firebaseapp.com",
+    databaseURL: "https://freeai-ratings-default-rtdb.firebaseio.com",
+    projectId: "freeai-ratings",
+    storageBucket: "freeai-ratings.firebasestorage.app",
+    messagingSenderId: "735292410645",
+    appId: "1:735292410645:web:4a79f607dad95b81ec771c"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const ratingRef = ref(db, 'site-stats');
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const ratingRef = ref(db, 'site-stats');
 
-    const starElements = document.querySelectorAll('.star');
-    const ratingCard = document.getElementById('rating-card');
-    const thanksPopup = document.getElementById('thanks-popup');
-    const statsText = document.getElementById('rating-stats');
+const starElements = document.querySelectorAll('.star');
+const ratingCard = document.getElementById('rating-card');
 
-    function highlightStars(count, color) {
-        starElements.forEach(s => {
-            s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
-        });
+// 1. LIVE AVERAGE CALCULATION
+// This updates the text so people see "4.8 / 5" instead of just colored stars
+onValue(ratingRef, (snapshot) => {
+    const data = snapshot.val();
+    const statsHeader = document.querySelector('#rating-card span');
+    if (data && data.count > 0 && statsHeader) {
+        const average = (data.sum / data.count).toFixed(1); // Gives you 4.8, 3.5, etc.
+        statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
     }
+});
 
-    function fetchCurrentRating() {
-        onValue(ratingRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.count > 0) {
-                const average = Math.round(data.sum / data.count);
-                highlightStars(average, "#00ff88");
-            }
-        }, { onlyOnce: true });
-    }
-
-    starElements.forEach(star => {
-        star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-value'), "#00ff88"));
-        star.addEventListener('mouseout', fetchCurrentRating);
-        
-        star.addEventListener('click', async () => {
-            const val = parseInt(star.getAttribute('data-value'));
-            if(statsText) {
-                statsText.style.display = "block";
-                statsText.innerText = "Sending...";
-            }
-
-            try {
-                await runTransaction(ratingRef, (currentData) => {
-                    if (currentData === null) {
-                        return { count: 1, sum: val };
-                    } else {
-                        return {
-                            count: (currentData.count || 0) + 1,
-                            sum: (currentData.sum || 0) + val
-                        };
-                    }
-                });
-
-                if(ratingCard) ratingCard.style.display = "none";
-                if(thanksPopup) thanksPopup.style.display = "block";
-
-                setTimeout(() => {
-                    if(thanksPopup) thanksPopup.style.display = "none";
-                    if(ratingCard) ratingCard.style.display = "block";
-                    if(statsText) statsText.style.display = "none";
-                    fetchCurrentRating();
-                }, 3000);
-
-            } catch (err) {
-                console.error("Firebase Error:", err);
-                if(statsText) statsText.innerText = "Error!";
-            }
-        });
+function highlightStars(count, color) {
+    starElements.forEach(s => {
+        s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
     });
+}
 
+starElements.forEach(star => {
+    // Hover effect
+    star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-value'), "#00ff88"));
+    star.addEventListener('mouseout', () => highlightStars(0, "#444")); // Clear on mouse out
+    
+    // Click to Rate
+    star.addEventListener('click', async () => {
+        const val = parseInt(star.getAttribute('data-value'));
+
+        try {
+            // Update Database
+            await runTransaction(ratingRef, (currentData) => {
+                if (currentData === null) {
+                    return { count: 1, sum: val };
+                } else {
+                    return {
+                        count: (currentData.count || 0) + 1,
+                        sum: (currentData.sum || 0) + val
+                    };
+                }
+            });
+
+            // SHOW THANK YOU & DISAPPEAR
+            if(ratingCard) {
+                // Change the card content to your message
+                ratingCard.innerHTML = `<div style="color: #00ff88; font-weight: 800; padding: 10px; font-size: 14px;">Thank you! 💖</div>`;
+                
+                // Wait 3 seconds, then vanish
+                setTimeout(() => {
+                    ratingCard.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+                    ratingCard.style.opacity = "0";
+                    ratingCard.style.transform = "translateY(20px)"; // Smooth slide down
+                    setTimeout(() => ratingCard.remove(), 800); // Fully delete from page
+                }, 3000);
+            }
+
+        } catch (err) {
+            console.error("Firebase Error:", err);
+        }
+    });
+});
+    
     fetchCurrentRating();
 
     window.sendFeedback = () => {
