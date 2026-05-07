@@ -501,9 +501,8 @@
         document.body.style.overflow = 'hidden';
     }
 
-  // --- FIREBASE RATING LOGIC ---
+// --- FIREBASE RATING LOGIC ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-// 1. ADDED THIS IMPORT:
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
 import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -519,9 +518,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// 2. ADDED THIS APP CHECK BLOCK (Using your Site Key):
+// 2. UPDATED WITH YOUR NEW SITE KEY (Project: freeai-ratings)
 const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaEnterpriseProvider('6Lcm5t0sAAAAAGUfOAkWujL8FVsLD6ZROjA-i_9F'),
+  provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
   isTokenAutoRefreshEnabled: true
 });
 
