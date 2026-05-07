@@ -498,8 +498,10 @@
         document.body.style.overflow = 'hidden';
     }
 
-   // --- FIREBASE RATING LOGIC ---
+  // --- FIREBASE RATING LOGIC ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+// 1. ADDED THIS IMPORT:
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
 import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -513,6 +515,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+// 2. ADDED THIS APP CHECK BLOCK (Using your Site Key):
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider('6Lcm5t0sAAAAAGUfOAkWujL8FVsLD6ZROjA-i_9F'),
+  isTokenAutoRefreshEnabled: true
+});
+
 const db = getDatabase(app);
 const ratingRef = ref(db, 'site-stats');
 
@@ -520,12 +529,11 @@ const starElements = document.querySelectorAll('.star');
 const ratingCard = document.getElementById('rating-card');
 
 // 1. LIVE AVERAGE CALCULATION
-// This updates the text so people see "4.8 / 5" instead of just colored stars
 onValue(ratingRef, (snapshot) => {
     const data = snapshot.val();
     const statsHeader = document.querySelector('#rating-card span');
     if (data && data.count > 0 && statsHeader) {
-        const average = (data.sum / data.count).toFixed(1); // Gives you 4.8, 3.5, etc.
+        const average = (data.sum / data.count).toFixed(1);
         statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
     }
 });
@@ -537,43 +545,30 @@ function highlightStars(count, color) {
 }
 
 starElements.forEach(star => {
-    // Hover effect
     star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-value'), "#00ff88"));
-    star.addEventListener('mouseout', () => highlightStars(0, "#444")); // Clear on mouse out
+    star.addEventListener('mouseout', () => highlightStars(0, "#444")); 
     
-    // Click to Rate
     star.addEventListener('click', async () => {
         const val = parseInt(star.getAttribute('data-value'));
 
         try {
-            // Update Database
+            // The transaction now automatically carries the reCAPTCHA token we set up earlier
             await runTransaction(ratingRef, (currentData) => {
-                if (currentData === null) {
+                if (!currentData) {
                     return { count: 1, sum: val };
-                } else {
-                    return {
-                        count: (currentData.count || 0) + 1,
-                        sum: (currentData.sum || 0) + val
-                    };
                 }
+                return {
+                    count: (currentData.count || 0) + 1,
+                    sum: (currentData.sum || 0) + val
+                };
             });
-
-            // SHOW THANK YOU & DISAPPEAR
-            if(ratingCard) {
-                // Change the card content to your message
-                ratingCard.innerHTML = `<div style="color: #00ff88; font-weight: 800; padding: 10px; font-size: 14px;">Thank you! 💖</div>`;
-                
-                // Wait 3 seconds, then vanish
-                setTimeout(() => {
-                    ratingCard.style.transition = "opacity 0.8s ease, transform 0.8s ease";
-                    ratingCard.style.opacity = "0";
-                    ratingCard.style.transform = "translateY(20px)"; // Smooth slide down
-                    setTimeout(() => ratingCard.remove(), 800); // Fully delete from page
-                }, 3000);
-            }
-
-        } catch (err) {
-            console.error("Firebase Error:", err);
+            
+            // Success Feedback
+            alert("Thanks for rating!");
+            
+        } catch (error) {
+            console.error("Rating failed:", error);
+            // If it fails here, it's usually because reCAPTCHA blocked the request
         }
     });
 });
