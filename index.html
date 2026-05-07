@@ -40,40 +40,34 @@
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
         }
 
-       /* Feedback Button - Matching Contact Style */
-#feedback-btn {
+ #feedback-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
     background: #007bff; /* Matching the Contact Blue */
     color: white;
-    padding: 10px 20px;
-    border-radius: 50px; /* Fully rounded like Contact button */
-    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: none;
     font-weight: 700;
     font-size: 13px;
+    cursor: pointer;
+    z-index: 9999;
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    border: none;
-    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    transition: 0.3s;
 }
 
 #feedback-btn:hover {
     background: #0056b3;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    transform: scale(1.05);
 }
 
-/* Matching the icon style */
 #feedback-btn::before {
-    content: '💬'; /* Feedback icon */
-    font-size: 16px;
+    content: '💬';
 }
         
         .contact-pill { 
@@ -174,7 +168,7 @@
     </div>
 </div>
 
-    <button class="feedback-btn" onclick="sendFeedback()">FEEDBACK</button>
+    <button id="feedback-btn" onclick="openFeedback()">Feedback</button>
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT</a>
 
     <div class="rate-container" id="rating-card">
