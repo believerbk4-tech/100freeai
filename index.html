@@ -207,16 +207,19 @@
    <button id="feedback-btn" onclick="sendFeedback()">Feedback</button>
     <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US</a>
 
-    <div class="rate-container" id="rating-card">
-        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">RATE OUR DIRECTORY</span>
-        <div id="starGroup" style="margin-top:5px;">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-        </div>
+  <div class="rate-container" id="rating-card">
+    <span style="font-size: 11px; font-weight: 800; color: var(--primary); display: block;">RATE OUR DIRECTORY</span>
+    
+    <span id="live-rating" style="font-size: 10px; color: #888;">Loading rating...</span>
+
+    <div id="starGroup" style="margin-top:5px;">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
     </div>
+</div>
 
    <header style="padding: 120px 20px 0; text-align: center;">
     <h1 style="font-size: clamp(2rem, 7vw, 4rem); font-weight: 900; color: var(--primary); margin-bottom: 15px;">
@@ -529,30 +532,23 @@ const starElements = document.querySelectorAll('.star');
 const ratingCard = document.getElementById('rating-card');
 
 // 1. LIVE AVERAGE CALCULATION
+// This updates the 0 / 5 text automatically when anyone in the world rates the site
 onValue(ratingRef, (snapshot) => {
     const data = snapshot.val();
-    const statsHeader = document.querySelector('#rating-card span');
+    const statsHeader = document.querySelector('#live-rating');
     if (data && data.count > 0 && statsHeader) {
         const average = (data.sum / data.count).toFixed(1);
         statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
     }
 });
 
-function highlightStars(count, color) {
-    starElements.forEach(s => {
-        s.style.color = parseInt(s.getAttribute('data-value')) <= count ? color : "#444";
-    });
-}
-
+// 2. RATING CLICK HANDLER
 starElements.forEach(star => {
-    star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-value'), "#00ff88"));
-    star.addEventListener('mouseout', () => highlightStars(0, "#444")); 
-    
     star.addEventListener('click', async () => {
         const val = parseInt(star.getAttribute('data-value'));
 
         try {
-            // The transaction now automatically carries the reCAPTCHA token we set up earlier
+            // This runs silently in the background
             await runTransaction(ratingRef, (currentData) => {
                 if (!currentData) {
                     return { count: 1, sum: val };
@@ -563,12 +559,10 @@ starElements.forEach(star => {
                 };
             });
             
-            // Success Feedback
-            alert("Thanks for rating!");
+            // NO ALERT HERE - Your existing "Thank You" logic will handle the rest!
             
         } catch (error) {
-            console.error("Rating failed:", error);
-            // If it fails here, it's usually because reCAPTCHA blocked the request
+            console.error("Security or Database error:", error);
         }
     });
 });
