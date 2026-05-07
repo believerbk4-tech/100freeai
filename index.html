@@ -70,12 +70,39 @@
     content: '💬';
 }
         
-        .contact-pill { 
-            position: fixed; top: 20px; right: 20px; 
-            background: #0052ff; color: white; padding: 12px 24px; 
-            border-radius: 50px; text-decoration: none; font-weight: 800; 
-            z-index: 998; font-size: 13px;
-        }
+      .contact-pill {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #007bff; /* Matching the Feedback Blue exactly */
+    color: white;
+    padding: 10px 22px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    z-index: 1000; /* Stays above everything */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* Adds professional depth */
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contact-pill:hover {
+    background: #0056b3;
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    color: white;
+}
+
+/* Adding the phone/contact icon */
+.contact-pill::before {
+    content: '📞';
+    font-size: 14px;
+}
 
         /* --- PROFESSIONAL GRID --- */
         .tool-grid { 
