@@ -40,15 +40,42 @@
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
         }
 
-        .feedback-btn { 
-            position: fixed; bottom: 25px; right: 25px; 
-            background: rgba(17, 17, 17, 0.85); color: #fff; padding: 14px 28px; 
-            border-radius: 14px; border: 1px solid #333;
-            font-weight: 700; cursor: pointer; z-index: 999; font-size: 11px;
-            text-transform: uppercase; letter-spacing: 1px;
-            backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        }
+       /* Feedback Button - Matching Contact Style */
+#feedback-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #007bff; /* Matching the Contact Blue */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px; /* Fully rounded like Contact button */
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
+#feedback-btn:hover {
+    background: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+/* Matching the icon style */
+#feedback-btn::before {
+    content: '💬'; /* Feedback icon */
+    font-size: 16px;
+}
+        
         .contact-pill { 
             position: fixed; top: 20px; right: 20px; 
             background: #0052ff; color: white; padding: 12px 24px; 
@@ -527,6 +554,7 @@ starElements.forEach(star => {
     window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
+    
 </script>
 </body>
 </html>
