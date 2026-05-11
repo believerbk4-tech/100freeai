@@ -3,23 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - 100+ Free AI Tools</title>
+    <title>FAQ - 100+ Free AI Tools Directory</title>
     <style>
+        :root {
+            --primary: #00ff88;
+            --bg: #000;
+            --text-main: #fff;
+            --text-dim: #bbb;
+        }
+
         body {
-            background-color: #000;
-            color: #fff;
+            background-color: var(--bg);
+            color: var(--text-main);
             font-family: 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 40px 20px;
         }
+
         .container { max-width: 800px; margin: 0 auto; }
-        h1 { color: #00ff88; font-size: 2.5rem; text-align: center; margin-bottom: 40px; }
-        .faq-item { margin-bottom: 30px; border-bottom: 1px solid #222; padding-bottom: 20px; }
-        .question { color: #00ff88; font-weight: 800; font-size: 1.2rem; margin-bottom: 10px; }
-        .answer { color: #bbb; }
+
+        h1 { 
+            color: var(--primary); 
+            font-size: 2.5rem; 
+            text-align: center; 
+            margin-bottom: 40px; 
+            letter-spacing: -1px;
+        }
+
+        .faq-item { 
+            margin-bottom: 30px; 
+            border-bottom: 1px solid #222; 
+            padding-bottom: 20px; 
+        }
+
+        /* SEO-Friendly Heading Style */
+        h2.question { 
+            color: var(--primary); 
+            font-weight: 800; 
+            font-size: 1.25rem; 
+            margin: 0 0 10px 0; /* Important for Google structure */
+            display: block;
+        }
+
+        .answer { color: var(--text-dim); font-size: 1.05rem; }
         
-        /* Centered Bottom Button Container */
         .btn-wrapper {
             text-align: center;
             margin-top: 50px;
@@ -28,19 +56,29 @@
 
         .back-home {
             display: inline-block;
-            color: #00ff88;
+            color: var(--primary);
             text-decoration: none;
             font-weight: bold;
-            border: 1px solid #00ff88;
+            border: 1px solid var(--primary);
             padding: 12px 24px;
             border-radius: 8px;
-            transition: 0.3s;
+            transition: 0.3s ease;
         }
 
         .back-home:hover {
-            background: #00ff88;
+            background: var(--primary);
             color: #000;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #555;
+            border-top: 1px solid #111;
+            padding-top: 20px;
         }
     </style>
 </head>
@@ -50,32 +88,32 @@
     <h1>Frequently Asked Questions</h1>
 
     <div class="faq-item">
-        <div class="question">What is the 100+ Free AI Tools Directory?</div>
+        <h2 class="question">What is the 100+ Free AI Tools Directory?</h2>
         <div class="answer">This platform is a manually curated library of elite artificial intelligence resources designed specifically for designers, developers, and digital creators. We focus on "Free" and "Freemium" tools to ensure that high-level technology remains accessible to everyone.</div>
     </div>
 
     <div class="faq-item">
-        <div class="question">How are these AI tools selected?</div>
+        <h2 class="question">How are these AI tools selected?</h2>
         <div class="answer">Every tool is hand-picked based on its functional utility and ease of use. We prioritize tools that offer a genuine free-to-use tier, allowing creators to enhance their workflow without immediate financial commitments.</div>
     </div>
 
     <div class="faq-item">
-        <div class="question">Is it free to use this directory?</div>
+        <h2 class="question">Is it free to use this directory?</h2>
         <div class="answer">Yes. Accessing our directory and browsing our categorized toolsets is completely free. We do not charge users to find or access the links provided in our library.</div>
     </div>
 
     <div class="faq-item">
-        <div class="question">How often is the list updated?</div>
+        <h2 class="question">How often is the list updated?</h2>
         <div class="answer">The AI landscape moves fast. We regularly review the directory to remove outdated tools and add the latest innovations in web programming, design, and marketing.</div>
     </div>
 
-    <!-- Step 1: Moved Button to the Bottom -->
     <div class="btn-wrapper">
-        <a href="index.html" class="back-home">← Back to Home</a>
+        <a href="index.html" class="back-home">← Back to Home Directory</a>
     </div>
 
-    <footer style="margin-top: 50px; text-align: center; font-size: 0.9rem; color: #555;">
-        <p>© 2026 AI Hub | Owner: Fahad Khan S/O Wahid Sher</p>
+    <footer>
+        <p>© 2026 AI Hub | Curated by Fahad Khan</p>
+        <p style="font-size: 0.7rem; margin-top: 5px;">Empowering creators with accessible AI technology.</p>
     </footer>
 </div>
 
