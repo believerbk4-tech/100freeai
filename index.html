@@ -17,6 +17,22 @@
     </script>
 
     <style>
+        /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
+.suggestion-item {
+    padding: 12px 20px;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #111;
+}
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover {
+    background: #1e1b4b;
+    color: #00ff88;
+}
+        
         :root { 
             --primary: #4f46e5; /* Premium Indigo Primary */
             --primary-hover: #4338ca;
@@ -204,8 +220,12 @@
         this directory is built to help you find the right technology to scale your productivity—all in one place.
     </p>
 
-    <input type="text" id="searchBar" onkeyup="filterSearch()" placeholder="Search 100+ tools..." 
-           style="width: 90%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white;">
+    <div style="position: relative; width: 90%; max-width: 500px; margin: 0 auto; z-index: 1000;">
+    <input type="text" id="searchBar" onkeyup="filterSearch()" autocomplete="off" placeholder="Search 100+ tools..." 
+           style="width: 100%; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; font-size: 1rem;">
+    
+    <div id="searchSuggestions" style="position: absolute; top: 110%; left: 5%; width: 90%; background: #0a0a0a; border: 1px solid #222; border-radius: 12px; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); padding: 5px 0;"></div>
+</div>
     
     <div class="filter-container">
         <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
@@ -2106,13 +2126,16 @@ window.filterCat = function(cat, btn) {
 window.filterSearch = function() {
     const input = document.getElementById('searchBar').value.toLowerCase();
     const spotlight = document.getElementById('leonardoSpotlight');
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    
+    // Clear old suggestions
+    suggestionsBox.innerHTML = '';
 
-    // SPOTLIGHT VISIBILITY RULE: Hide spotlight completely if the user is typing a search query
+    // Handle Spotlight section visibility rule
     if (spotlight) {
         if (input.length > 0) {
             spotlight.style.display = 'none';
         } else {
-            // When search is cleared, check if the active button allows it
             const activeBtn = document.querySelector('.filter-btn.active');
             const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : 'all';
             if (currentCat === 'all' || currentCat === 'design') {
@@ -2121,20 +2144,60 @@ window.filterSearch = function() {
         }
     }
 
-    document.querySelectorAll('.tool-card').forEach(card => {
+    // Collect all tool cards
+    const cards = document.querySelectorAll('.tool-card');
+    let matches = [];
+
+    cards.forEach(card => {
         const titleElement = card.querySelector('h3');
         const descElement = card.querySelector('.tool-info p');
         
-        const title = titleElement ? titleElement.innerText.toLowerCase() : '';
+        const title = titleElement ? titleElement.innerText : '';
         const desc = descElement ? descElement.innerText.toLowerCase() : '';
         
-        if (title.includes(input) || desc.includes(input)) {
+        // Main Search Matching Logic
+        if (title.toLowerCase().includes(input) || desc.includes(input)) {
             card.style.display = "flex";
+            // If user typed something, gather tool names matching the query for autocomplete
+            if (input.length > 0 && title.toLowerCase().includes(input)) {
+                matches.push(title);
+            }
         } else {
             card.style.display = "none";
         }
     });
+
+    // Google-like Dropdown Builder Logic
+    if (matches.length > 0 && input.length > 0) {
+        suggestionsBox.style.display = 'block';
+        
+        // Limit suggestions list to top 6 items to keep it compact
+        matches.slice(0, 6).forEach(toolName => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            item.innerHTML = `🔍 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
+            
+            // On click behavior: fill search input box, filter to that tool, and close dropdown
+            item.onclick = function() {
+                document.getElementById('searchBar').value = toolName;
+                suggestionsBox.style.display = 'none';
+                window.filterSearch(); // Re-trigger filter with absolute tool string
+            };
+            suggestionsBox.appendChild(item);
+        });
+    } else {
+        suggestionsBox.style.display = 'none';
+    }
 };
+
+// Global listener: Hide the suggestion panel instantly if user clicks anywhere else on the window screen
+document.addEventListener('click', function(e) {
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    const searchInput = document.getElementById('searchBar');
+    if (suggestionsBox && e.target !== searchInput && e.target !== suggestionsBox) {
+        suggestionsBox.style.display = 'none';
+    }
+});
     
     // --- UTILITIES ---
     window.sendFeedback = () => {
