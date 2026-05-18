@@ -2186,7 +2186,7 @@ window.filterSearch = function() {
         matches.slice(0, 6).forEach(toolName => {
             const item = document.createElement('div');
             item.className = 'suggestion-item';
-            item.innerHTML = `🔍 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
+            item.innerHTML = `🤖 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
             
             // On click behavior: fill search input box, filter to that tool, and close dropdown
             item.onclick = function() {
