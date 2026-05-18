@@ -215,7 +215,7 @@
     </div>
 </header>
 
-    <section class="spotlight-container" style="max-width: 1400px; margin: 0 auto; padding: 0 1rem; margin-top: 1.5rem;">
+    <section id="leonardoSpotlight" class="spotlight-container" style="max-width: 1400px; margin: 0 auto; padding: 0 1rem; margin-top: 1.5rem;">
     <div style="background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 2px solid #4f46e5; border-radius: 16px; padding: 1.5rem; display: flex; gap: 1.5rem; align-items: center; justify-content: space-between; flex-wrap: wrap; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15); position: relative;">
         
         <div style="background: #4f46e5; color: #fff; padding: 4px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; display: inline-block; margin-bottom: 0.5rem;">
@@ -2072,44 +2072,70 @@
         document.body.style.overflow = 'hidden';
     }
 
-    // --- SEARCH & CATEGORY FILTERING LOGIC ---
-    window.filterCat = function(cat, btn) {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        if (btn) btn.classList.add('active');
+   // --- UPDATED SEARCH & CATEGORY FILTERING LOGIC ---
+window.filterCat = function(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
 
-        const cards = document.querySelectorAll('.tool-card');
-        cards.forEach(card => {
-            const cardCategory = card.getAttribute('data-cat');
-            if (cat === 'all' || cardCategory === cat) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        
-        const header = document.querySelector('header');
-        if (header) {
-            window.scrollTo({ top: header.offsetHeight, behavior: 'smooth' });
+    // SPOTLIGHT VISIBILITY RULE: Show only on 'all' or 'design'
+    const spotlight = document.getElementById('leonardoSpotlight');
+    if (spotlight) {
+        if (cat === 'all' || cat === 'design') {
+            spotlight.style.display = 'block';
+        } else {
+            spotlight.style.display = 'none';
         }
-    };
+    }
 
-    window.filterSearch = function() {
-        const input = document.getElementById('searchBar').value.toLowerCase();
-        document.querySelectorAll('.tool-card').forEach(card => {
-            const titleElement = card.querySelector('h3');
-            const descElement = card.querySelector('.tool-info p');
-            
-            const title = titleElement ? titleElement.innerText.toLowerCase() : '';
-            const desc = descElement ? descElement.innerText.toLowerCase() : '';
-            
-            if (title.includes(input) || desc.includes(input)) {
-                card.style.display = "flex";
-            } else {
-                card.style.display = "none";
+    const cards = document.querySelectorAll('.tool-card');
+    cards.forEach(card => {
+        const cardCategory = card.getAttribute('data-cat');
+        if (cat === 'all' || cardCategory === cat) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    const header = document.querySelector('header');
+    if (header) {
+        window.scrollTo({ top: header.offsetHeight, behavior: 'smooth' });
+    }
+};
+
+window.filterSearch = function() {
+    const input = document.getElementById('searchBar').value.toLowerCase();
+    const spotlight = document.getElementById('leonardoSpotlight');
+
+    // SPOTLIGHT VISIBILITY RULE: Hide spotlight completely if the user is typing a search query
+    if (spotlight) {
+        if (input.length > 0) {
+            spotlight.style.display = 'none';
+        } else {
+            // When search is cleared, check if the active button allows it
+            const activeBtn = document.querySelector('.filter-btn.active');
+            const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : 'all';
+            if (currentCat === 'all' || currentCat === 'design') {
+                spotlight.style.display = 'block';
             }
-        });
-    };
+        }
+    }
 
+    document.querySelectorAll('.tool-card').forEach(card => {
+        const titleElement = card.querySelector('h3');
+        const descElement = card.querySelector('.tool-info p');
+        
+        const title = titleElement ? titleElement.innerText.toLowerCase() : '';
+        const desc = descElement ? descElement.innerText.toLowerCase() : '';
+        
+        if (title.includes(input) || desc.includes(input)) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+    });
+};
+    
     // --- UTILITIES ---
     window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
