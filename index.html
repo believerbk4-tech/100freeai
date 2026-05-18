@@ -166,23 +166,30 @@
 </head>
 <body>
 
-<div id="welcomePortal">
-    <div class="portal-content" style="max-width: 600px; padding: 20px;">
-        <h1 style="font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; margin-bottom: 10px; line-height: 1.1;">
-            100+ FREE <span style="color: var(--primary);">AI TOOLS</span>
-        </h1>
-
-        <p style="font-size: 1.1rem; color: #ccc; margin-bottom: 30px; line-height: 1.6; font-weight: 400;">
-            Stop searching and start creating. We’ve hand-picked and reviewed the top 100+ AI tools for <strong>Writing, Design, and Video</strong> to help you work 10x faster.
-        </p>
-
-        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap;">
-            <div style="font-size: 13px; color: var(--primary); font-weight: 700;">✓ 100% FREE ACCESS</div>
-            <div style="font-size: 13px; color: var(--primary); font-weight: 700;">✓ HAND-PICKED REVIEWS</div>
-            <div style="font-size: 13px; color: var(--primary); font-weight: 700;">✓ NO SIGN-UP REQUIRED</div>
+<div id="welcomePortal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #030712; background-image: radial-gradient(rgba(79, 70, 229, 0.15) 1px, transparent 0), radial-gradient(rgba(79, 70, 229, 0.1) 1px, #030712 100%); background-size: 40px 40px; background-position: 0 0, 20px 20px; z-index: 10000; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 24px; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
+    <div class="portal-content" style="max-width: 640px; width: 100%; padding: 20px; backdrop-filter: blur(4px); border-radius: 24px;">
+        
+        <div style="background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.3); color: #818cf8; padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block; margin-bottom: 1.5rem;">
+            ⚡ V2 PRODUCTION ENGINE LIVE
         </div>
 
-        <button class="enter-btn" onclick="enterSite()">Enter Directory</button>
+        <h1 style="font-size: clamp(2.5rem, 7vw, 4.2rem); font-weight: 900; margin: 0 0 15px 0; line-height: 1.05; letter-spacing: -1px; color: #ffffff;">
+            100+ FREE <span style="background: linear-gradient(to right, #818cf8, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI TOOLS</span>
+        </h1>
+
+        <p style="font-size: clamp(1rem, 2.5vw, 1.15rem); color: #94a3b8; margin: 0 auto 35px auto; max-width: 520px; line-height: 1.6; font-weight: 400;">
+            Stop jumping between infinite pricing loops. Access a hand-reviewed directory built for creators to scale delivery 10x faster.
+        </p>
+
+        <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 45px; flex-wrap: wrap;">
+            <div style="font-size: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 8px; color: #e2e8f0; font-weight: 600; letter-spacing: 0.5px;">✓ 100% UNLOCKED</div>
+            <div style="font-size: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 8px; color: #e2e8f0; font-weight: 600; letter-spacing: 0.5px;">✓ EXPERT VERIFIED</div>
+            <div style="font-size: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 8px; color: #e2e8f0; font-weight: 600; letter-spacing: 0.5px;">✓ ZERO SIGN-UP</div>
+        </div>
+
+        <button class="enter-btn" onclick="enterSite()" style="background: #4f46e5; color: #ffffff; padding: 18px 50px; border-radius: 12px; font-size: 1rem; font-weight: 700; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3); transition: all 0.2s ease;">
+            Launch Directory
+        </button>
     </div>
 </div>
 
@@ -207,17 +214,21 @@
     </div>
 </div>
     
-<header style="padding: 120px 20px 0; text-align: center;">
-    <h1 style="font-size: clamp(2rem, 7vw, 4rem); font-weight: 900; color: var(--primary); margin-bottom: 15px;">
-        The Ultimate AI Toolkit
+<header style="padding: 140px 20px 0; text-align: center; max-width: 900px; margin: 0 auto; position: relative;">
+    
+    <span style="color: #818cf8; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">
+        Curated Creation Matrix
+    </span>
+
+    <h1 style="font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 900; color: #ffffff; margin: 0 0 20px 0; letter-spacing: -1px; line-height: 1.1;">
+        The Ultimate <span style="background: linear-gradient(to right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Toolkit</span>
     </h1>
 
-    <p style="max-width: 700px; margin: 0 auto 30px auto; color: #888; line-height: 1.6; font-size: 1.1rem;">
-        Explore a curated collection of the world's most powerful AI tools. Whether you're a 
-        <span style="color: #fff; font-weight: 600;">designer</span>, 
-        <span style="color: #fff; font-weight: 600;">writer</span>, or 
-        <span style="color: #fff; font-weight: 600;">content creator</span>, 
-        this directory is built to help you find the right technology to scale your productivity—all in one place.
+    <p style="max-width: 640px; margin: 0 auto 35px auto; color: #94a3b8; line-height: 1.6; font-size: clamp(0.95rem, 2.5vw, 1.1rem); font-weight: 400;">
+        Explore a professional collection of the world's most powerful AI engines. Custom targeted for 
+        <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">designers</span>, 
+        <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">writers</span>, and 
+        <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">content creators</span> to optimize digital workflows in one central scope.
     </p>
 
     <div style="position: relative; width: 90%; max-width: 500px; margin: 0 auto; z-index: 1000;">
