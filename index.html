@@ -2099,24 +2099,43 @@
         }
     };
 
+  // --- PORTAL ENTER LOGIC ---
     if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
         document.body.style.overflow = 'hidden';
+    } else if (document.getElementById('welcomePortal')) {
+        // If they already entered, keep the portal hidden and body scrollable
+        document.getElementById('welcomePortal').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 
-   // --- UPDATED SEARCH & CATEGORY FILTERING LOGIC ---
-window.filterCat = function(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-
-    // SPOTLIGHT VISIBILITY RULE: Show only on 'all' or 'design'
-    const spotlight = document.getElementById('leonardoSpotlight');
-    if (spotlight) {
-        if (cat === 'all' || cat === 'design') {
-            spotlight.style.display = 'block';
-        } else {
-            spotlight.style.display = 'none';
+    window.enterSite = function() {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            // Smooth fade out
+            portal.classList.add('disappearing');
+            
+            // Unlock page scrolling instantly
+            document.body.style.overflow = 'auto';
+            
+            // Set session storage flag so it doesn't pop up again this session
+            sessionStorage.setItem('siteEntered', 'true');
         }
-    }
+    };
+
+    // --- UPDATED SEARCH & CATEGORY FILTERING LOGIC ---
+    window.filterCat = function(cat, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        // SPOTLIGHT VISIBILITY RULE: Show only on 'all' or 'design'
+        const spotlight = document.getElementById('leonardoSpotlight');
+        if (spotlight) {
+            if (cat === 'all' || cat === 'design') {
+                spotlight.style.display = 'block';
+            } else {
+                spotlight.style.display = 'none';
+            }
+        }
 
     const cards = document.querySelectorAll('.tool-card');
     cards.forEach(card => {
