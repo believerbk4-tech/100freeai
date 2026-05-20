@@ -57,9 +57,17 @@
             background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%);
             z-index: 10000; display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; padding: 20px;
+            /* 🚀 Keeps your pristine cubic-bezier timing curve intact */
             transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .disappearing { transform: scale(1.2); opacity: 0; pointer-events: none; visibility: hidden; }
+        
+        /* 🚀 THE FIXED BEST OPTION: Scales down & melts away to look luxury instead of spammy */
+        .disappearing { 
+            transform: scale(0.95); 
+            opacity: 0; 
+            pointer-events: none; 
+            visibility: hidden; 
+        }
 
         .enter-btn { 
             background: var(--primary); color: #ffffff; padding: 20px 60px; 
@@ -801,9 +809,12 @@
             </div>
         </div>
 
-        <div class="tool-card" data-cat="writing">
+       <div class="tool-card" data-cat="writing">
             <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=gocharlie.ai" alt="GoCharlie Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+                <img src="https://img.zapier.com/storage/developer-cli/dae25187e14a1f11e9bf1f2b6bd8e957.png" 
+                     alt="GoCharlie Logo" 
+                     class="tool-logo" 
+                     onerror="this.src='fallback-icon.png'">
             </div>
             <div class="tool-info">
                 <h3>GoCharlie</h3>
@@ -1923,23 +1934,25 @@
             </div>
         </div>
 
-        <div class="tool-card" data-cat="video">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=moovly.com" alt="Moovly Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        <div class="tool-card" data-cat="video"> <div class="tool-logo-container">
+                <img src="https://img.zapier.com/storage/developer-cli/ba948d37eb64b0f907e86895b6c310b8.png" 
+                     alt="Moovly Logo" 
+                     class="tool-logo" 
+                     onerror="this.src='fallback-icon.png'">
             </div>
             <div class="tool-info">
                 <h3>Moovly</h3>
-                <p><strong>Review:</strong> Cloud-based editor for teams. <strong>Pro Tip:</strong> Share a "Media Library" so the whole team uses the same AI assets.</p>
+                <p><strong>Review:</strong> An intuitive online video creation platform. <strong>Pro Tip:</strong> It's Perfect for turning scripts into engaging animated explainer videos quickly.</p>
                 <div class="tool-rating" data-tool="moovly">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.3/5)</span>
+                    <span class="rating-count">(4.4/5)</span>
                 </div>
             </div>
             <div class="tool-action">
                 <a href="https://moovly.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
             </div>
         </div>
-
+    
         <div class="tool-card" data-cat="video">
     <div class="tool-logo-container">
         <img src="https://img.icons8.com/fluent/96/movie-projector.png" alt="Hour One Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/ai.png'">
@@ -2230,8 +2243,10 @@ document.addEventListener('click', function(e) {
 
     const app = initializeApp(firebaseConfig);
 
-    // 🚀 FIX: Force local environment debug mode for App Check to bypass reCAPTCHA error on localhost
-    self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+   // 🚀 FIXED: Automatically enables debug mode on localhost but keeps production console 100% clean
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+    }
 
     const appCheck = initializeAppCheck(app, {
         provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
