@@ -216,6 +216,48 @@
             <span class="star" data-value="5">★</span>
         </div>
     </div>
+</div> <div id="game-container" style="display:none; max-width: 600px; margin: 20px auto; background: #0b0f19; border: 3px solid #4f46e5; border-radius: 12px; padding: 20px; color: white; font-family: sans-serif; text-align: center;">
+    <h2>🚧 CROSSY BROKEN BRIDGE 🚧</h2>
+    
+    <div id="char-select-screen">
+        <h3>CHOOSE YOUR SURVIVOR:</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+            <button class="char-btn" data-char="fahad" style="background:#1e1b4b; border:2px solid #4f46e5; padding:15px; border-radius:8px; color:white; cursor:pointer;">
+                <div style="font-size:1.5rem;">🤖</div>
+                <strong>Fahad Khan</strong><br><small style="color:#a5b4fc;">The Owner of This Site</small>
+            </button>
+            <button class="char-btn" data-char="mahaz" style="background:#1e1b4b; border:2px solid transparent; padding:15px; border-radius:8px; color:white; cursor:pointer;">
+                <div style="font-size:1.5rem;">🐯</div>
+                <strong>Mahaz Khan</strong><br><small style="color:#fbbf24;">The Tiger</small>
+            </button>
+            <button class="char-btn" data-char="fawad" style="background:#1e1b4b; border:2px solid transparent; padding:15px; border-radius:8px; color:white; cursor:pointer;">
+                <div style="font-size:1.5rem;">🐂</div>
+                <strong>Fawad Alam</strong><br><small style="color:#ef4444;">The Red Bull</small>
+            </button>
+            <button class="char-btn" data-char="hamad" style="background:#1e1b4b; border:2px solid transparent; padding:15px; border-radius:8px; color:white; cursor:pointer;">
+                <div style="font-size:1.5rem;">👨‍⚕️</div>
+                <strong>Hamad Ahmad</strong><br><small style="color:#10b981;">The Doctor</small>
+            </button>
+        </div>
+        <button id="start-game-btn" style="background:#4f46e5; color:white; border:none; padding:12px 40px; font-weight:bold; font-size:1.1rem; border-radius:50px; cursor:pointer; width:100%;">START RUN</button>
+    </div>
+
+    <div id="gameplay-screen" style="display: none; position: relative;">
+        <div style="display:flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px;">
+            <div id="game-score">SCORE: 0</div>
+            <div id="selected-title" style="color:#4f46e5;">🤖 Fahad Khan</div>
+        </div>
+        <canvas id="bridgeCanvas" width="400" height="500" style="background: #111827; border: 2px solid #374151; display: block; margin: 0 auto; border-radius: 6px;"></canvas>
+        <p style="font-size:0.85rem; color:#9ca3af; margin-top:5px;">Use Keyboard Arrow Keys or WASD to jump across the broken links!</p>
+    </div>
+
+    <div id="leaderboard-section" style="margin-top: 25px; border-top: 1px solid #374151; padding-top: 15px;">
+        <h3>🏆 LIVE BRIDGE LEADERBOARD</h3>
+        <ol id="leaderboard-list" style="text-align: left; max-width: 350px; margin: 0 auto; padding-left: 20px; color: #e5e7eb;">
+            <li>Loading champions...</li>
+        </ol>
+    </div>
+</div>
 
     <div id="thank-you-msg" style="display:none; font-size: 12px; font-weight: 800; color: #ff69b4; padding: 10px;">
         Thanks for your Vote! 💖
@@ -2305,11 +2347,130 @@ document.addEventListener('click', function(e) {
                     }
                 }, 3000);
 
-            } catch (error) {
+           } catch (error) {
                 console.error("Rating transaction dropped:", error);
             }
         });
     });
+
+    // 🚀 PASTE ALL OF THE JAVASCRIPT GAME LOGIC HERE
+    const gameContainer = document.getElementById('game-container');
+    const canvas = document.getElementById('bridgeCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    const charButtons = document.querySelectorAll('.char-btn');
+    let selectedCharacter = 'fahad';
+    
+    const charMetadata = {
+        fahad: { name: "Fahad Khan", tag: "🤖 Pro Robot", subtitle: "The Owner of This Site", color: "#818cf8" },
+        mahaz: { name: "Mahaz Khan", tag: "🐯 The Tiger", subtitle: "Tiger Elite", color: "#fbbf24" },
+        fawad: { name: "Fawad Alam", tag: "🐂 Red Bull", subtitle: "Bull Energy", color: "#ef4444" },
+        hamad: { name: "Hamad Ahmad", tag: "👨‍⚕️ The Doctor", subtitle: "Medic Chief", color: "#10b981" }
+    };
+
+    charButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            charButtons.forEach(b => b.style.borderColor = 'transparent');
+            btn.style.borderColor = '#4f46e5';
+            selectedCharacter = btn.getAttribute('data-char');
+        });
+    });
+
+    let player = { x: 180, y: 440, size: 35 };
+    let obstacles = [];
+    let brokenLinks = [];
+    let score = 0;
+    let gameInterval = null;
+    let gameActive = false;
+
+    if(gameContainer) gameContainer.style.display = 'block';
+
+    document.getElementById('start-game-btn')?.addEventListener('click', () => {
+        document.getElementById('char-select-screen').style.display = 'none';
+        document.getElementById('gameplay-screen').style.display = 'block';
+        document.getElementById('selected-title').innerText = `${charMetadata[selectedCharacter].tag} (${charMetadata[selectedCharacter].name})`;
+        startGame();
+    });
+
+    function startGame() {
+        score = 0; player.x = 180; player.y = 440; obstacles = []; brokenLinks = []; gameActive = true;
+        for (let i = 0; i < 5; i++) { brokenLinks.push({ x: Math.random() * 320, y: i * 90 + 50, w: 60, h: 25 }); }
+        window.addEventListener('keydown', handleMovement);
+        gameInterval = setInterval(updateGameFrame, 1000 / 30);
+    }
+
+    function handleMovement(e) {
+        if (!gameActive) return;
+        if (e.key === 'ArrowUp' || e.key === 'w') { player.y -= 30; score++; }
+        if (e.key === 'ArrowDown' || e.key === 's') { player.y += 30; }
+        if (e.key === 'ArrowLeft' || e.key === 'a') { player.x -= 25; }
+        if (e.key === 'ArrowRight' || e.key === 'd') { player.x += 25; }
+        document.getElementById('game-score').innerText = `SCORE: ${score}`;
+        if (player.y < 50) {
+            player.y = 440;
+            obstacles.forEach(obs => obs.y += 200);
+            brokenLinks.forEach(hole => hole.y = (Math.random() * 200) + 250);
+        }
+    }
+
+    function updateGameFrame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#374151'; ctx.fillRect(0, 0, 30, canvas.height); ctx.fillRect(370, 0, 30, canvas.height);
+        ctx.fillStyle = '#4b5563'; for(let i = 0; i < canvas.height; i += 40) { ctx.fillRect(35, i, 330, 4); }
+        ctx.fillStyle = '#000000';
+        brokenLinks.forEach(hole => {
+            ctx.fillRect(hole.x, hole.y, hole.w, hole.h);
+            if (player.x > hole.x && player.x < hole.x + hole.w && player.y > hole.y && player.y < hole.y + hole.h) { endGameSession("You fell through a broken plank hole!"); }
+        });
+        if (Math.random() < 0.04) { obstacles.push({ x: -40, y: Math.random() * 300 + 80, speed: (Math.random() * 4) + 3, w: 40, h: 20 }); }
+        ctx.fillStyle = '#f87171';
+        obstacles.forEach((obs, index) => {
+            obs.x += obs.speed; ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+            if (player.x < obs.x + obs.w && player.x + player.size > obs.x && player.y < obs.y + obs.h && player.y + player.size > obs.y) { endGameSession("Hit by a bridge obstacle!"); }
+            if (obs.x > canvas.width) obstacles.splice(index, 1);
+        });
+        let activeMeta = charMetadata[selectedCharacter];
+        ctx.fillStyle = activeMeta.color; ctx.fillRect(player.x, player.y, player.size, player.size);
+        ctx.fillStyle = '#ffffff'; ctx.font = '10px Arial'; ctx.fillText(activeMeta.tag.split(' '), player.x + 12, player.y + 22);
+        ctx.fillStyle = '#94a3b8'; ctx.font = '9px Arial'; ctx.fillText(activeMeta.subtitle, player.x - 20, player.y - 8);
+        if(player.x < 30 || player.x > 340 || player.y > 480) { endGameSession("Stepped into the abyss!"); }
+    }
+
+    async function endGameSession(message) {
+        gameActive = false; clearInterval(gameInterval); window.removeEventListener('keydown', handleMovement);
+        alert(`🚨 GAME OVER: ${message}\nFinal Score: ${score} points!`);
+        const playerHandle = prompt("Enter your name for the leaderboard:");
+        if (playerHandle) {
+            try {
+                const leaderboardRef = ref(db, 'game-leaderboard');
+                await runTransaction(leaderboardRef, (currentData) => {
+                    if (!currentData) currentData = [];
+                    currentData.push({ username: playerHandle, points: score, identityTag: charMetadata[selectedCharacter].tag, timestamp: Date.now() });
+                    currentData.sort((a, b) => b.points - a.points);
+                    return currentData.slice(0, 10);
+                });
+            } catch(err) { console.error("Leaderboard error:", err); }
+        }
+        document.getElementById('gameplay-screen').style.display = 'none';
+        document.getElementById('char-select-screen').style.display = 'block';
+    }
+
+    const scoresDisplayRef = ref(db, 'game-leaderboard');
+    onValue(scoresDisplayRef, (snapshot) => {
+        const boardData = snapshot.val();
+        const listContainer = document.getElementById('leaderboard-list');
+        if (listContainer) {
+            listContainer.innerHTML = '';
+            if (boardData && boardData.length > 0) {
+                boardData.forEach((entry) => {
+                    const rowItem = document.createElement('li');
+                    rowItem.style.marginBottom = '6px';
+                    rowItem.innerHTML = `<strong>${entry.username}</strong> <span style="color:#a5b4fc; font-size:0.85rem;">(as ${entry.identityTag})</span> — <strong>${entry.points} pts</strong>`;
+                    listContainer.appendChild(rowItem);
+                });
+            } else { listContainer.innerHTML = '<li>No operational scores logged yet. Be the first!</li>'; }
+        }
+    });
+
 </script>
 </body>
 </html>
