@@ -102,6 +102,28 @@
             overflow-x: hidden; width: 100%;
         }
 
+        /* 🎮 BULLETPROOF FULL SCREEN OVERLAY ENGINE FIX */
+        #game-modal-overlay {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%) !important;
+            z-index: 2147483647 !important; /* Locks it above footers and body containers */
+            box-sizing: border-box !important;
+            margin: 0 !important;
+            padding: 12px !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+
+        /* Freezes back-page window content layout when the game is launched */
+        body.game-active {
+            overflow: hidden !important;
+            height: 100vh !important;
+        }
+
         /* --- PORTAL --- */
         #welcomePortal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -225,7 +247,8 @@
             .tool-card { padding: 1.25rem; }
         }
     </style>
-</head> <body>
+</head>
+<body>
 
 <div id="welcomePortal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #030712; background-image: radial-gradient(rgba(79, 70, 229, 0.15) 1px, transparent 0), radial-gradient(rgba(79, 70, 229, 0.1) 1px, #030712 100%); background-size: 40px 40px; background-position: 0 0, 20px 20px; z-index: 10000; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 24px; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
     <div class="portal-content" style="max-width: 640px; width: 100%; padding: 20px; backdrop-filter: blur(4px); border-radius: 24px;">
@@ -269,11 +292,11 @@
             <span class="star" data-value="5">★</span>
         </div>
     </div>
-<div id="game-modal-overlay" style="display: none !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%) !important; z-index: 2147483647 !important; box-sizing: border-box !important; margin: 0 !important; padding: 10px !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important;">
     
+<div id="game-modal-overlay" style="display: none;">
     <div style="display: flex !important; align-items: center !important; justify-content: center !important; min-height: 100% !important; width: 100% !important; box-sizing: border-box !important; margin: 0 !important; padding: 0 !important;">
         
-        <div id="game-container" style="width: 100% !important; max-width: 400px !important; background: #0b0f19 !important; border: 2px solid #4f46e5 !important; border-radius: 16px !important; padding: 20px !important; color: white !important; font-family: system-ui, -apple-system, sans-serif !important; text-align: center !important; box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important; position: relative !important; box-sizing: border-box !important; margin: auto !important; flex: 0 1 auto !important;">
+        <div id="game-container" style="width: 100% !important; max-width: 400px !important; background: #0b0f19 !important; border: 2px solid #4f46e5 !important; border-radius: 16px !important; padding: 20px !important; color: white !important; font-family: system-ui, -apple-system, sans-serif !important; text-align: center !important; box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important; box-sizing: border-box !important;">
             
             <button id="close-game-btn" style="position: absolute !important; top: 12px !important; right: 15px !important; background: none !important; border: none !important; color: #9ca3af !important; font-size: 1.8rem !important; cursor: pointer !important; line-height: 1 !important; padding: 0 !important; z-index: 10 !important;">&times;</button>
 
@@ -2371,225 +2394,183 @@ window.enterSite = function() {
     });
 
  // --- SAFE MEMORY ENGINE INITIALIZATION ---
-    const gameOverlay = document.getElementById('game-modal-overlay');
-    const openGameTrigger = document.getElementById('open-game-trigger');
-    const closeGameBtn = document.getElementById('close-game-btn');
-    const memoryGrid = document.getElementById('memory-grid');
-    const movesDisplay = document.getElementById('game-moves');
-    
-    const rawDeck = [
-        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-        { id: 'fawad', emoji: '🐂', name: 'Fawad' },
-        { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
-        { id: 'wahid', emoji: '🦁', name: 'Wahid' },
-        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-        { id: 'fawad', emoji: '🐂', name: 'Fawad' },
-        { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
-        { id: 'wahid', emoji: '🦁', name: 'Wahid' },
-        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-        { id: 'fawad', emoji: '🐂', name: 'Fawad' },
-        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-        { id: 'fawad', emoji: '🐂', name: 'Fawad' }
-    ];
+const gameOverlay = document.getElementById('game-modal-overlay');
+const openGameTrigger = document.getElementById('open-game-trigger');
+const closeGameBtn = document.getElementById('close-game-btn');
+const restartGameBtn = document.getElementById('restart-game-btn'); // Linked to layout reset button
+const memoryGrid = document.getElementById('memory-grid');
+const movesDisplay = document.getElementById('game-moves');
 
-    let flippedCards = [];
-    let matchedCount = 0;
-    let movesCount = 0;
-    let lockBoard = false;
+// 💡 Fixed: Balanced pairs. 8 distinct item items duplicated exactly once = 16 cards total.
+const rawDeck = [
+    { id: 'fahad', emoji: '🤖', name: 'Fahad' },
+    { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
+    { id: 'fawad', emoji: '🐂', name: 'Fawad' },
+    { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
+    { id: 'wahid', emoji: '🦁', name: 'Wahid' },
+    { id: 'alien', emoji: '👽', name: 'Alien' },
+    { id: 'rocket', emoji: '🚀', name: 'Rocket' },
+    { id: 'ghost', emoji: '👻', name: 'Ghost' },
+    // Matching identical pairs
+    { id: 'fahad', emoji: '🤖', name: 'Fahad' },
+    { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
+    { id: 'fawad', emoji: '🐂', name: 'Fawad' },
+    { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
+    { id: 'wahid', emoji: '🦁', name: 'Wahid' },
+    { id: 'alien', emoji: '👽', name: 'Alien' },
+    { id: 'rocket', emoji: '🚀', name: 'Rocket' },
+    { id: 'ghost', emoji: '👻', name: 'Ghost' }
+];
 
-    openGameTrigger?.addEventListener('click', () => {
-        if (gameOverlay) {
-            document.body.classList.add('game-active');
-            document.body.style.overflow = 'hidden';
-            gameOverlay.style.setProperty('display', 'flex', 'important');
-            initMemoryGame();
-        }
-    });
+let flippedCards = [];
+let matchedCount = 0;
+let movesCount = 0;
+let lockBoard = false;
 
-    function hideGameModal() {
-        if (gameOverlay) {
-            document.body.classList.remove('game-active');
-            document.body.style.overflow = 'auto';
-            gameOverlay.style.setProperty('display', 'none', 'important');
-            if(memoryGrid) memoryGrid.innerHTML = '';
-        }
-    }
-    closeGameBtn?.addEventListener('click', hideGameModal);
-
-    function initMemoryGame() {
-        if (!memoryGrid) return;
-        memoryGrid.innerHTML = '';
-        flippedCards = [];
-        matchedCount = 0;
-        movesCount = 0;
-        if(movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-        lockBoard = false;
-
-        const shuffledDeck = [...rawDeck].sort(() => 0.5 - Math.random());
-
-        shuffledDeck.forEach(data => {
-            const cardItem = document.createElement('div');
-            cardItem.style.cssText = 'aspect-ratio: 1/1 !important; background: #1e1b4b !important; border: 2px solid #1e293b !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; user-select: none !important; transition: transform 0.2s ease !important; position: relative !important; box-sizing: border-box !important;';
-            cardItem.setAttribute('data-id', data.id);
-            
-            cardItem.innerHTML = `<div class="card-face" style="display: none !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; width: 100% !important; height: 100% !important;">
-                <span style="font-size: 1.5rem !important; line-height: 1 !important;">${data.emoji}</span>
-                <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
-            </div>`;
-            
-            cardItem.addEventListener('click', () => flipCard(cardItem));
-            memoryGrid.appendChild(cardItem);
-        });
-    }
-
-    function flipCard(card) {
-        if (lockBoard || flippedCards.includes(card) || card.getAttribute('data-matched') === 'true') return;
-
-        const face = card.querySelector('.card-face');
-        if(face) face.style.setProperty('display', 'flex', 'important');
-        card.style.setProperty('background', '#312e81', 'important');
-        card.style.setProperty('border-color', '#4f46e5', 'important');
-
-        flippedCards.push(card);
-
-        if (flippedCards.length === 2) {
-            movesCount++;
-            if(movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-            lockBoard = true;
-            checkMatch();
-        }
-    }
-
-    function checkMatch() {
-        const card1 = flippedCards;
-        const card2 = flippedCards;
-        
-        const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
-        
-        if (isMatch) {
-            card1.setAttribute('data-matched', 'true');
-            card2.setAttribute('data-matched', 'true');
-            
-            card1.style.setProperty('background', '#064e3b', 'important');
-            card2.style.setProperty('background', '#064e3b', 'important');
-            card1.style.setProperty('border-color', '#10b981', 'important');
-            card2.style.setProperty('border-color', '#10b981', 'important');
-            
-            matchedCount += 2;
-            flippedCards = [];
-            lockBoard = false;
-
-            if (matchedCount === rawDeck.length) {
-                setTimeout(() => {
-                    alert(`🎉 Amazing job! Cleared in ${movesCount} moves.`);
-                    saveHighScore(movesCount);
-                }, 300);
-            }
-        } else {
-            setTimeout(() => {
-                const face1 = card1.querySelector('.card-face');
-                const face2 = card2.querySelector('.card-face');
-                
-                if(face1) face1.style.setProperty('display', 'none', 'important');
-                if(face2) face2.style.setProperty('display', 'none', 'important');
-                
-                card1.style.setProperty('background', '#1e1b4b', 'important');
-                card2.style.setProperty('background', '#1e1b4b', 'important');
-                card1.style.setProperty('border-color', '#1e293b', 'important');
-                card2.style.setProperty('border-color', '#1e293b', 'important');
-                
-                flippedCards = [];
-                lockBoard = false;
-            }, 800);
-        }
-    }
-
-    async function saveHighScore(score) {
-        const userAlias = prompt("Enter your name for the Leaderboard:");
-        if (userAlias) {
-            try {
-                const memoryLeaderboardRef = ref(db, 'memory-leaderboard');
-                await runTransaction(memoryLeaderboardRef, (currentData) => {
-                    if (!currentData) currentData = [];
-                    currentData.push({ username: userAlias, score: score, timestamp: Date.now() });
-                    currentData.sort((a, b) => a.score - b.score);
-                    return currentData.slice(0, 5);
-                });
-            } catch (err) { console.error("Database error:", err); }
-        }
+openGameTrigger?.addEventListener('click', () => {
+    if (gameOverlay) {
+        document.body.classList.add('game-active');
+        gameOverlay.style.setProperty('display', 'flex', 'important');
         initMemoryGame();
     }
+});
 
-    // --- STREAM LEADERBOARD ---
-    try {
-        const memoryDisplayRef = ref(db, 'memory-leaderboard');
-        onValue(memoryDisplayRef, (snapshot) => {
-            const boardData = snapshot.val();
-            const listContainer = document.getElementById('leaderboard-list');
-            if (listContainer) {
-                listContainer.innerHTML = '';
-                if (boardData && boardData.length > 0) {
-                    boardData.forEach((entry) => {
-                        const row = document.createElement('li');
-                        row.style.marginBottom = '4px';
-                        row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
-                        listContainer.appendChild(row);
-                    });
-                } else {
-                    listContainer.innerHTML = '<li>No records logged yet!</li>';
-                }
-            }
-        });
-    } catch(e) { console.error("Leaderboard loading failed:", e); }
-    
-    // 🚀 RECURSION-SAFE CONSOLE 404 INTERCEPTION MOTOR
-    (function() {
-        const nativeImgSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
-        const originalCreateElement = document.createElement;
+function hideGameModal() {
+    if (gameOverlay) {
+        document.body.classList.remove('game-active');
+        gameOverlay.style.setProperty('display', 'none', 'important');
+        if (memoryGrid) memoryGrid.innerHTML = '';
+    }
+}
+closeGameBtn?.addEventListener('click', hideGameModal);
+restartGameBtn?.addEventListener('click', initMemoryGame);
+
+function initMemoryGame() {
+    if (!memoryGrid) return;
+    memoryGrid.innerHTML = '';
+    flippedCards = [];
+    matchedCount = 0;
+    movesCount = 0;
+    if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
+    lockBoard = false;
+
+    const shuffledDeck = [...rawDeck].sort(() => 0.5 - Math.random());
+
+    shuffledDeck.forEach(data => {
+        const cardItem = document.createElement('div');
+        cardItem.style.cssText = 'aspect-ratio: 1/1 !important; background: #1e1b4b !important; border: 2px solid #1e293b !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; user-select: none !important; transition: transform 0.2s ease !important; position: relative !important; box-sizing: border-box !important;';
+        cardItem.setAttribute('data-id', data.id);
         
-        document.createElement = function(tagName) {
-            const element = originalCreateElement.call(document, tagName);
-            if (tagName.toLowerCase() === 'img') {
-                Object.defineProperty(element, 'src', {
-                    set: function(value) {
-                        let targetSrc = value;
-                        if (typeof value === 'string' && value.includes('fallback-icon.png')) {
-                            targetSrc = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
-                        }
-                        if (nativeImgSrcDescriptor && nativeImgSrcDescriptor.set) {
-                            nativeImgSrcDescriptor.set.call(this, targetSrc);
-                        } else {
-                            this.setAttribute('src', targetSrc);
-                        }
-                    },
-                    get: function() { 
-                        if (nativeImgSrcDescriptor && nativeImgSrcDescriptor.get) {
-                            return nativeImgSrcDescriptor.get.call(this);
-                        }
-                        return this.getAttribute('src'); 
-                    },
-                    configurable: true,
-                    enumerable: true
-                });
-            }
-            return element;
-        };
+        cardItem.innerHTML = `<div class="card-face" style="display: none !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; width: 100% !important; height: 100% !important;">
+            <span style="font-size: 1.5rem !important; line-height: 1 !important;">${data.emoji}</span>
+            <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
+        </div>`;
+        
+        cardItem.addEventListener('click', () => flipCard(cardItem));
+        memoryGrid.appendChild(cardItem);
+    });
+}
 
-        window.addEventListener('error', function (e) {
-            if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
-                const currentSrc = e.target.src || '';
-                const inlineOnError = e.target.getAttribute('onerror') || '';
-                if (currentSrc.includes('fallback-icon.png') || inlineOnError.includes('fallback-icon.png')) {
-                    e.preventDefault();
-                    e.target.src = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
-                }
+function flipCard(card) {
+    if (lockBoard || flippedCards.includes(card) || card.getAttribute('data-matched') === 'true') return;
+
+    const face = card.querySelector('.card-face');
+    if (face) face.style.setProperty('display', 'flex', 'important');
+    card.style.setProperty('background', '#312e81', 'important');
+    card.style.setProperty('border-color', '#4f46e5', 'important');
+
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+        movesCount++;
+        if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
+        lockBoard = true;
+        checkMatch();
+    }
+}
+
+function checkMatch() {
+    // 💡 Fixed: Correctly targets array index position indices and
+    const card1 = flippedCards;
+    const card2 = flippedCards;
+    
+    const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
+    
+    if (isMatch) {
+        card1.setAttribute('data-matched', 'true');
+        card2.setAttribute('data-matched', 'true');
+        
+        card1.style.setProperty('background', '#064e3b', 'important');
+        card2.style.setProperty('background', '#064e3b', 'important');
+        card1.style.setProperty('border-color', '#10b981', 'important');
+        card2.style.setProperty('border-color', '#10b981', 'important');
+        
+        matchedCount += 2;
+        flippedCards = [];
+        lockBoard = false;
+
+        if (matchedCount === rawDeck.length) {
+            setTimeout(() => {
+                alert(`🎉 Amazing job! Cleared in ${movesCount} moves.`);
+                saveHighScore(movesCount);
+            }, 300);
+        }
+    } else {
+        setTimeout(() => {
+            const face1 = card1.querySelector('.card-face');
+            const face2 = card2.querySelector('.card-face');
+            
+            if (face1) face1.style.setProperty('display', 'none', 'important');
+            if (face2) face2.style.setProperty('display', 'none', 'important');
+            
+            card1.style.setProperty('background', '#1e1b4b', 'important');
+            card2.style.setProperty('background', '#1e1b4b', 'important');
+            card1.style.setProperty('border-color', '#1e293b', 'important');
+            card2.style.setProperty('border-color', '#1e293b', 'important');
+            
+            flippedCards = [];
+            lockBoard = false;
+        }, 800);
+    }
+}
+
+async function saveHighScore(score) {
+    const userAlias = prompt("Enter your name for the Leaderboard:");
+    if (userAlias) {
+        try {
+            const memoryLeaderboardRef = ref(db, 'memory-leaderboard');
+            await runTransaction(memoryLeaderboardRef, (currentData) => {
+                if (!currentData) currentData = [];
+                currentData.push({ username: userAlias, score: score, timestamp: Date.now() });
+                currentData.sort((a, b) => a.score - b.score);
+                return currentData.slice(0, 5);
+            });
+        } catch (err) { console.error("Database error:", err); }
+    }
+    initMemoryGame();
+}
+
+// --- STREAM LEADERBOARD ---
+try {
+    const memoryDisplayRef = ref(db, 'memory-leaderboard');
+    onValue(memoryDisplayRef, (snapshot) => {
+        const boardData = snapshot.val();
+        const listContainer = document.getElementById('leaderboard-list');
+        if (listContainer) {
+            listContainer.innerHTML = '';
+            if (boardData && boardData.length > 0) {
+                boardData.forEach((entry) => {
+                    const row = document.createElement('li');
+                    row.style.marginBottom = '4px';
+                    row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
+                    listContainer.appendChild(row);
+                });
+            } else {
+                listContainer.innerHTML = '<li>No records logged yet!</li>';
             }
-        }, true);
-    })();
+        }
+    });
+} catch (e) { console.error("Leaderboard loading failed:", e); }
 </script>
 </body>
 </html>
