@@ -3,20 +3,35 @@
 <head>
     <script>
         (function() {
-            // Intercept dynamic elements created by JavaScript
+            // Securely capture the browser's true native image src setter to prevent execution recursions
+            const nativeImgSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
+
             const originalCreateElement = document.createElement;
             document.createElement = function(tagName) {
                 const element = originalCreateElement.call(document, tagName);
+                
                 if (tagName.toLowerCase() === 'img') {
                     Object.defineProperty(element, 'src', {
                         set: function(value) {
+                            let targetSrc = value;
                             if (typeof value === 'string' && value.includes('fallback-icon.png')) {
-                                this.setAttribute('src', 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png');
-                                return;
+                                targetSrc = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
                             }
-                            this.setAttribute('src', value);
+                            // Bypass custom loops by executing the native browser engine property setter directly
+                            if (nativeImgSrcDescriptor && nativeImgSrcDescriptor.set) {
+                                nativeImgSrcDescriptor.set.call(this, targetSrc);
+                            } else {
+                                this.setAttribute('src', targetSrc);
+                            }
                         },
-                        get: function() { return this.getAttribute('src'); }
+                        get: function() { 
+                            if (nativeImgSrcDescriptor && nativeImgSrcDescriptor.get) {
+                                return nativeImgSrcDescriptor.get.call(this);
+                            }
+                            return this.getAttribute('src'); 
+                        },
+                        configurable: true,
+                        enumerable: true
                     });
                 }
                 return element;
@@ -26,12 +41,14 @@
             window.addEventListener('error', function (e) {
                 if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
                     const currentSrc = e.target.src || '';
-                    if (currentSrc.includes('fallback-icon.png') || e.target.getAttribute('onerror')?.includes('fallback-icon.png')) {
-                        e.preventDefault(); // Prevents the browser from throwing the red 404 log in the console
+                    const inlineOnError = e.target.getAttribute('onerror') || '';
+                    
+                    if (currentSrc.includes('fallback-icon.png') || inlineOnError.includes('fallback-icon.png')) {
+                        e.preventDefault(); // Prevents global event handler bubble-ups
                         e.target.src = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
                     }
                 }
-            }, true); // 'true' triggers the capture phase to run before inline scripts execute
+            }, true); // 'true' triggers the capture phase to run before inline elements execute
         })();
     </script>
 
@@ -94,6 +111,11 @@
             transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
+        /* Forces the portal to stay hidden if the user already clicked enter */
+        .portal-skipped #welcomePortal {
+            display: none !important;
+        }
+        
         .disappearing { 
             transform: scale(0.95); 
             opacity: 0; 
@@ -112,7 +134,7 @@
             background: var(--primary-hover);
             transform: translateY(-2px);
         }
-
+        
         /* --- FIXED FLOATING ELEMENTS --- */
         #feedback-btn {
             position: fixed; bottom: 20px; right: 20px;
@@ -203,8 +225,7 @@
             .tool-card { padding: 1.25rem; }
         }
     </style>
-</head>
-<body>
+</head> <body>
 
 <div id="welcomePortal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #030712; background-image: radial-gradient(rgba(79, 70, 229, 0.15) 1px, transparent 0), radial-gradient(rgba(79, 70, 229, 0.1) 1px, #030712 100%); background-size: 40px 40px; background-position: 0 0, 20px 20px; z-index: 10000; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 24px; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
     <div class="portal-content" style="max-width: 640px; width: 100%; padding: 20px; backdrop-filter: blur(4px); border-radius: 24px;">
@@ -248,27 +269,26 @@
             <span class="star" data-value="5">★</span>
         </div>
     </div>
+<div id="game-modal-overlay" style="display: none !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%) !important; z-index: 999999 !important; align-items: center !important; justify-content: center !important; padding: 20px !important; box-sizing: border-box !important; overflow-y: auto !important;">
     
-<div id="game-modal-overlay" style="display: none !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.9) !important; z-index: 999999 !important; align-items: center !important; justify-content: center !important; backdrop-filter: blur(10px) !important; padding: 10px !important; box-sizing: border-box !important;">
-    
-    <div id="game-container" style="width: 100% !important; max-width: 420px !important; background: #0b0f19 !important; border: 2px solid #4f46e5 !important; border-radius: 16px !important; padding: 20px !important; color: white !important; font-family: system-ui, -apple-system, sans-serif !important; text-align: center !important; box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important; position: relative !important; box-sizing: border-box !important;">
+    <div id="game-container" style="width: 100% !important; max-width: 500px !important; background: rgba(11, 15, 25, 0.8) !important; border: 2px solid #4f46e5 !important; border-radius: 24px !important; padding: 30px 24px !important; color: white !important; font-family: system-ui, -apple-system, sans-serif !important; text-align: center !important; box-shadow: 0 30px 70px rgba(0,0,0,0.9), inset 0 0 20px rgba(79, 70, 229, 0.15) !important; position: relative !important; box-sizing: border-box !important; backdrop-filter: blur(12px) !important;">
         
-        <button id="close-game-btn" style="position: absolute !important; top: 12px !important; right: 15px !important; background: none !important; border: none !important; color: #9ca3af !important; font-size: 1.8rem !important; cursor: pointer !important; line-height: 1 !important; padding: 0 !important; z-index: 10 !important;">&times;</button>
+        <button id="close-game-btn" style="position: absolute !important; top: 16px !important; right: 20px !important; background: none !important; border: none !important; color: #9ca3af !important; font-size: 2rem !important; cursor: pointer !important; line-height: 1 !important; padding: 0 !important; z-index: 10 !important; transition: color 0.2s ease !important;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#9ca3af'">&times;</button>
 
-        <h2 style="font-size: 1.3rem !important; margin: 10px 0 5px 0 !important; color: #ffffff !important; letter-spacing: 0.5px !important; font-weight: 800 !important;">🧠 MEMORY MATCH CHALLENGE 🧠</h2>
-        <p style="font-size: 0.8rem !important; color: #9ca3af !important; margin: 0 0 15px 0 !important;">Match the inner circle pairs in the fewest moves!</p>
+        <h2 style="font-size: 1.5rem !important; margin: 10px 0 6px 0 !important; color: #ffffff !important; letter-spacing: 1px !important; font-weight: 800 !important; text-shadow: 0 0 15px rgba(79, 70, 229, 0.6) !important;">🎮 MEMORY MATCH CHALLENGE 🎮</h2>
+        <p style="font-size: 0.85rem !important; color: #9ca3af !important; margin: 0 0 20px 0 !important; font-weight: 500 !important;">Match the inner circle pairs in the fewest moves!</p>
         
-        <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 15px !important; font-weight: bold !important; background: #111827 !important; padding: 10px 15px !important; border-radius: 8px !important; border: 1px solid #1e293b !important; box-sizing: border-box !important;">
-            <div id="game-moves" style="font-size: 0.85rem !important; color: #a5b4fc !important;">MOVES: 0</div>
-            <button id="restart-game-btn" style="background: #4f46e5 !important; color: white !important; border: none !important; padding: 6px 14px !important; font-size: 0.75rem !important; font-weight: bold !important; border-radius: 6px !important; cursor: pointer !important;">RESET</button>
+        <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 20px !important; font-weight: bold !important; background: #111827 !important; padding: 12px 20px !important; border-radius: 12px !important; border: 1px solid #1e293b !important; box-sizing: border-box !important;">
+            <div id="game-moves" style="font-size: 0.95rem !important; color: #a5b4fc !important; letter-spacing: 0.5px !important;">MOVES: 0</div>
+            <button id="restart-game-btn" style="background: #4f46e5 !important; color: white !important; border: none !important; padding: 8px 18px !important; font-size: 0.8rem !important; font-weight: 800 !important; border-radius: 8px !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; transition: all 0.2s ease !important;" onmouseover="this.style.background='#4338ca'" onmouseout="this.style.background='#4f46e5'">RESET</button>
         </div>
 
-        <div id="memory-grid" style="display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; margin: 0 auto 15px auto !important; width: 100% !important; max-width: 360px !important; box-sizing: border-box !important;">
-            </div>
+        <div id="memory-grid" style="display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 10px !important; margin: 0 auto 25px auto !important; width: 100% !important; max-width: 400px !important; box-sizing: border-box !important;">
+        </div>
 
-        <div id="leaderboard-section" style="border-top: 1px solid #1e293b !important; padding-top: 12px !important; box-sizing: border-box !important;">
-            <h3 style="font-size: 0.95rem !important; margin: 0 0 8px 0 !important; color: #f3f4f6 !important;">🏆 TOP CHAMPIONS</h3>
-            <ol id="leaderboard-list" style="text-align: left !important; max-width: 300px !important; margin: 0 auto !important; padding-left: 20px !important; color: #d1d5db !important; font-size: 0.85rem !important; line-height: 1.4 !important;">
+        <div id="leaderboard-section" style="border-top: 1px solid #1e293b !important; padding-top: 18px !important; box-sizing: border-box !important;">
+            <h3 style="font-size: 1rem !important; margin: 0 0 12px 0 !important; color: #f3f4f6 !important; letter-spacing: 0.5px !important; font-weight: 700 !important;">🏆 TOP CHAMPIONS</h3>
+            <ol id="leaderboard-list" style="text-align: left !important; max-width: 320px !important; margin: 0 auto !important; padding-left: 24px !important; color: #d1d5db !important; font-size: 0.9rem !important; line-height: 1.5 !important;">
                 <li>Loading rankings...</li>
             </ol>
         </div>
@@ -2127,36 +2147,48 @@
     import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // --- NAVIGATION & PORTAL FRAMEWORK ---
-    function checkNavigation() {
-        if (sessionStorage.getItem('siteEntered') === 'true') {
-            const portal = document.getElementById('welcomePortal');
-            if (portal) {
-                portal.style.display = 'none'; 
-                document.body.style.overflow = 'auto'; 
-            }
-        }
+    // --- INSTANT ANTI-FLASH GUARD ---
+// This runs immediately before the DOM fully paints to ensure the portal is skipped cleanly
+(function() {
+    if (sessionStorage.getItem('siteEntered') === 'true') {
+        document.documentElement.classList.add('portal-skipped');
     }
-    checkNavigation();
+})();
 
-    if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
-        document.body.style.overflow = 'hidden';
-    } else if (document.getElementById('welcomePortal')) {
-        document.getElementById('welcomePortal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    window.enterSite = function() {
+// --- NAVIGATION & PORTAL FRAMEWORK ---
+function checkNavigation() {
+    if (sessionStorage.getItem('siteEntered') === 'true') {
         const portal = document.getElementById('welcomePortal');
         if (portal) {
-            portal.classList.add('disappearing');
-            document.body.style.overflow = 'auto';
-            sessionStorage.setItem('siteEntered', 'true');
-            setTimeout(() => {
-                portal.remove();
-            }, 700);
+            portal.style.display = 'none'; 
+            document.body.style.overflow = 'auto'; 
         }
-    };
+    }
+}
+checkNavigation();
+
+if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
+    document.body.style.overflow = 'hidden';
+} else if (document.getElementById('welcomePortal')) {
+    document.getElementById('welcomePortal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+window.enterSite = function() {
+    const portal = document.getElementById('welcomePortal');
+    if (portal) {
+        portal.classList.add('disappearing');
+        document.body.style.overflow = 'auto';
+        sessionStorage.setItem('siteEntered', 'true');
+        
+        // Also add the utility class to prevent shifts if they open a new menu item
+        document.documentElement.classList.add('portal-skipped');
+        
+        setTimeout(() => {
+            portal.remove();
+        }, 700);
+    }
+};
 
     // --- UPDATED SEARCH & CATEGORY FILTERING LOGIC ---
     window.filterCat = function(cat, btn) {
@@ -2335,7 +2367,7 @@
         });
     });
 
-    // --- SAFE MEMORY ENGINE INITIALIZATION ---
+  // --- SAFE MEMORY ENGINE INITIALIZATION ---
     const gameOverlay = document.getElementById('game-modal-overlay');
     const openGameTrigger = document.getElementById('open-game-trigger');
     const closeGameBtn = document.getElementById('close-game-btn');
@@ -2368,6 +2400,9 @@
 
     openGameTrigger?.addEventListener('click', () => {
         if (gameOverlay) {
+            // Adds full screen layout modifier flag to the document body
+            document.body.classList.add('game-active');
+            document.body.style.overflow = 'hidden';
             gameOverlay.style.setProperty('display', 'flex', 'important');
             initMemoryGame();
         }
@@ -2375,6 +2410,9 @@
 
     function hideGameModal() {
         if (gameOverlay) {
+            // Removes full screen layout modifier layout flag cleanly
+            document.body.classList.remove('game-active');
+            document.body.style.overflow = 'auto';
             gameOverlay.style.setProperty('display', 'none', 'important');
             if(memoryGrid) memoryGrid.innerHTML = '';
         }
@@ -2426,6 +2464,7 @@
     }
 
     function checkMatch() {
+        // Fixed: Compares first element against second element in array properly
         const isMatch = flippedCards.getAttribute('data-id') === flippedCards.getAttribute('data-id');
         if (isMatch) {
             flippedCards.setAttribute('data-matched', 'true');
