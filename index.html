@@ -2217,7 +2217,7 @@ document.addEventListener('click', function(e) {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
 
-    // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
+   // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
     const firebaseConfig = {
         apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
         authDomain: "freeai-ratings.firebaseapp.com",
@@ -2229,6 +2229,9 @@ document.addEventListener('click', function(e) {
     };
 
     const app = initializeApp(firebaseConfig);
+
+    // 🚀 FIX: Force local environment debug mode for App Check to bypass reCAPTCHA error on localhost
+    self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 
     const appCheck = initializeAppCheck(app, {
         provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
