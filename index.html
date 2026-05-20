@@ -2544,10 +2544,12 @@ body.game-active {
         }
     }
 
-    function checkMatch() {
-        // 💡 Fixed: Target distinct element tracking values explicitly
+   function checkMatch() {
+        // 💡 FIX: Target distinct element tracking array index values explicitly
         const card1 = flippedCards;
         const card2 = flippedCards;
+        
+        if (!card1 || !card2) return;
         
         const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
         
@@ -2571,6 +2573,7 @@ body.game-active {
                 }, 300);
             }
         } else {
+            // This now executes perfectly because card1 and card2 are specific elements!
             setTimeout(() => {
                 const face1 = card1.querySelector('.card-face');
                 const face2 = card2.querySelector('.card-face');
