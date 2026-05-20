@@ -103,59 +103,125 @@
         }
 
         /* 🎮 BULLETPROOF FULL SCREEN OVERLAY ENGINE FIX */
-        #game-modal-overlay {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%) !important;
-            z-index: 2147483647 !important; /* Locks it above footers and body containers */
-            box-sizing: border-box !important;
-            margin: 0 !important;
-            padding: 12px !important;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch !important;
-        }
+#game-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    /* Changed from radial-gradient to translucent backdrop so the underlying site looks blurred and beautiful */
+    background: rgba(11, 15, 25, 0.85) !important; 
+    backdrop-filter: blur(12px) !important; /* Premium blur effect */
+    -webkit-backdrop-filter: blur(12px) !important;
+    z-index: 2147483647 !important; /* Locks it above everything else on screen */
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
 
-        /* Freezes back-page window content layout when the game is launched */
-        body.game-active {
-            overflow: hidden !important;
-            height: 100vh !important;
-        }
-
-        /* --- PORTAL --- */
-        #welcomePortal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%);
-            z-index: 10000; display: flex; align-items: center; justify-content: center;
-            text-align: center; color: white; padding: 20px;
-            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* Freezes back-page window content layout when the game is launched */
+body.game-active {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
         
-        /* Forces the portal to stay hidden if the user already clicked enter */
-        .portal-skipped #welcomePortal {
-            display: none !important;
-        }
-        
-        .disappearing { 
-            transform: scale(0.95); 
-            opacity: 0; 
-            pointer-events: none; 
-            visibility: hidden; 
-        }
+       /* --- PORTAL BASE --- */
+#welcomePortal {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    z-index: 10000; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    text-align: center; 
+    color: white; 
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
 
-        .enter-btn { 
-            background: var(--primary); color: #ffffff; padding: 20px 60px; 
-            border-radius: 50px; font-size: 1.1rem; font-weight: 800; 
-            border: none; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-        .enter-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-        }
+/* --- THE SPLIT WIPE MOTOR --- */
+/* We turn the background into two halves that slide away */
+#welcomePortal::before,
+#welcomePortal::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%);
+    z-index: -1;
+    transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+/* Top half background position */
+#welcomePortal::before {
+    top: 0;
+    background-position: top center;
+}
+
+/* Bottom half background position */
+#welcomePortal::after {
+    bottom: 0;
+    background-position: bottom center;
+}
+
+/* --- INNER CONTENT ANIMATION --- */
+/* Smoothly fades the text content and buttons from the center */
+#welcomePortal > div {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* --- THE SPLIT TRIGGER WIPE EFFECT --- */
+.disappearing::before {
+    transform: translateY(-100%); /* Slides top half up */
+}
+
+.disappearing::after {
+    transform: translateY(100%); /* Slides bottom half down */
+}
+
+.disappearing > div {
+    opacity: 0;
+    transform: scale(0.9); /* Subtle shrinking effect as it fades */
+}
+
+.disappearing { 
+    pointer-events: none; 
+    visibility: hidden; 
+    /* Delays visibility toggling until slide animation finishes */
+    transition: visibility 0.7s step-end; 
+}
+
+/* Forces the portal to stay hidden if the user already clicked enter */
+.portal-skipped #welcomePortal {
+    display: none !important;
+}
+
+/* --- BUTTON STYLING --- */
+.enter-btn { 
+    background: var(--primary); 
+    color: #ffffff; 
+    padding: 20px 60px; 
+    border-radius: 50px; 
+    font-size: 1.1rem; 
+    font-weight: 800; 
+    border: none; 
+    cursor: pointer; 
+    text-transform: uppercase;
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.enter-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
         
         /* --- FIXED FLOATING ELEMENTS --- */
         #feedback-btn {
@@ -2140,55 +2206,79 @@
     <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
 </footer>
 
+<div id="game-modal-overlay" style="display: none;">
+    <div style="display: flex !important; align-items: center !important; justify-content: center !important; min-height: 100% !important; width: 100% !important; padding: 20px !important; box-sizing: border-box !important;">
+        
+        <div id="game-container" style="width: 100% !important; max-width: 400px !important; background: #0b0f19 !important; border: 2px solid #4f46e5 !important; border-radius: 16px !important; padding: 20px !important; color: white !important; font-family: system-ui, sans-serif !important; text-align: center; position: relative !important; box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important; box-sizing: border-box !important;">
+            
+            <button id="close-game-btn" style="position: absolute !important; top: 12px !important; right: 15px !important; background: none !important; border: none !important; color: #9ca3af !important; font-size: 1.8rem !important; cursor: pointer !important; line-height: 1 !important; padding: 0 !important;">&times;</button>
+
+            <h2 style="font-size: 1.2rem !important; margin: 10px 0 5px 0 !important; font-weight: 800 !important;">🧠 MEMORY MATCH CHALLENGE 🧠</h2>
+            <p style="font-size: 0.8rem !important; color: #9ca3af !important; margin: 0 0 15px 0 !important;">Match the inner circle pairs in the fewest moves!</p>
+            
+            <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 15px !important; background: #111827 !important; padding: 10px 15px !important; border-radius: 8px !important; border: 1px solid #1e293b !important; box-sizing: border-box !important;">
+                <div id="game-moves" style="font-size: 0.85rem !important; color: #a5b4fc !important; font-weight: bold !important;">MOVES: 0</div>
+                <button id="restart-game-btn" style="background: #4f46e5 !important; color: white !important; border: none !important; padding: 6px 14px !important; font-size: 0.75rem !important; font-weight: bold !important; border-radius: 6px !important; cursor: pointer !important;">RESET</button>
+            </div>
+
+            <div id="memory-grid" style="display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; margin: 0 auto 15px auto !important; width: 100% !important; box-sizing: border-box !important;"></div>
+
+            <div id="leaderboard-section" style="border-top: 1px solid #1e293b !important; padding-top: 12px !important; box-sizing: border-box !important;">
+                <h3 style="font-size: 0.9rem !important; margin: 0 0 8px 0 !important; color: #f3f4f6 !important;">🏆 TOP CHAMPIONS</h3>
+                <ol id="leaderboard-list" style="text-align: left !important; max-width: 280px !important; margin: 0 auto !important; padding-left: 20px !important; color: #d1d5db !important; font-size: 0.8rem !important; line-height: 1.4 !important;">
+                    <li>Loading rankings...</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     // --- INSTANT ANTI-FLASH GUARD ---
-// This runs immediately before the DOM fully paints to ensure the portal is skipped cleanly
-(function() {
-    if (sessionStorage.getItem('siteEntered') === 'true') {
-        document.documentElement.classList.add('portal-skipped');
-    }
-})();
+    (function() {
+        if (sessionStorage.getItem('siteEntered') === 'true') {
+            document.documentElement.classList.add('portal-skipped');
+        }
+    })();
 
-// --- NAVIGATION & PORTAL FRAMEWORK ---
-function checkNavigation() {
-    if (sessionStorage.getItem('siteEntered') === 'true') {
-        const portal = document.getElementById('welcomePortal');
-        if (portal) {
-            portal.style.display = 'none'; 
-            document.body.style.overflow = 'auto'; 
+    // --- NAVIGATION & PORTAL FRAMEWORK ---
+    function checkNavigation() {
+        if (sessionStorage.getItem('siteEntered') === 'true') {
+            const portal = document.getElementById('welcomePortal');
+            if (portal) {
+                portal.style.display = 'none'; 
+                document.body.style.overflow = 'auto'; 
+            }
         }
     }
-}
-checkNavigation();
+    checkNavigation();
 
-if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
-    document.body.style.overflow = 'hidden';
-} else if (document.getElementById('welcomePortal')) {
-    document.getElementById('welcomePortal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-window.enterSite = function() {
-    const portal = document.getElementById('welcomePortal');
-    if (portal) {
-        portal.classList.add('disappearing');
+    if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
+        document.body.style.overflow = 'hidden';
+    } else if (document.getElementById('welcomePortal')) {
+        document.getElementById('welcomePortal').style.display = 'none';
         document.body.style.overflow = 'auto';
-        sessionStorage.setItem('siteEntered', 'true');
-        
-        // Also add the utility class to prevent shifts if they open a new menu item
-        document.documentElement.classList.add('portal-skipped');
-        
-        setTimeout(() => {
-            portal.remove();
-        }, 700);
     }
-};
 
-    // --- UPDATED SEARCH & CATEGORY FILTERING LOGIC ---
+    window.enterSite = function() {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            portal.classList.add('disappearing');
+            document.body.style.overflow = 'auto';
+            sessionStorage.setItem('siteEntered', 'true');
+            document.documentElement.classList.add('portal-skipped');
+            
+            setTimeout(() => {
+                portal.remove();
+            }, 700);
+        }
+    };
+
+    // --- NAVIGATION FILTERING ENGINE ---
     window.filterCat = function(cat, btn) {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         if (btn) btn.classList.add('active');
@@ -2334,7 +2424,6 @@ window.enterSite = function() {
     starElements.forEach(star => {
         star.addEventListener('click', async () => {
             const val = parseInt(star.getAttribute('data-value'));
-
             try {
                 await runTransaction(ratingRef, (currentData) => {
                     if (!currentData) return { count: 1, sum: val };
@@ -2346,230 +2435,197 @@ window.enterSite = function() {
 
                 if (ratingContent) ratingContent.style.display = 'none';
                 if (thankYouMsg) thankYouMsg.style.display = 'block';
-
                 localStorage.setItem('hasVoted', 'true');
 
                 setTimeout(() => {
                     if (ratingCard) {
                         ratingCard.style.transition = 'opacity 0.5s ease';
                         ratingCard.style.opacity = '0';
-                        setTimeout(() => {
-                            ratingCard.style.display = 'none';
-                        }, 500); 
+                        setTimeout(() => { ratingCard.style.display = 'none'; }, 500); 
                     }
                 }, 3000);
-
            } catch (error) {
                 console.error("Rating transaction dropped:", error);
             }
         });
     });
 
-    <div id="game-modal-overlay" style="display: none;">
-        <div style="display: flex !important; align-items: center !important; justify-content: center !important; min-height: 100% !important; width: 100% !important; padding: 20px !important; box-sizing: border-box !important;">
-            
-            <div id="game-container" style="width: 100% !important; max-width: 400px !important; background: #0b0f19 !important; border: 2px solid #4f46e5 !important; border-radius: 16px !important; padding: 20px !important; color: white !important; font-family: system-ui, sans-serif !important; text-align: center; position: relative !important; box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important; box-sizing: border-box !important;">
-                
-                <button id="close-game-btn" style="position: absolute !important; top: 12px !important; right: 15px !important; background: none !important; border: none !important; color: #9ca3af !important; font-size: 1.8rem !important; cursor: pointer !important; line-height: 1 !important; padding: 0 !important;">&times;</button>
+    // --- SAFE MEMORY ENGINE INITIALIZATION ---
+    const gameOverlay = document.getElementById('game-modal-overlay');
+    const openGameTrigger = document.getElementById('open-game-trigger');
+    const closeGameBtn = document.getElementById('close-game-btn');
+    const restartGameBtn = document.getElementById('restart-game-btn');
+    const memoryGrid = document.getElementById('memory-grid');
+    const movesDisplay = document.getElementById('game-moves');
 
-                <h2 style="font-size: 1.2rem !important; margin: 10px 0 5px 0 !important; font-weight: 800 !important;">🧠 MEMORY MATCH CHALLENGE 🧠</h2>
-                <p style="font-size: 0.8rem !important; color: #9ca3af !important; margin: 0 0 15px 0 !important;">Match the inner circle pairs in the fewest moves!</p>
-                
-                <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 15px !important; background: #111827 !important; padding: 10px 15px !important; border-radius: 8px !important; border: 1px solid #1e293b !important; box-sizing: border-box !important;">
-                    <div id="game-moves" style="font-size: 0.85rem !important; color: #a5b4fc !important; font-weight: bold !important;">MOVES: 0</div>
-                    <button id="restart-game-btn" style="background: #4f46e5 !important; color: white !important; border: none !important; padding: 6px 14px !important; font-size: 0.75rem !important; font-weight: bold !important; border-radius: 6px !important; cursor: pointer !important;">RESET</button>
-                </div>
+    const rawDeck = [
+        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
+        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
+        { id: 'fawad', emoji: '🐂', name: 'Fawad' },
+        { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
+        { id: 'wahid', emoji: '🦁', name: 'Wahid' },
+        { id: 'alien', emoji: '👽', name: 'Alien' },
+        { id: 'rocket', emoji: '🚀', name: 'Rocket' },
+        { id: 'ghost', emoji: '👻', name: 'Ghost' },
+        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
+        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
+        { id: 'fawad', emoji: '🐂', name: 'Fawad' },
+        { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
+        { id: 'wahid', emoji: '🦁', name: 'Wahid' },
+        { id: 'alien', emoji: '👽', name: 'Alien' },
+        { id: 'rocket', emoji: '🚀', name: 'Rocket' },
+        { id: 'ghost', emoji: '👻', name: 'Ghost' }
+    ];
 
-                <div id="memory-grid" style="display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; margin: 0 auto 15px auto !important; width: 100% !important; box-sizing: border-box !important;"></div>
+    let flippedCards = [];
+    let matchedCount = 0;
+    let movesCount = 0;
+    let lockBoard = false;
 
-                <div id="leaderboard-section" style="border-top: 1px solid #1e293b !important; padding-top: 12px !important; box-sizing: border-box !important;">
-                    <h3 style="font-size: 0.9rem !important; margin: 0 0 8px 0 !important; color: #f3f4f6 !important;">🏆 TOP CHAMPIONS</h3>
-                    <ol id="leaderboard-list" style="text-align: left !important; max-width: 280px !important; margin: 0 auto !important; padding-left: 20px !important; color: #d1d5db !important; font-size: 0.8rem !important; line-height: 1.4 !important;">
-                        <li>Loading rankings...</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
- // --- SAFE MEMORY ENGINE INITIALIZATION ---
-const gameOverlay = document.getElementById('game-modal-overlay');
-const openGameTrigger = document.getElementById('open-game-trigger');
-const closeGameBtn = document.getElementById('close-game-btn');
-const restartGameBtn = document.getElementById('restart-game-btn'); // Linked to layout reset button
-const memoryGrid = document.getElementById('memory-grid');
-const movesDisplay = document.getElementById('game-moves');
-
-// 💡 Fixed: Balanced pairs. 8 distinct item items duplicated exactly once = 16 cards total.
-const rawDeck = [
-    { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-    { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-    { id: 'fawad', emoji: '🐂', name: 'Fawad' },
-    { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
-    { id: 'wahid', emoji: '🦁', name: 'Wahid' },
-    { id: 'alien', emoji: '👽', name: 'Alien' },
-    { id: 'rocket', emoji: '🚀', name: 'Rocket' },
-    { id: 'ghost', emoji: '👻', name: 'Ghost' },
-    // Matching identical pairs
-    { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-    { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-    { id: 'fawad', emoji: '🐂', name: 'Fawad' },
-    { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
-    { id: 'wahid', emoji: '🦁', name: 'Wahid' },
-    { id: 'alien', emoji: '👽', name: 'Alien' },
-    { id: 'rocket', emoji: '🚀', name: 'Rocket' },
-    { id: 'ghost', emoji: '👻', name: 'Ghost' }
-];
-
-let flippedCards = [];
-let matchedCount = 0;
-let movesCount = 0;
-let lockBoard = false;
-
-openGameTrigger?.addEventListener('click', () => {
-    if (gameOverlay) {
-        document.body.classList.add('game-active');
-        gameOverlay.style.setProperty('display', 'flex', 'important');
-        initMemoryGame();
-    }
-});
-
-function hideGameModal() {
-    if (gameOverlay) {
-        document.body.classList.remove('game-active');
-        gameOverlay.style.setProperty('display', 'none', 'important');
-        if (memoryGrid) memoryGrid.innerHTML = '';
-    }
-}
-closeGameBtn?.addEventListener('click', hideGameModal);
-restartGameBtn?.addEventListener('click', initMemoryGame);
-
-function initMemoryGame() {
-    if (!memoryGrid) return;
-    memoryGrid.innerHTML = '';
-    flippedCards = [];
-    matchedCount = 0;
-    movesCount = 0;
-    if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-    lockBoard = false;
-
-    const shuffledDeck = [...rawDeck].sort(() => 0.5 - Math.random());
-
-    shuffledDeck.forEach(data => {
-        const cardItem = document.createElement('div');
-        cardItem.style.cssText = 'aspect-ratio: 1/1 !important; background: #1e1b4b !important; border: 2px solid #1e293b !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; user-select: none !important; transition: transform 0.2s ease !important; position: relative !important; box-sizing: border-box !important;';
-        cardItem.setAttribute('data-id', data.id);
-        
-        cardItem.innerHTML = `<div class="card-face" style="display: none !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; width: 100% !important; height: 100% !important;">
-            <span style="font-size: 1.5rem !important; line-height: 1 !important;">${data.emoji}</span>
-            <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
-        </div>`;
-        
-        cardItem.addEventListener('click', () => flipCard(cardItem));
-        memoryGrid.appendChild(cardItem);
+    openGameTrigger?.addEventListener('click', () => {
+        if (gameOverlay) {
+            document.body.classList.add('game-active');
+            gameOverlay.style.setProperty('display', 'flex', 'important');
+            initMemoryGame();
+        }
     });
-}
 
-function flipCard(card) {
-    if (lockBoard || flippedCards.includes(card) || card.getAttribute('data-matched') === 'true') return;
-
-    const face = card.querySelector('.card-face');
-    if (face) face.style.setProperty('display', 'flex', 'important');
-    card.style.setProperty('background', '#312e81', 'important');
-    card.style.setProperty('border-color', '#4f46e5', 'important');
-
-    flippedCards.push(card);
-
-    if (flippedCards.length === 2) {
-        movesCount++;
-        if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-        lockBoard = true;
-        checkMatch();
+    function hideGameModal() {
+        if (gameOverlay) {
+            document.body.classList.remove('game-active');
+            gameOverlay.style.setProperty('display', 'none', 'important');
+            if (memoryGrid) memoryGrid.innerHTML = '';
+        }
     }
-}
+    closeGameBtn?.addEventListener('click', hideGameModal);
+    restartGameBtn?.addEventListener('click', initMemoryGame);
 
-function checkMatch() {
-    // 💡 Fixed: Correctly targets array index position indices and
-    const card1 = flippedCards;
-    const card2 = flippedCards;
-    
-    const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
-    
-    if (isMatch) {
-        card1.setAttribute('data-matched', 'true');
-        card2.setAttribute('data-matched', 'true');
-        
-        card1.style.setProperty('background', '#064e3b', 'important');
-        card2.style.setProperty('background', '#064e3b', 'important');
-        card1.style.setProperty('border-color', '#10b981', 'important');
-        card2.style.setProperty('border-color', '#10b981', 'important');
-        
-        matchedCount += 2;
+    function initMemoryGame() {
+        if (!memoryGrid) return;
+        memoryGrid.innerHTML = '';
         flippedCards = [];
+        matchedCount = 0;
+        movesCount = 0;
+        if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
         lockBoard = false;
 
-        if (matchedCount === rawDeck.length) {
-            setTimeout(() => {
-                alert(`🎉 Amazing job! Cleared in ${movesCount} moves.`);
-                saveHighScore(movesCount);
-            }, 300);
+        const shuffledDeck = [...rawDeck].sort(() => 0.5 - Math.random());
+
+        shuffledDeck.forEach(data => {
+            const cardItem = document.createElement('div');
+            cardItem.style.cssText = 'aspect-ratio: 1/1 !important; background: #1e1b4b !important; border: 2px solid #1e293b !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; user-select: none !important; transition: transform 0.2s ease !important; position: relative !important; box-sizing: border-box !important;';
+            cardItem.setAttribute('data-id', data.id);
+            
+            cardItem.innerHTML = `<div class="card-face" style="display: none !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; width: 100% !important; height: 100% !important;">
+                <span style="font-size: 1.5rem !important; line-height: 1 !important;">${data.emoji}</span>
+                <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
+            </div>`;
+            
+            cardItem.addEventListener('click', () => flipCard(cardItem));
+            memoryGrid.appendChild(cardItem);
+        });
+    }
+
+    function flipCard(card) {
+        if (lockBoard || flippedCards.includes(card) || card.getAttribute('data-matched') === 'true') return;
+
+        const face = card.querySelector('.card-face');
+        if (face) face.style.setProperty('display', 'flex', 'important');
+        card.style.setProperty('background', '#312e81', 'important');
+        card.style.setProperty('border-color', '#4f46e5', 'important');
+
+        flippedCards.push(card);
+
+        if (flippedCards.length === 2) {
+            movesCount++;
+            if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
+            lockBoard = true;
+            checkMatch();
         }
-    } else {
-        setTimeout(() => {
-            const face1 = card1.querySelector('.card-face');
-            const face2 = card2.querySelector('.card-face');
+    }
+
+    function checkMatch() {
+        // 💡 Fixed: Target distinct element tracking values explicitly
+        const card1 = flippedCards;
+        const card2 = flippedCards;
+        
+        const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
+        
+        if (isMatch) {
+            card1.setAttribute('data-matched', 'true');
+            card2.setAttribute('data-matched', 'true');
             
-            if (face1) face1.style.setProperty('display', 'none', 'important');
-            if (face2) face2.style.setProperty('display', 'none', 'important');
+            card1.style.setProperty('background', '#064e3b', 'important');
+            card2.style.setProperty('background', '#064e3b', 'important');
+            card1.style.setProperty('border-color', '#10b981', 'important');
+            card2.style.setProperty('border-color', '#10b981', 'important');
             
-            card1.style.setProperty('background', '#1e1b4b', 'important');
-            card2.style.setProperty('background', '#1e1b4b', 'important');
-            card1.style.setProperty('border-color', '#1e293b', 'important');
-            card2.style.setProperty('border-color', '#1e293b', 'important');
-            
+            matchedCount += 2;
             flippedCards = [];
             lockBoard = false;
-        }, 800);
-    }
-}
 
-async function saveHighScore(score) {
-    const userAlias = prompt("Enter your name for the Leaderboard:");
-    if (userAlias) {
-        try {
-            const memoryLeaderboardRef = ref(db, 'memory-leaderboard');
-            await runTransaction(memoryLeaderboardRef, (currentData) => {
-                if (!currentData) currentData = [];
-                currentData.push({ username: userAlias, score: score, timestamp: Date.now() });
-                currentData.sort((a, b) => a.score - b.score);
-                return currentData.slice(0, 5);
-            });
-        } catch (err) { console.error("Database error:", err); }
-    }
-    initMemoryGame();
-}
-
-// --- STREAM LEADERBOARD ---
-try {
-    const memoryDisplayRef = ref(db, 'memory-leaderboard');
-    onValue(memoryDisplayRef, (snapshot) => {
-        const boardData = snapshot.val();
-        const listContainer = document.getElementById('leaderboard-list');
-        if (listContainer) {
-            listContainer.innerHTML = '';
-            if (boardData && boardData.length > 0) {
-                boardData.forEach((entry) => {
-                    const row = document.createElement('li');
-                    row.style.marginBottom = '4px';
-                    row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
-                    listContainer.appendChild(row);
-                });
-            } else {
-                listContainer.innerHTML = '<li>No records logged yet!</li>';
+            if (matchedCount === rawDeck.length) {
+                setTimeout(() => {
+                    alert(`🎉 Amazing job! Cleared in ${movesCount} moves.`);
+                    saveHighScore(movesCount);
+                }, 300);
             }
+        } else {
+            setTimeout(() => {
+                const face1 = card1.querySelector('.card-face');
+                const face2 = card2.querySelector('.card-face');
+                
+                if (face1) face1.style.setProperty('display', 'none', 'important');
+                if (face2) face2.style.setProperty('display', 'none', 'important');
+                
+                card1.style.setProperty('background', '#1e1b4b', 'important');
+                card2.style.setProperty('background', '#1e1b4b', 'important');
+                card1.style.setProperty('border-color', '#1e293b', 'important');
+                card2.style.setProperty('border-color', '#1e293b', 'important');
+                
+                flippedCards = [];
+                lockBoard = false;
+            }, 800);
         }
-    });
-} catch (e) { console.error("Leaderboard loading failed:", e); }
+    }
+
+    async function saveHighScore(score) {
+        const userAlias = prompt("Enter your name for the Leaderboard:");
+        if (userAlias) {
+            try {
+                const memoryLeaderboardRef = ref(db, 'memory-leaderboard');
+                await runTransaction(memoryLeaderboardRef, (currentData) => {
+                    if (!currentData) currentData = [];
+                    currentData.push({ username: userAlias, score: score, timestamp: Date.now() });
+                    currentData.sort((a, b) => a.score - b.score);
+                    return currentData.slice(0, 5);
+                });
+            } catch (err) { console.error("Database error:", err); }
+        }
+        initMemoryGame();
+    }
+
+    // --- STREAM LEADERBOARD ---
+    try {
+        const memoryDisplayRef = ref(db, 'memory-leaderboard');
+        onValue(memoryDisplayRef, (snapshot) => {
+            const boardData = snapshot.val();
+            const listContainer = document.getElementById('leaderboard-list');
+            if (listContainer) {
+                listContainer.innerHTML = '';
+                if (boardData && boardData.length > 0) {
+                    boardData.forEach((entry) => {
+                        const row = document.createElement('li');
+                        row.style.marginBottom = '4px';
+                        row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
+                        listContainer.appendChild(row);
+                    });
+                } else {
+                    listContainer.innerHTML = '<li>No records logged yet!</li>';
+                }
+            }
+        });
+    } catch (e) { console.error("Leaderboard loading failed:", e); }
 </script>
 </body>
 </html>
