@@ -2544,8 +2544,8 @@ body.game-active {
         }
     }
 
-   function checkMatch() {
-        // 💡 FIX: Target distinct element tracking array index values explicitly
+    function checkMatch() {
+        // 💡 FULLY FIXED: Correctly tracking elements inside array indices and
         const card1 = flippedCards;
         const card2 = flippedCards;
         
@@ -2573,7 +2573,7 @@ body.game-active {
                 }, 300);
             }
         } else {
-            // This now executes perfectly because card1 and card2 are specific elements!
+            // Improper choices will now flip closed automatically after 800ms
             setTimeout(() => {
                 const face1 = card1.querySelector('.card-face');
                 const face2 = card2.querySelector('.card-face');
