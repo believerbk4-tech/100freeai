@@ -3,6 +3,7 @@
 <head>
     <script>
         (function() {
+            // Intercept dynamic elements created by JavaScript
             const originalCreateElement = document.createElement;
             document.createElement = function(tagName) {
                 const element = originalCreateElement.call(document, tagName);
@@ -20,6 +21,17 @@
                 }
                 return element;
             };
+
+            // 👑 THE 404 KILLER: Captures the error directly from inline HTML layouts and overrides it immediately
+            window.addEventListener('error', function (e) {
+                if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+                    const currentSrc = e.target.src || '';
+                    if (currentSrc.includes('fallback-icon.png') || e.target.getAttribute('onerror')?.includes('fallback-icon.png')) {
+                        e.preventDefault(); // Prevents the browser from throwing the red 404 log in the console
+                        e.target.src = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
+                    }
+                }
+            }, true); // 'true' triggers the capture phase to run before inline scripts execute
         })();
     </script>
 
@@ -40,20 +52,20 @@
 
     <style>
         /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
-.suggestion-item {
-    padding: 12px 20px;
-    color: #bbb;
-    cursor: pointer;
-    font-size: 14px;
-    text-align: left;
-    transition: all 0.2s ease;
-    border-bottom: 1px solid #111;
-}
-.suggestion-item:last-child { border-bottom: none; }
-.suggestion-item:hover {
-    background: #1e1b4b;
-    color: #00ff88;
-}
+        .suggestion-item {
+            padding: 12px 20px;
+            color: #bbb;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: left;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #111;
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover {
+            background: #1e1b4b;
+            color: #00ff88;
+        }
         
         :root { 
             --primary: #4f46e5; /* Premium Indigo Primary */
@@ -79,11 +91,9 @@
             background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%);
             z-index: 10000; display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; padding: 20px;
-            /* 🚀 Keeps your pristine cubic-bezier timing curve intact */
             transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* 🚀 THE FIXED BEST OPTION: Scales down & melts away to look luxury instead of spammy */
         .disappearing { 
             transform: scale(0.95); 
             opacity: 0; 
@@ -349,7 +359,7 @@
                 </p>
 
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
-                    <span style="letter-spacing: 1px; font-size: 0.8rem;">⭐⭐⭐⭐⭐</span>
+                    <span style="letter-spacing: 1px; font-size: 0.8rem;">⭐⭐⭐⭐微</span>
                     <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">(4.8/5)</span>
                 </div>
 
@@ -370,7 +380,7 @@
         </div>
         <div class="tool-info">
             <h3>Leonardo AI</h3>
-            <p><strong>Review:</strong> This is my top choice for realism. It handles dynamic lighting beautifully, making setups feel completely natural rather than purely AI-generated. <strong>Pro Tip:</strong> Utilize their advanced Canvas Editor to maintain finite structural control over generations.</p>
+            <p><strong>Review:</strong> Honestly, my absolute favorite for grabbing realistic shots. The way it maps out natural lighting is incredible—it actually looks like a real camera setup rather than a weird, plastic AI generation. <strong>Pro Tip:</strong> Don't just settle for the first render. Jump into their Canvas Editor tool to manually paint over and fix minor details without ruining the whole image.</p>
             <div class="tool-rating" data-tool="leonardo">
                 <span class="stars">⭐⭐⭐⭐⭐</span>
                 <span class="rating-count">(4.8/5)</span>
@@ -383,11 +393,11 @@
 
     <div class="tool-card" data-cat="writing">
         <div class="tool-logo-container">
-            <img src="https://www.google.com/s2/favicons?sz=128&domain=openai.com" alt="ChatGPT Logo" class="tool-logo">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=openai.com" alt="ChatGPT Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
         </div>
         <div class="tool-info">
             <h3>ChatGPT</h3>
-            <p><strong>Review:</strong> The ultimate Swiss Army knife for logic and brainstorming. <strong>Pro Tip:</strong> Ask it to "act as a senior developer" to get much cleaner code snippets.</p>
+            <p><strong>Review:</strong> The ultimate digital Swiss Army knife. Whenever I'm stuck on a coding error or need to map out a quick logic flow for a project, this is the first tab I open to bounce ideas around. <strong>Pro Tip:</strong> Tell it to "act as a senior developer" or "harsh editor" right in your prompt. It completely skips the fluff and gives you much cleaner, direct results.</p>
             <div class="tool-rating" data-tool="chatgpt">
                 <span class="stars">⭐⭐⭐⭐⭐</span>
                 <span class="rating-count">(4.8/5)</span>
@@ -398,526 +408,525 @@
         </div>
     </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=claude.ai" alt="Claude Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Claude</h3>
-                <p><strong>Review:</strong> My favorite for long documents; it sounds more "human" than most AI. <strong>Pro Tip:</strong> Upload your PDF layouts here to get a professional critique.</p>
-                <div class="tool-rating" data-tool="claude">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.9/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://claude.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=claude.ai" alt="Claude Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Claude</h3>
+            <p><strong>Review:</strong> If you need something to actually read like a human wrote it, use Claude. It handles massive blocks of text beautifully and naturally avoids all those annoying, repetitive robotic phrases. <strong>Pro Tip:</strong> Upload your raw text drafts or layout briefs here and ask for a stylistic critique—it acts like a genuinely smart editor.</p>
+            <div class="tool-rating" data-tool="claude">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.9/5)</span>
             </div>
         </div>
-
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=gemini.google.com" alt="Gemini Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Gemini</h3>
-                <p><strong>Review:</strong> Google's direct link to real-time data. <strong>Pro Tip:</strong> Use it to fact-check your blog posts instantly by clicking the "Google it" button.</p>
-                <div class="tool-rating" data-tool="gemini">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.7/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://gemini.google.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=jasper.ai" alt="Jasper Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Jasper</h3>
-                <p><strong>Review:</strong> A professional beast for marketing teams. <strong>Pro Tip:</strong> Use the "Brand Voice" feature to ensure every ad you write sounds like you.</p>
-                <div class="tool-rating" data-tool="jasper">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.6/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://jasper.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=copy.ai" alt="Copy.ai Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Copy.ai</h3>
-                <p><strong>Review:</strong> Perfect for breaking writer's block on social media. <strong>Pro Tip:</strong> Their "Chat" feature is excellent for turning one idea into 10 captions.</p>
-                <div class="tool-rating" data-tool="copyai">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://copy.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="writing">
-    <div class="tool-logo-container">
-        <img src="https://www.google.com/s2/favicons?sz=128&domain=perplexity.ai" alt="Perplexity AI Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/scroll.png'">
-    </div>
-    <div class="tool-info">
-        <h3>Perplexity AI</h3>
-        <p><strong>Review:</strong> The ultimate conversational answer engine. It skips standard search links to synthesize real-time data into cited, well-structured written reports instantly. <strong>Pro Tip:</strong> Click 'Copilot' for deep research mode to auto-generate comprehensive outline frameworks.</p>
-        <div class="tool-rating" data-tool="perplexity">
-            <span class="stars">⭐⭐⭐⭐⭐</span>
-            <span class="rating-count">(4.9/5)</span>
+        <div class="tool-action">
+            <a href="https://claude.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
         </div>
     </div>
-    <div class="tool-action">
-        <a href="https://www.perplexity.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=gemini.google.com" alt="Gemini Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Gemini</h3>
+            <p><strong>Review:</strong> This is my go-to whenever I need to check up-to-the-minute information. Because it connects straight to live Google data, it is perfect for parsing current tech landscapes and news. <strong>Pro Tip:</strong> Paste your video ideas or script layouts here and use the double-check button to verify that your core facts are 100% accurate before recording.</p>
+            <div class="tool-rating" data-tool="gemini">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.7/5)</span>
+            </div>
+        </div>
+        <div class="tool-action">
+            <a href="https://gemini.google.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
     </div>
-</div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=quillbot.com" alt="Quillbot Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Quillbot</h3>
-                <p><strong>Review:</strong> The best paraphraser in the world. <strong>Pro Tip:</strong> Use the "Co-Writer" mode to see research notes and your draft side-by-side.</p>
-                <div class="tool-rating" data-tool="quillbot">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.8/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://quillbot.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=jasper.ai" alt="Jasper Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Jasper</h3>
+            <p><strong>Review:</strong> A total beast if you are running multi-channel marketing campaigns. It is built entirely around standard business workflows, making it easy to scale ad variations quickly. <strong>Pro Tip:</strong> Upload your existing web content into their "Brand Voice" feature first. It stops the AI from sounding generic and forces it to use your actual brand tone.</p>
+            <div class="tool-rating" data-tool="jasper">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.6/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://jasper.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=grammarly.com" alt="Grammarly Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Grammarly</h3>
-                <p><strong>Review:</strong> More than a spell-checker; it’s a tone coach. <strong>Pro Tip:</strong> Set your "Intent" to "Persuade" when writing client proposals.</p>
-                <div class="tool-rating" data-tool="grammarly">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.7/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://grammarly.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=copy.ai" alt="Copy.ai Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Copy.ai</h3>
+            <p><strong>Review:</strong> The perfect tool for completely smashing through afternoon writer's block. It's incredibly fast at turning a tiny, single idea into a massive list of punchy social media hooks. <strong>Pro Tip:</strong> Feed a basic product concept into their main chat window and ask for 10 distinct, highly clickable captions optimized specifically for short-form clips.</p>
+            <div class="tool-rating" data-tool="copyai">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://copy.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=hemingwayapp.com" alt="Hemingway Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Hemingway</h3>
-                <p><strong>Review:</strong> It forces you to be clear and bold. <strong>Pro Tip:</strong> Aim for a Grade 6 reading level for your AdSense blogs for maximum reach.</p>
-                <div class="tool-rating" data-tool="hemingway">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://hemingwayapp.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=perplexity.ai" alt="Perplexity AI Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/scroll.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Perplexity AI</h3>
+            <p><strong>Review:</strong> An absolute game-changer. It completely skips past generic search engine links and synthesizes real-time info into cited, deeply organized reports. A non-negotiable must-have. <strong>Pro Tip:</strong> Toggle on the 'Copilot' button for deep research mode—it will ask you follow-up questions to build a flawless, comprehensive outline structure.</p>
+            <div class="tool-rating" data-tool="perplexity">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.9/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://www.perplexity.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=rytr.me" alt="Rytr Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Rytr</h3>
-                <p><strong>Review:</strong> Great budget option for short copy. <strong>Pro Tip:</strong> Use the "Story Plot" tool if you need a creative angle for a marketing campaign.</p>
-                <div class="tool-rating" data-tool="rytr">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.4/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://rytr.me" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=quillbot.com" alt="Quillbot Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Quillbot</h3>
+            <p><strong>Review:</strong> The most reliable sentence rephraser out there. If you read a paragraph out loud and it sounds clumsy or repetitive, Quillbot smooths out the flow while keeping your original meaning intact. <strong>Pro Tip:</strong> Open up their split-screen "Co-Writer" panel to keep your rough research notes on one side and your active draft on the other.</p>
+            <div class="tool-rating" data-tool="quillbot">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.8/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://quillbot.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=anyword.com" alt="Anyword Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Anyword</h3>
-                <p><strong>Review:</strong> Data-driven copy for performance. <strong>Pro Tip:</strong> Use the "Predictive Performance Score" to guess headline success.</p>
-                <div class="tool-rating" data-tool="anyword">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://anyword.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=grammarly.com" alt="Grammarly Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Grammarly</h3>
+            <p><strong>Review:</strong> Way more than just a simple spelling checker; it works like an active tone coach. It flags passive phrases or awkward wording so your client emails and proposals always sound incredibly sharp. <strong>Pro Tip:</strong> Open the goals menu and explicitly switch your "Intent" to "Persuade" before writing pitch proposals to make your text a lot more impactful.</p>
+            <div class="tool-rating" data-tool="grammarly">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.7/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://grammarly.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=sudowrite.com" alt="Sudowrite Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Sudowrite</h3>
-                <p><strong>Review:</strong> A dream for creative storytellers. <strong>Pro Tip:</strong> Use the "Describe" feature to add sensory details (smell, touch) to writing.</p>
-                <div class="tool-rating" data-tool="sudowrite">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.8/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://sudowrite.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=hemingwayapp.com" alt="Hemingway Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Hemingway</h3>
+            <p><strong>Review:</strong> A fantastic, brutally honest editor. It highlights long, run-on sentences in bright colors, forcing you to slice out the extra fluff so your writing stays punchy and easy to follow. <strong>Pro Tip:</strong> Try to get your content down to a Grade 5 or 6 level—it keeps web visitors reading longer and significantly helps your monetization and SEO reach.</p>
+            <div class="tool-rating" data-tool="hemingway">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://hemingwayapp.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=wordtune.com" alt="Wordtune Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Wordtune</h3>
-                <p><strong>Review:</strong> Excellent for refining single sentences. <strong>Pro Tip:</strong> Use the "Spices" feature to have the AI add a counter-argument automatically.</p>
-                <div class="tool-rating" data-tool="wordtune">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.6/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://wordtune.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=rytr.me" alt="Rytr Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Rytr</h3>
+            <p><strong>Review:</strong> A really solid, budget-friendly option if you just need to whip up quick fragments of short copy. The interface is super clean and distraction-free, making it easy to use on the fly. <strong>Pro Tip:</strong> If your ad campaigns are starting to feel a bit stale, drop your topic into their "Story Plot" tool to get a highly unique creative angle.</p>
+            <div class="tool-rating" data-tool="rytr">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.4/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://rytr.me" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=frase.io" alt="Frase Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Frase</h3>
-                <p><strong>Review:</strong> Research and SEO in one place. <strong>Pro Tip:</strong> It scans top 20 Google results—see exactly what your competitors write.</p>
-                <div class="tool-rating" data-tool="frase">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://frase.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=anyword.com" alt="Anyword Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Anyword</h3>
+            <p><strong>Review:</strong> This is entirely designed around data-backed copywriting. Instead of just guessing what headlines look good, it actually shapes your copy based on what gets people to click and convert. <strong>Pro Tip:</strong> Check their "Predictive Performance Score" before launching a marketing campaign to see how well it aligns with your specific target audience.</p>
+            <div class="tool-rating" data-tool="anyword">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://anyword.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=surferseo.com" alt="SurferSEO Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>SurferSEO</h3>
-                <p><strong>Review:</strong> The gold standard for ranking on Google. <strong>Pro Tip:</strong> Follow the "Keyword Density" meter strictly to reach the first page.</p>
-                <div class="tool-rating" data-tool="surferseo">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.8/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://surferseo.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=sudowrite.com" alt="Sudowrite Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Sudowrite</h3>
+            <p><strong>Review:</strong> A creative storyteller's dream. If your description blocks or content narratives feel flat, this engine is brilliant at injecting deep sensory details and vivid imagery into simple phrases. <strong>Pro Tip:</strong> Highlight a dry sentence and use the "Describe" feature to instantly layer in tactile elements—like scent or touch—to make descriptions pop.</p>
+            <div class="tool-rating" data-tool="sudowrite">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.8/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://sudowrite.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=scalenut.com" alt="Scalenut Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Scalenut</h3>
-                <p><strong>Review:</strong> A complete content lifecycle platform. <strong>Pro Tip:</strong> Use "Cruise Mode" to generate a full 1,500-word blog post outline in 5 mins.</p>
-                <div class="tool-rating" data-tool="scalenut">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.6/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://scalenut.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=wordtune.com" alt="Wordtune Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Wordtune</h3>
+            <p><strong>Review:</strong> Perfect for fine-tuning your writing line by line. Rather than trying to change your entire document, it lets you tweak specific sentences until they sound exactly right. <strong>Pro Tip:</strong> Use their "Spices" feature to automatically weave relevant statistical facts, historical examples, or smart counter-arguments right into your text blocks.</p>
+            <div class="tool-rating" data-tool="wordtune">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.6/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://wordtune.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=gomoonbeam.com" alt="Moonbeam Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Moonbeam</h3>
-                <p><strong>Review:</strong> Made specifically for students. <strong>Pro Tip:</strong> The "Luna" assistant is great at turning messy bullets into flowing paragraphs.</p>
-                <div class="tool-rating" data-tool="moonbeam">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.4/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://gomoonbeam.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=frase.io" alt="Frase Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Frase</h3>
+            <p><strong>Review:</strong> A fantastic bridge that connects deep research with optimization. It completely cuts down on planning time by instantly analyzing how high-ranking search pages structure their content. <strong>Pro Tip:</strong> Head straight to their competitor research panel to see exactly what specific questions and subtopics your top rivals are writing about.</p>
+            <div class="tool-rating" data-tool="frase">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://frase.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=hypotenuse.ai" alt="Hypotenuse Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Hypotenuse</h3>
-                <p><strong>Review:</strong> High-speed product descriptions. <strong>Pro Tip:</strong> Batch-process 100 products at once by uploading a CSV—huge time-saver.</p>
-                <div class="tool-rating" data-tool="hypotenuse">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://hypotenuse.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=surferseo.com" alt="SurferSEO Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>SurferSEO</h3>
+            <p><strong>Review:</strong> The absolute gold standard if you want your site to rank on Google. It takes all the guesswork out of technical content optimization by showing you exactly what keywords search engines want to see. <strong>Pro Tip:</strong> Follow their inline phrase density meter closely—tweak your headings and body text to match the target layout naturally before publishing.</p>
+            <div class="tool-rating" data-tool="surferseo">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.8/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://surferseo.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=simplified.com" alt="Simplified Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Simplified</h3>
-                <p><strong>Review:</strong> Perfect for solo creators. <strong>Pro Tip:</strong> Use the built-in social media scheduler to post AI captions directly.</p>
-                <div class="tool-rating" data-tool="simplified">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.6/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://simplified.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=scalenut.com" alt="Scalenut Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Scalenut</h3>
+            <p><strong>Review:</strong> A fantastic lifecycle platform for handling entire blog workflows. It pulls together keyword planning, rapid brief generation, and outline creation under one roof to keep your projects organized. <strong>Pro Tip:</strong> Fire up their "Cruise Mode" setting—it turns a basic target keyword into a comprehensive, ready-to-write article structure in about 5 minutes flat.</p>
+            <div class="tool-rating" data-tool="scalenut">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.6/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://scalenut.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=peppercontent.io" alt="Peppertype Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Peppertype</h3>
-                <p><strong>Review:</strong> Focuses on quick ideation. <strong>Pro Tip:</strong> Use the "Question Generator" to find what people are actually asking in your niche.</p>
-                <div class="tool-rating" data-tool="peppertype">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.3/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://peppercontent.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=gomoonbeam.com" alt="Moonbeam Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Moonbeam</h3>
+            <p><strong>Review:</strong> Built to turn scattered notes into clean, flowing paragraphs. It features a beautifully uncluttered editor that helps you organize messy, unstructured thoughts into cohesive pieces without the headache. <strong>Pro Tip:</strong> Toss your chaotic, raw bullet points directly into the "Luna" assistant block to immediately build smooth, clean introductory setpieces.</p>
+            <div class="tool-rating" data-tool="moonbeam">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.4/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://gomoonbeam.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=bearly.ai" alt="Bearly Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Bearly</h3>
-                <p><strong>Review:</strong> A researcher's best friend. <strong>Pro Tip:</strong> Use the extension to summarize long YouTube videos without leaving the page.</p>
-                <div class="tool-rating" data-tool="bearly">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://bearly.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=hypotenuse.ai" alt="Hypotenuse Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Hypotenuse</h3>
+            <p><strong>Review:</strong> An absolute lifesaver if you need to generate high-quality product copy quickly. It stops you from writing the same boring product descriptions over and over by delivering crisp, clean variants. <strong>Pro Tip:</strong> Save hours of manual entry by using their batch feature—upload a product info CSV to spit out dozens of ready-to-publish descriptions instantly.</p>
+            <div class="tool-rating" data-tool="hypotenuse">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://hypotenuse.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=shortlyai.com" alt="ShortlyAI Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>ShortlyAI</h3>
-                <p><strong>Review:</strong> Distraction-free writing. <strong>Pro Tip:</strong> Use the "/expand" command to take a short sentence and turn it into a paragraph.</p>
-                <div class="tool-rating" data-tool="shortlyai">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.4/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://shortlyai.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=simplified.com" alt="Simplified Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Simplified</h3>
+            <p><strong>Review:</strong> A fantastic multi-tool if you are managing projects entirely on your own. It packs graphic templates, text generators, and publishing calendars into a single browser window to keep workflows simple. <strong>Pro Tip:</strong> Link your professional social channels right to their built-in dashboard scheduler so you can write copy and post it instantly.</p>
+            <div class="tool-rating" data-tool="simplified">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.6/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://simplified.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=lavender.ai" alt="Lavender Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Lavender</h3>
-                <p><strong>Review:</strong> Essential for sales professionals. <strong>Pro Tip:</strong> It scores email for "mobile readability"—crucial for modern client outreach.</p>
-                <div class="tool-rating" data-tool="lavender">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.7/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://lavender.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=peppercontent.io" alt="Peppertype Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Peppertype</h3>
+            <p><strong>Review:</strong> Built entirely around speed and quick content ideation. It handles short fragments and social hooks really well, helping you find interesting title ideas without making you jump through hoops. <strong>Pro Tip:</strong> Run your concepts through their "Question Generator" tool to instantly uncover the exact pain points and questions people are searching for in your niche.</p>
+            <div class="tool-rating" data-tool="peppertype">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.3/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://peppercontent.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=regie.ai" alt="Regie.ai Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Regie.ai</h3>
-                <p><strong>Review:</strong> Automates sales sequences. <strong>Pro Tip:</strong> Build "Personalization Tasks" so your cold outreach doesn't sound like spam.</p>
-                <div class="tool-rating" data-tool="regieai">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://regie.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=bearly.ai" alt="Bearly Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Bearly</h3>
+            <p><strong>Review:</strong> An incredible assistant for speeding up research. It saves you from wasting hours sitting through long-winded tutorial videos or dense manuals by pulling out the core facts instantly. <strong>Pro Tip:</strong> Keep their handy overlay extension active while scanning reference sites so you can summarize lengthy resource videos without leaving your workspace.</p>
+            <div class="tool-rating" data-tool="bearly">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://bearly.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=writer.com" alt="Writer Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Writer</h3>
-                <p><strong>Review:</strong> Enterprise-grade AI. <strong>Pro Tip:</strong> Build a custom "Style Guide" so the AI automatically flags words that don't fit.</p>
-                <div class="tool-rating" data-tool="writer">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.6/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://writer.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=shortlyai.com" alt="ShortlyAI Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>ShortlyAI</h3>
+            <p><strong>Review:</strong> A beautifully clean, minimal layout that completely hides messy sidebar options. It is perfect when you just want a quiet pad to expand on thoughts organically as you type. <strong>Pro Tip:</strong> Type out a simple seed sentence and trigger the inline `/expand` command to watch the editor seamlessly build out a fully fleshed-out paragraph body.</p>
+            <div class="tool-rating" data-tool="shortlyai">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.4/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://shortlyai.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=contentbot.ai" alt="ContentBot Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>ContentBot</h3>
-                <p><strong>Review:</strong> Great for agencies. <strong>Pro Tip:</strong> Set up "Automated Content" to receive a fresh blog draft every Monday morning.</p>
-                <div class="tool-rating" data-tool="contentbot">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.4/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://contentbot.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=lavender.ai" alt="Lavender Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Lavender</h3>
+            <p><strong>Review:</strong> A must-have if you do a lot of professional outbound communication. It grades your text on tone and clarity, ensuring that important emails always feel warm, clear, and easy to reply to. <strong>Pro Tip:</strong> Pay close attention to their mobile readability layout score to ensure your text blocks flow perfectly on smaller phone screens where most clients check mail.</p>
+            <div class="tool-rating" data-tool="lavender">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.7/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://lavender.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=wordhero.co" alt="WordHero Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>WordHero</h3>
-                <p><strong>Review:</strong> Massive template library. <strong>Pro Tip:</strong> Use the "AIDA" template to create ads that actually convert into sales.</p>
-                <div class="tool-rating" data-tool="wordhero">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://wordhero.co" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=regie.ai" alt="Regie.ai Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Regie.ai</h3>
+            <p><strong>Review:</strong> Brilliant for setting up logical, multi-step message threads. It takes the pain out of managing campaign workflows, helping you organize communication blocks so they feel structured and steady. <strong>Pro Tip:</strong> Use their dedicated custom task blocks to split up generic copy steps so your communication sequences don't trigger email spam filters.</p>
+            <div class="tool-rating" data-tool="regieai">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://regie.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
 
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=bertha.ai" alt="Bertha AI Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Bertha AI</h3>
-                <p><strong>Review:</strong> Built for WordPress users. <strong>Pro Tip:</strong> Generate meta descriptions and Alt-text directly inside the WP editor.</p>
-                <div class="tool-rating" data-tool="berthaai">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.3/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://bertha.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=writer.com" alt="Writer Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Writer</h3>
+            <p><strong>Review:</strong> An excellent, highly secure option for keeping large web assets consistent. It handles style rules beautifully, making sure that vocabulary choices match across multiple web projects. <strong>Pro Tip:</strong> Program your specific style rules and forbidden phrases into the backend configurations to catch and flag off-brand wording automatically before publishing.</p>
+            <div class="tool-rating" data-tool="writer">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.6/5)</span>
             </div>
         </div>
+        <div class="tool-action">
+            <a href="https://writer.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
+
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=contentbot.ai" alt="ContentBot Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>ContentBot</h3>
+            <p><strong>Review:</strong> A fantastic automation suite if you are trying to keep multiple client portals filled. It acts as an incredible foundation layer for mapping out large queues of regular draft ideas. <strong>Pro Tip:</strong> Set up their automated trigger blocks to drop fresh, skeletal article structures straight into your review panel every Monday morning like clockwork.</p>
+            <div class="tool-rating" data-tool="contentbot">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.4/5)</span>
+            </div>
+        </div>
+        <div class="tool-action">
+            <a href="https://contentbot.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
+
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=wordhero.co" alt="WordHero Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>WordHero</h3>
+            <p><strong>Review:</strong> Offers a massive, incredibly varied collection of quick copy templates. It handles classic commercial structures really well, giving you immediate access to fast layouts for basic store promos. <strong>Pro Tip:</strong> Use the built-in "AIDA" layout blueprint to instantly organize your product launch social descriptions for better audience conversions.</p>
+            <div class="tool-rating" data-tool="wordhero">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
+            </div>
+        </div>
+        <div class="tool-action">
+            <a href="https://wordhero.co" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
+
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=bertha.ai" alt="Bertha AI Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Bertha AI</h3>
+            <p><strong>Review:</strong> Designed specifically to live inside open-source web builders. It saves massive amounts of time by removing the constant need to switch between your editor and external text tabs. <strong>Pro Tip:</strong> Use it to write your meta summaries and image Alt-text values right inside your page block builder to keep your site administration seamless.</p>
+            <div class="tool-rating" data-tool="berthaai">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.3/5)</span>
+            </div>
+        </div>
+        <div class="tool-action">
+            <a href="https://bertha.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
+
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://img.zapier.com/storage/developer-cli/dae25187e14a1f11e9bf1f2b6bd8e957.png" alt="GoCharlie Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>GoCharlie</h3>
+            <p><strong>Review:</strong> A genuinely clever tool for turning a single piece of content into multiple formats. It cuts down on hours of tedious editing work by easily repurposing master assets into clean marketing snippets. <strong>Pro Tip:</strong> Paste your long reference video links or raw footage transcripts here to quickly break them down into structured post briefs and short clips.</p>
+            <div class="tool-rating" data-tool="gocharlie">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.5/5)</span>
+            </div>
+        </div>
+        <div class="tool-action">
+            <a href="https://gocharlie.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
+
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=longshot.ai" alt="LongShot Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>LongShot</h3>
+            <p><strong>Review:</strong> Built entirely to keep your informational guides factually accurate. It helps protect your web project's reputation by cross-checking claims, which is vital for building deep customer trust. <strong>Pro Tip:</strong> Run your educational text blocks through their dedicated "Fact Check" panel to catch and weed out any weird AI hallucinations before you hit publish.</p>
+            <div class="tool-rating" data-tool="longshot">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.6/5)</span>
+            </div>
+        </div>
+        <div class="tool-action">
+            <a href="https://longshot.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
+
+    <div class="tool-card" data-cat="writing">
+        <div class="tool-logo-container">
+            <img src="https://www.google.com/s2/favicons?sz=128&domain=neuroflash.com" alt="Neuroflash Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+        </div>
+        <div class="tool-info">
+            <h3>Neuroflash</h3>
+            <p><strong>Review:</strong> Incredible at handling localized phrasing across different languages. It doesn't give you those awkward, literal translations, making sure your marketing campaigns sound native and natural. <strong>Pro Tip:</strong> Take advantage of their regional audience analyzer module to see exactly how well your copy will resonate with specific demographics before launching.</p>
+            <div class="tool-rating" data-tool="neuroflash">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-count">(4.4/5)</span>
+            </div>
+        </div>
+        <div class="tool-action">
+            <a href="https://neuroflash.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+        </div>
+    </div>
+
+</main>
 
        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://img.zapier.com/storage/developer-cli/dae25187e14a1f11e9bf1f2b6bd8e957.png" 
-                     alt="GoCharlie Logo" 
-                     class="tool-logo" 
-                     onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>GoCharlie</h3>
-                <p><strong>Review:</strong> A "multimodal" assistant. <strong>Pro Tip:</strong> Upload a YouTube link to turn video into a blog post and 5 social posts.</p>
-                <div class="tool-rating" data-tool="gocharlie">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://gocharlie.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=longshot.ai" alt="LongShot Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>LongShot</h3>
-                <p><strong>Review:</strong> Focuses on factual accuracy. <strong>Pro Tip:</strong> Use the "Fact Check" feature to verify claims before publishing.</p>
-                <div class="tool-rating" data-tool="longshot">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.6/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://longshot.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="writing">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=neuroflash.com" alt="Neuroflash Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Neuroflash</h3>
-                <p><strong>Review:</strong> Best for European languages. <strong>Pro Tip:</strong> Tells you exactly how much a specific audience will like your copy.</p>
-                <div class="tool-rating" data-tool="neuroflash">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.4/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://neuroflash.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="writing">
             <div class="tool-logo-container">
                 <img src="https://www.google.com/s2/favicons?sz=128&domain=texti.app" alt="Texti Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
             </div>
             <div class="tool-info">
                 <h3>Texti</h3>
-                <p><strong>Review:</strong> A handy search companion. <strong>Pro Tip:</strong> Lives in your sidebar—summarize search results while still on the Google page.</p>
+                <p><strong>Review:</strong> Super helpful if you hate constantly jumping back and forth between search tabs. It sits quietly right where you are working to break down complex articles on the fly. <strong>Pro Tip:</strong> Keep it pinned to your active browser sidebar to instantly clean up dense technical documentation while researching errors.</p>
                 <div class="tool-rating" data-tool="texti">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.2/5)</span>
@@ -934,7 +943,7 @@
             </div>
             <div class="tool-info">
                 <h3>Wordtune Read</h3>
-                <p><strong>Review:</strong> A lifesaver for researchers. <strong>Pro Tip:</strong> Upload a 50-page PDF and get "Key Highlights" in bullet points in seconds.</p>
+                <p><strong>Review:</strong> An absolute lifesaver when you get hit with massive, dry background documents. It cuts right through the corporate fluff and extracts what actually matters. <strong>Pro Tip:</strong> Drop lengthy, 50-page niche market reports or privacy policies here to get a scannable bulleted layout of key takeaways in under ten seconds.</p>
                 <div class="tool-rating" data-tool="wordtuneread">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.7/5)</span>
@@ -945,13 +954,13 @@
             </div>
         </div>
         
-       <div class="tool-card" data-cat="design">
+        <div class="tool-card" data-cat="design">
             <div class="tool-logo-container">
                 <img src="https://www.google.com/s2/favicons?sz=128&domain=canva.com" alt="Canva Magic Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
             </div>
             <div class="tool-info">
                 <h3>Canva Magic</h3>
-                <p><strong>Review:</strong> Standard for fast graphics. <strong>Pro Tip:</strong> Use "Magic Switch" to turn a post into a flyer and a presentation instantly.</p>
+                <p><strong>Review:</strong> My go-to for churning out rapid, clean social assets. It bridges the gap perfectly when you need look-good graphics quickly but don't want to open heavy software. <strong>Pro Tip:</strong> Use the "Magic Switch" engine to instantly clone a single square feed post design into a matching vertical short-video thumbnail or presentation header layout.</p>
                 <div class="tool-rating" data-tool="canvamagic">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.7/5)</span>
@@ -968,7 +977,7 @@
             </div>
             <div class="tool-info">
                 <h3>Midjourney</h3>
-                <p><strong>Review:</strong> Unbeatable for concept visuals. <strong>Pro Tip:</strong> Use the "--v 6" tag in prompts to get the highest level of detail.</p>
+                <p><strong>Review:</strong> Hands down the undisputed king for generating gorgeous mood boards and highly stylized cinematic concepts. The texture detailing is completely unmatched. <strong>Pro Tip:</strong> Lean heavily on their `--v 6` styling parameters and inject specific lighting terms like "moody ambient backlight" to force incredibly cinematic, hyper-realistic renders.</p>
                 <div class="tool-rating" data-tool="midjourney">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.9/5)</span>
@@ -985,7 +994,7 @@
             </div>
             <div class="tool-info">
                 <h3>Adobe Firefly</h3>
-                <p><strong>Review:</strong> Professional AI. <strong>Pro Tip:</strong> Use "Generative Fill" in Photoshop to remove or add objects with perfect lighting.</p>
+                <p><strong>Review:</strong> Incredibly seamless if you are already deeply embedded in standard professional design suites. It blends new generations into your layers beautifully. <strong>Pro Tip:</strong> Fire up their "Generative Fill" tool to extend tight canvas edges or seamlessly paint out distracting background objects without messing up your original lighting environment.</p>
                 <div class="tool-rating" data-tool="adobefirefly">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.7/5)</span>
@@ -1002,7 +1011,7 @@
             </div>
             <div class="tool-info">
                 <h3>Looka</h3>
-                <p><strong>Review:</strong> Excellent for new brand identity. <strong>Pro Tip:</strong> Check the "Brand Kit" to see logos on business cards and shirts.</p>
+                <p><strong>Review:</strong> A fantastic starting point when trying to visualize a new commercial identity from scratch. It builds highly structured, scalable concept directions quickly. <strong>Pro Tip:</strong> Head straight to their interactive "Brand Kit" panel to see your logo mockups placed on real product boxes, apparel, and business cards before committing to any design.</p>
                 <div class="tool-rating" data-tool="looka">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.5/5)</span>
@@ -1019,7 +1028,7 @@
             </div>
             <div class="tool-info">
                 <h3>Brandmark</h3>
-                <p><strong>Review:</strong> Simple and elegant. <strong>Pro Tip:</strong> Perfect for a minimalist aesthetic if you want to look modern and clean.</p>
+                <p><strong>Review:</strong> Perfect if you want to skip over-complicated design elements and lean straight into a clean, contemporary feel. It balances layout elements incredibly well. <strong>Pro Tip:</strong> This engine shines best with minimalism; keep your input text simple and use their tool to rapidly sort out clean, professional font hierarchies.</p>
                 <div class="tool-rating" data-tool="brandmark">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.4/5)</span>
@@ -1036,7 +1045,7 @@
             </div>
             <div class="tool-info">
                 <h3>Figma AI</h3>
-                <p><strong>Review:</strong> Game-changer for UI designers. <strong>Pro Tip:</strong> Use "Auto-Layout" suggestions to ensure mobile responsiveness.</p>
+                <p><strong>Review:</strong> Completely eliminates the tedious grunt work from web wireframing. It acts like a highly responsive assistant built directly inside your working design canvas. <strong>Pro Tip:</strong> Let the AI analyze your component groupings to suggest automated layout configurations—it makes ensuring perfect mobile responsiveness a breeze.</p>
                 <div class="tool-rating" data-tool="figmaai">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.8/5)</span>
@@ -1053,7 +1062,7 @@
             </div>
             <div class="tool-info">
                 <h3>Uizard</h3>
-                <p><strong>Review:</strong> Sketches to app designs. <strong>Pro Tip:</strong> Photo a whiteboard sketch and turn it into a digital prototype in minutes.</p>
+                <p><strong>Review:</strong> Genuinely magical for pulling loose, rough ideas directly out of your notebook and slapping them straight onto a digital screen. It makes product prototyping incredibly fast. <strong>Pro Tip:</strong> Take a quick, clear photo of a messy whiteboard layout draw-up and upload it—the engine will convert those marker lines into clean, clickable UI mockups.</p>
                 <div class="tool-rating" data-tool="uizard">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.6/5)</span>
@@ -1070,7 +1079,7 @@
             </div>
             <div class="tool-info">
                 <h3>DALL-E 3</h3>
-                <p><strong>Review:</strong> Amazing text instructions. <strong>Pro Tip:</strong> Ask it to "include text"—best at rendering readable letters inside art.</p>
+                <p><strong>Review:</strong> The absolute best tool if you have incredibly specific layout requirements. It listens to exact spatial instructions remarkably well compared to other platforms. <strong>Pro Tip:</strong> Explicitly mention exact lettering parameters inside quotes (like: "Render the words 'SHOP NOW' on a sleek banner") to get crisp, readable text inside your designs.</p>
                 <div class="tool-rating" data-tool="dalle3">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.7/5)</span>
@@ -1087,7 +1096,7 @@
             </div>
             <div class="tool-info">
                 <h3>Recraft</h3>
-                <p><strong>Review:</strong> Best for vector-style art. <strong>Pro Tip:</strong> Use it to create icons and logos that scale to any size without quality loss.</p>
+                <p><strong>Review:</strong> A major secret weapon for web administrators. It completely sidesteps blurry renders by focusing heavily on structured, scalable graphic paths. <strong>Pro Tip:</strong> Use their dedicated dashboard to build custom site icon sets and vector assets—you can scale them as large as you want without ever losing crisp pixel depth.</p>
                 <div class="tool-rating" data-tool="recraft">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.8/5)</span>
@@ -1104,7 +1113,7 @@
             </div>
             <div class="tool-info">
                 <h3>Photoroom</h3>
-                <p><strong>Review:</strong> Fast removal for e-commerce. <strong>Pro Tip:</strong> Use "Batch" mode to remove backgrounds from 50 product photos at once.</p>
+                <p><strong>Review:</strong> An absolute workhorse if you are running commercial storefronts and handling inventory layouts. It cuts down hours of tedious clipping into seconds. <strong>Pro Tip:</strong> Leverage their "Batch" function to process up to 50 raw product photos simultaneously—it will isolate items and drop crisp, uniform web backgrounds onto all of them at once.</p>
                 <div class="tool-rating" data-tool="photoroom">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.7/5)</span>
@@ -1121,7 +1130,7 @@
             </div>
             <div class="tool-info">
                 <h3>Flair.ai</h3>
-                <p><strong>Review:</strong> Staging for product shots. <strong>Pro Tip:</strong> Place a bottle photo and let the AI place it in a high-end studio setting.</p>
+                <p><strong>Review:</strong> Perfect for upgrading basic product shots on a budget. It takes a completely flat object photo and builds a deeply cinematic, professional digital set around it. <strong>Pro Tip:</strong> Drop a clean bottle or serum asset onto their stage, type in "placed on a premium marble vanity with soft leaf shadows," and let the engine render high-end commercial content.</p>
                 <div class="tool-rating" data-tool="flairai">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.5/5)</span>
@@ -1138,7 +1147,7 @@
             </div>
             <div class="tool-info">
                 <h3>Fontjoy</h3>
-                <p><strong>Review:</strong> Solve font pairing forever. <strong>Pro Tip:</strong> Lock one font you love and generate perfect pairings for it.</p>
+                <p><strong>Review:</strong> Completely eliminates the endless, mind-numbing scrolling through font libraries when starting a landing page build. It makes stylistic typography pairing immediate. <strong>Pro Tip:</strong> Once you establish a primary brand font you love, lock it in place on the dashboard and click generate—the engine builds highly balanced header-to-body pairings instantly.</p>
                 <div class="tool-rating" data-tool="fontjoy">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.3/5)</span>
@@ -1155,7 +1164,7 @@
             </div>
             <div class="tool-info">
                 <h3>Khroma</h3>
-                <p><strong>Review:</strong> Personalized palettes. <strong>Pro Tip:</strong> The AI learns your taste—pick colors you like first for perfect suggestions.</p>
+                <p><strong>Review:</strong> A deeply intuitive color generator that completely skips over generic, pre-made template wheels. It designs palettes tailored specifically to your aesthetic preference. <strong>Pro Tip:</strong> Spend a couple of minutes clicking on the initial setup colors you genuinely like—the underlying engine learns your precise taste to serve up gorgeous, custom site combinations.</p>
                 <div class="tool-rating" data-tool="khroma">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.5/5)</span>
@@ -1172,7 +1181,7 @@
             </div>
             <div class="tool-info">
                 <h3>Autodraw</h3>
-                <p><strong>Review:</strong> Fast icon creation. <strong>Pro Tip:</strong> Perfect for creating quick slides when you need a simple icon for an idea.</p>
+                <p><strong>Review:</strong> Incredibly fast for pulling basic, clean indicators out of your head when sketching presentation mockups or flowcharts. It turns rough mouse gestures into crisp vectors. <strong>Pro Tip:</strong> Don't stress about precision; just draw a loose, shaky representation of an object, and use the top toolbar suggestions to swap it for a clean, professional asset instantly.</p>
                 <div class="tool-rating" data-tool="autodraw">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.2/5)</span>
@@ -1189,7 +1198,7 @@
             </div>
             <div class="tool-info">
                 <h3>Let's Enhance</h3>
-                <p><strong>Review:</strong> Professional image upscaler. <strong>Pro Tip:</strong> Fix low-res client photos so they look crisp on high-def screens.</p>
+                <p><strong>Review:</strong> A total game-changer when you are handed tiny, low-quality images that look terrible on large display banners. It cleans up compression blocks beautifully. <strong>Pro Tip:</strong> Take fuzzy asset renders or compressed client files, pass them through the upscaler, and use their specialized textures settings to make them look razor-sharp on high-res displays.</p>
                 <div class="tool-rating" data-tool="letsenhance">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.6/5)</span>
@@ -1206,7 +1215,7 @@
             </div>
             <div class="tool-info">
                 <h3>VanceAI</h3>
-                <p><strong>Review:</strong> Restores blurry photos. <strong>Pro Tip:</strong> The "Sharpen" tool is specifically designed to fix motion blur in portraits.</p>
+                <p><strong>Review:</strong> Exceptionally reliable for cleaning up real-world photography issues. Instead of just blowing up pixels, it actively reconstructs fine details like text and faces. <strong>Pro Tip:</strong> Use their specialized "Sharpen" configuration blocks to instantly save slightly out-of-focus portraits or remove noticeable motion blur from live team action shots.</p>
                 <div class="tool-rating" data-tool="vanceai">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.5/5)</span>
@@ -1217,22 +1226,22 @@
             </div>
         </div>
 
-       <div class="tool-card" data-cat="design">
-    <div class="tool-logo-container">
-        <img src="https://img.icons8.com/fluent/96/wizard.png" alt="Magician Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/design.png'">
-    </div>
-    <div class="tool-info">
-        <h3>Magician</h3>
-        <p><strong>Review:</strong> A brilliant Figma plugin powered by AI to generate unique icons, copy text, and imagery right inside your workspace. <strong>Pro Tip:</strong> Perfect for rapid UI prototyping without leaving your design canvas frames.</p>
-        <div class="tool-rating" data-tool="magician">
-            <span class="stars">⭐⭐⭐⭐⭐</span>
-            <span class="rating-count">(4.7/5)</span>
+        <div class="tool-card" data-cat="design">
+            <div class="tool-logo-container">
+                <img src="https://img.icons8.com/fluent/96/wizard.png" alt="Magician Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/design.png'">
+            </div>
+            <div class="tool-info">
+                <h3>Magician</h3>
+                <p><strong>Review:</strong> A brilliant, zero-friction plugin that keeps you in your creative flow state. It lets you create placeholder icons and mock copy text right where you design. <strong>Pro Tip:</strong> Use it during rapid interface prototyping runs to instantly populate empty frames with unique, fitting icons without ever breaking your attention away from your workspace layouts.</p>
+                <div class="tool-rating" data-tool="magician">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span class="rating-count">(4.7/5)</span>
+                </div>
+            </div>
+            <div class="tool-action">
+                <a href="https://magician.design" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+            </div>
         </div>
-    </div>
-    <div class="tool-action">
-        <a href="https://magician.design" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-    </div>
-</div>
         
         <div class="tool-card" data-cat="design">
             <div class="tool-logo-container">
@@ -1240,7 +1249,7 @@
             </div>
             <div class="tool-info">
                 <h3>Galileo AI</h3>
-                <p><strong>Review:</strong> Text-to-UI is here. <strong>Pro Tip:</strong> Describe a dashboard and it will build an editable design in Figma instantly.</p>
+                <p><strong>Review:</strong> Generative layout design done right. It saves hours of block placement by building fully structured design frameworks directly from a simple text idea. <strong>Pro Tip:</strong> Describe your complex application interface requirements (like a checkout flow with specific tracking panels) and export it directly to your styling boards as editable layers.</p>
                 <div class="tool-rating" data-tool="galileoai">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.7/5)</span>
@@ -1257,7 +1266,7 @@
             </div>
             <div class="tool-info">
                 <h3>Relume</h3>
-                <p><strong>Review:</strong> Fast-track web development. <strong>Pro Tip:</strong> Use the AI site-mapper to plan navigation before you start designing.</p>
+                <p><strong>Review:</strong> The ultimate structural foundation for web development. It completely eliminates structural planning headaches by mapping out perfectly organized component blocks. <strong>Pro Tip:</strong> Use their AI architecture assistant to layout your entire site map navigation hierarchy before touch styling—it will export flawlessly clean, scalable section wrappers.</p>
                 <div class="tool-rating" data-tool="relume">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.8/5)</span>
@@ -1274,7 +1283,7 @@
             </div>
             <div class="tool-info">
                 <h3>Krea.ai</h3>
-                <p><strong>Review:</strong> Real-time enhancements. <strong>Pro Tip:</strong> Makes messy sketches look like finished masterpieces instantly.</p>
+                <p><strong>Review:</strong> Incredible for real-time creative experimentation. Watching your loose layout sketches instantly transform into high-fidelity artistic concepts is mind-blowing. <strong>Pro Tip:</strong> Keep their real-time generation panel active on a secondary screen while adjusting basic color paths to see instant, professional stylistic changes to your canvas blocks.</p>
                 <div class="tool-rating" data-tool="kreaai">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.6/5)</span>
@@ -1285,22 +1294,22 @@
             </div>
         </div>
 
-       <div class="tool-card" data-cat="design">
-    <div class="tool-logo-container">
-        <img src="https://img.icons8.com/fluent/96/vector-gradient.png" alt="Vector Magic Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/image.png'">
-    </div>
-    <div class="tool-info">
-        <h3>Vector Magic</h3>
-        <p><strong>Review:</strong> The cleanest auto-tracer available to convert messy JPGs and PNGs into scalable SVG vector files effortlessly. <strong>Pro Tip:</strong> Essential tool for logo designers dealing with low-resolution client source files.</p>
-        <div class="tool-rating" data-tool="vectormagic">
-            <span class="stars">⭐⭐⭐⭐⭐</span>
-            <span class="rating-count">(4.8/5)</span>
+        <div class="tool-card" data-cat="design">
+            <div class="tool-logo-container">
+                <img src="https://img.icons8.com/fluent/96/vector-gradient.png" alt="Vector Magic Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/image.png'">
+            </div>
+            <div class="tool-info">
+                <h3>Vector Magic</h3>
+                <p><strong>Review:</strong> The cleanest, most precise auto-tracer on the web. It takes pixelated, muddy flat graphics and transforms them into incredibly smooth, mathematically perfect shapes. <strong>Pro Tip:</strong> It is a complete necessity when a client sends an unuseable, low-res header snippet and you need a high-quality, crisp SVG format to drop into your web code frames.</p>
+                <div class="tool-rating" data-tool="vectormagic">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span class="rating-count">(4.8/5)</span>
+                </div>
+            </div>
+            <div class="tool-action">
+                <a href="https://vectormagic.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+            </div>
         </div>
-    </div>
-    <div class="tool-action">
-        <a href="https://vectormagic.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-    </div>
-</div>
 
         <div class="tool-card" data-cat="design">
             <div class="tool-logo-container">
@@ -1473,21 +1482,21 @@
         </div>
 
         <div class="tool-card" data-cat="design">
-    <div class="tool-logo-container">
-        <img src="https://img.icons8.com/fluent/96/brush.png" alt="DeepArt Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/image.png'">
-    </div>
-    <div class="tool-info">
-        <h3>DeepArt</h3>
-        <p><strong>Review:</strong> Uses advanced stylistic algorithms to turn any ordinary photograph into a fine-art masterpiece canvas. <strong>Pro Tip:</strong> Try uploading high-contrast images for spectacular results modeled after classic painters.</p>
-        <div class="tool-rating" data-tool="deepart">
-            <span class="stars">⭐⭐⭐⭐★</span>
-            <span class="rating-count">(4.3/5)</span>
+            <div class="tool-logo-container">
+                <img src="https://img.icons8.com/fluent/96/brush.png" alt="DeepArt Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/image.png'">
+            </div>
+            <div class="tool-info">
+                <h3>DeepArt</h3>
+                <p><strong>Review:</strong> Uses advanced stylistic algorithms to turn any ordinary photograph into a fine-art masterpiece canvas. <strong>Pro Tip:</strong> Try uploading high-contrast images for spectacular results modeled after classic painters.</p>
+                <div class="tool-rating" data-tool="deepart">
+                    <span class="stars">⭐⭐⭐⭐★</span>
+                    <span class="rating-count">(4.3/5)</span>
+                </div>
+            </div>
+            <div class="tool-action">
+                <a href="https://deepart.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+            </div>
         </div>
-    </div>
-    <div class="tool-action">
-        <a href="https://deepart.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-    </div>
-</div>
 
         <div class="tool-card" data-cat="design">
             <div class="tool-logo-container">
@@ -1505,7 +1514,7 @@
                 <a href="https://tailorbrands.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
             </div>
         </div>
-        
+
         <div class="tool-card" data-cat="video">
             <div class="tool-logo-container">
                 <img src="https://www.google.com/s2/favicons?sz=128&domain=runwayml.com" alt="Runway Gen-2 Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
@@ -1863,213 +1872,107 @@
             </div>
         </div>
 
-        <div class="tool-card" data-cat="video">
+       <div class="tool-card" data-cat="video">
             <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=wonderdynamics.com" alt="Wonder Dynamics Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+                <img src="https://www.google.com/s2/favicons?sz=128&domain=invideo.io" alt="InVideo AI Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
             </div>
             <div class="tool-info">
-                <h3>Wonder Dynamics</h3>
-                <p><strong>Review:</strong> Hollywood CG animation. <strong>Pro Tip:</strong> Replaces a real person with a 3D character—all in your browser.</p>
-                <div class="tool-rating" data-tool="wonderdynamics">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.8/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://wonderdynamics.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="video">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=topazlabs.com" alt="Topaz Video AI Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Topaz Video AI</h3>
-                <p><strong>Review:</strong> Professional upscaler. <strong>Pro Tip:</strong> Turns old 480p footage into crisp 4K—must-have for restoration.</p>
-                <div class="tool-rating" data-tool="topazvideoai">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.7/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://topazlabs.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="video">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=ebsynth.com" alt="EbSynth Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>EbSynth</h3>
-                <p><strong>Review:</strong> Keyframe animation. <strong>Pro Tip:</strong> Paint one frame and the AI will apply that style to the entire clip.</p>
-                <div class="tool-rating" data-tool="ebsynth">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.3/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://ebsynth.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="video">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=steve.ai" alt="Steve.ai Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Steve.ai</h3>
-                <p><strong>Review:</strong> Fast animations for educators. <strong>Pro Tip:</strong> "Explainer Video" mode uses cartoons to simplify complex topics.</p>
-                <div class="tool-rating" data-tool="steveai">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.4/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://steve.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="video">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=veed.io" alt="Veed.io Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Veed.io</h3>
-                <p><strong>Review:</strong> Online editing suite. <strong>Pro Tip:</strong> Swap a messy room for a professional office using AI background removal.</p>
-                <div class="tool-rating" data-tool="veedio">
+                <h3>InVideo AI</h3>
+                <p><strong>Review:</strong> Prompt-to-video powerhouse. <strong>Pro Tip:</strong> Type a topic, script idea, or audience premise, and it generates a complete video with voiceover and media in minutes.</p>
+                <div class="tool-rating" data-tool="invideo">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-count">(4.6/5)</span>
                 </div>
             </div>
             <div class="tool-action">
-                <a href="https://veed.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+                <a href="https://invideo.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-cat="video">
+            <div class="tool-logo-container">
+                <img src="https://www.google.com/s2/favicons?sz=128&domain=synthesia.io" alt="Synthesia Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+            </div>
+            <div class="tool-info">
+                <h3>Synthesia</h3>
+                <p><strong>Review:</strong> Market leader for virtual presenters. <strong>Pro Tip:</strong> Turn plain-text documentation or knowledge bases into realistic corporate training modules without any studio gear.</p>
+                <div class="tool-rating" data-tool="synthesia">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span class="rating-count">(4.8/5)</span>
+                </div>
+            </div>
+            <div class="tool-action">
+                <a href="https://synthesia.io" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-cat="video">
+            <div class="tool-logo-container">
+                <img src="https://www.google.com/s2/favicons?sz=128&domain=heygen.com" alt="HeyGen Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+            </div>
+            <div class="tool-info">
+                <h3>HeyGen</h3>
+                <p><strong>Review:</strong> Uncanny AI avatar precision. <strong>Pro Tip:</strong> Use the Video Translate feature to clone your voice and perfectly match your lip-sync across dozens of foreign languages.</p>
+                <div class="tool-rating" data-tool="heygen">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span class="rating-count">(4.7/5)</span>
+                </div>
+            </div>
+            <div class="tool-action">
+                <a href="https://heygen.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-cat="video">
+            <div class="tool-logo-container">
+                <img src="https://www.google.com/s2/favicons?sz=128&domain=runwayml.com" alt="Runway Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+            </div>
+            <div class="tool-info">
+                <h3>Runway (Gen-2)</h3>
+                <p><strong>Review:</strong> Cutting-edge generative art. <strong>Pro Tip:</strong> Use the Motion Brush feature to isolate specific parts of a still image and give them natural, cinematic movement.</p>
+                <div class="tool-rating" data-tool="runwayml">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span class="rating-count">(4.5/5)</span>
+                </div>
+            </div>
+            <div class="tool-action">
+                <a href="https://runwayml.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+            </div>
+        </div>
+
+        <div class="tool-card" data-cat="video">
+            <div class="tool-logo-container">
+                <img src="https://www.google.com/s2/favicons?sz=128&domain=opus.pro" alt="Opus Clip Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+            </div>
+            <div class="tool-info">
+                <h3>Opus Clip</h3>
+                <p><strong>Review:</strong> Long-form to short-form wizard. <strong>Pro Tip:</strong> Drop a single long YouTube video link and it automatically extracts 10 high-engagement, captioned shorts with virality scores.</p>
+                <div class="tool-rating" data-tool="opusclip">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span class="rating-count">(4.7/5)</span>
+                </div>
+            </div>
+            <div class="tool-action">
+                <a href="https://opus.pro" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
             </div>
         </div>
 
        <div class="tool-card" data-cat="video">
-    <div class="tool-logo-container">
-        <img src="https://img.icons8.com/fluent/96/audio-wave.png" alt="NeuralSync Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/ai.png'">
-    </div>
-    <div class="tool-info">
-        <h3>NeuralSync</h3>
-        <p><strong>Review:</strong> Excellent backend technology for lip-syncing audio to any video avatar smoothly. <strong>Pro Tip:</strong> Best used when translating content into multiple languages while keeping natural mouth structures.</p>
-        <div class="tool-rating" data-tool="neuralsync">
-            <span class="stars">⭐⭐⭐⭐★</span>
-            <span class="rating-count">(4.1/5)</span>
-        </div>
-    </div>
-    <div class="tool-action">
-        <a href="https://www.neuralsync.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-    </div>
-</div>
-        
-        <div class="tool-card" data-cat="video">
             <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=wondershare.com" alt="Wondershare Virbo Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
+                <img src="https://www.google.com/s2/favicons?sz=128&domain=descript.com" alt="Descript Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
             </div>
             <div class="tool-info">
-                <h3>Wondershare Virbo</h3>
-                <p><strong>Review:</strong> Cross-platform avatar creator. <strong>Pro Tip:</strong> Create professional business announcements on the move.</p>
-                <div class="tool-rating" data-tool="wondersharevirbo">
+                <h3>Descript</h3>
+                <p><strong>Review:</strong> Edit video via text transcript. <strong>Pro Tip:</strong> Use the "Overdub" feature to type correction text and seamlessly insert a cloned version of your voice without re-recording.</p>
+                <div class="tool-rating" data-tool="descript">
                     <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
+                    <span class="rating-count">(4.6/5)</span>
                 </div>
             </div>
             <div class="tool-action">
-                <a href="https://virbo.wondershare.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
+                <a href="https://descript.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
             </div>
         </div>
-
-        <div class="tool-card" data-cat="video"> <div class="tool-logo-container">
-                <img src="https://img.zapier.com/storage/developer-cli/ba948d37eb64b0f907e86895b6c310b8.png" 
-                     alt="Moovly Logo" 
-                     class="tool-logo" 
-                     onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Moovly</h3>
-                <p><strong>Review:</strong> An intuitive online video creation platform. <strong>Pro Tip:</strong> It's Perfect for turning scripts into engaging animated explainer videos quickly.</p>
-                <div class="tool-rating" data-tool="moovly">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.4/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://moovly.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-    
-        <div class="tool-card" data-cat="video">
-    <div class="tool-logo-container">
-        <img src="https://img.icons8.com/fluent/96/movie-projector.png" alt="Hour One Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/ai.png'">
-    </div>
-    <div class="tool-info">
-        <h3>Hour One</h3>
-        <p><strong>Review:</strong> Specializes in converting text into presenter-led videos automatically using virtual anchors. <strong>Pro Tip:</strong> Use their batch-creation features to scale video production lines instantly.</p>
-        <div class="tool-rating" data-tool="hourone">
-            <span class="stars">⭐⭐⭐⭐⭐</span>
-            <span class="rating-count">(4.6/5)</span>
-        </div>
-    </div>
-    <div class="tool-action">
-        <a href="https://www.hourone.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-    </div>
-</div>
-
-        <div class="tool-card" data-cat="video">
-    <div class="tool-logo-container">
-        <img src="https://img.icons8.com/fluent/96/video-call.png" alt="Rephrase.ai Logo" class="tool-logo" onerror="this.src='https://img.icons8.com/fluency/96/ai.png'">
-    </div>
-    <div class="tool-info">
-        <h3>Rephrase.ai</h3>
-        <p><strong>Review:</strong> An incredible tool for turning text into professional avatar videos. It saves hours of filming layout time. <strong>Pro Tip:</strong> Perfect for corporate training videos and personalized email marketing campaigns.</p>
-        <div class="tool-rating" data-tool="rephrase">
-            <span class="stars">⭐⭐⭐⭐★</span>
-            <span class="rating-count">(4.2/5)</span>
-        </div>
-    </div>
-    <div class="tool-action">
-        <a href="https://www.rephrase.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-    </div>
-</div>
-
-        <div class="tool-card" data-cat="video">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=supercreator.ai" alt="Supercreator Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Supercreator</h3>
-                <p><strong>Review:</strong> Built for "talking head" shorts. <strong>Pro Tip:</strong> Helps with script, teleprompter, and editing all in one app.</p>
-                <div class="tool-rating" data-tool="supercreator">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.3/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://supercreator.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-
-        <div class="tool-card" data-cat="video">
-            <div class="tool-logo-container">
-                <img src="https://www.google.com/s2/favicons?sz=128&domain=trymaverick.com" alt="Maverick Logo" class="tool-logo" onerror="this.src='fallback-icon.png'">
-            </div>
-            <div class="tool-info">
-                <h3>Maverick</h3>
-                <p><strong>Review:</strong> Personalization expert. <strong>Pro Tip:</strong> Greet every one of your store's customers by name automatically.</p>
-                <div class="tool-rating" data-tool="maverick">
-                    <span class="stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-count">(4.5/5)</span>
-                </div>
-            </div>
-            <div class="tool-action">
-                <a href="https://trymaverick.com" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
-            </div>
-        </div>
-    </main>
-
     </main>
 
 <section id="about" style="padding: 100px 20px; background: #050505; border-top: 1px solid #111; text-align: center;">
@@ -2103,7 +2006,7 @@
     </div>
 </section>
 
-    <div style="text-align: center; margin: 30px auto;">
+<div style="text-align: center; margin: 30px auto;">
     <button id="open-game-trigger" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: white; border: none; padding: 12px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); transition: transform 0.2s, box-shadow 0.2s;">
         🎮 Play Memory Game
     </button>
@@ -2137,23 +2040,9 @@
     }
     checkNavigation();
 
-    window.enterSite = function() {
-        const portal = document.getElementById('welcomePortal');
-        if (portal) {
-            portal.classList.add('disappearing');
-            sessionStorage.setItem('siteEntered', 'true'); 
-            document.body.style.overflow = 'auto'; 
-            setTimeout(() => {
-                portal.remove();
-            }, 700);
-        }
-    };
-
-  // --- PORTAL ENTER LOGIC ---
     if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
         document.body.style.overflow = 'hidden';
     } else if (document.getElementById('welcomePortal')) {
-        // If they already entered, keep the portal hidden and body scrollable
         document.getElementById('welcomePortal').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
@@ -2161,14 +2050,12 @@
     window.enterSite = function() {
         const portal = document.getElementById('welcomePortal');
         if (portal) {
-            // Smooth fade out
             portal.classList.add('disappearing');
-            
-            // Unlock page scrolling instantly
             document.body.style.overflow = 'auto';
-            
-            // Set session storage flag so it doesn't pop up again this session
             sessionStorage.setItem('siteEntered', 'true');
+            setTimeout(() => {
+                portal.remove();
+            }, 700);
         }
     };
 
@@ -2177,7 +2064,6 @@
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         if (btn) btn.classList.add('active');
 
-        // SPOTLIGHT VISIBILITY RULE: Show only on 'all' or 'design'
         const spotlight = document.getElementById('leonardoSpotlight');
         if (spotlight) {
             if (cat === 'all' || cat === 'design') {
@@ -2187,104 +2073,93 @@
             }
         }
 
-    const cards = document.querySelectorAll('.tool-card');
-    cards.forEach(card => {
-        const cardCategory = card.getAttribute('data-cat');
-        if (cat === 'all' || cardCategory === cat) {
-            card.style.display = 'flex';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    
-    const header = document.querySelector('header');
-    if (header) {
-        window.scrollTo({ top: header.offsetHeight, behavior: 'smooth' });
-    }
-};
-
-window.filterSearch = function() {
-    const input = document.getElementById('searchBar').value.toLowerCase();
-    const spotlight = document.getElementById('leonardoSpotlight');
-    const suggestionsBox = document.getElementById('searchSuggestions');
-    
-    // Clear old suggestions
-    suggestionsBox.innerHTML = '';
-
-    // Handle Spotlight section visibility rule
-    if (spotlight) {
-        if (input.length > 0) {
-            spotlight.style.display = 'none';
-        } else {
-            const activeBtn = document.querySelector('.filter-btn.active');
-            const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : 'all';
-            if (currentCat === 'all' || currentCat === 'design') {
-                spotlight.style.display = 'block';
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute('data-cat');
+            if (cat === 'all' || cardCategory === cat) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
             }
-        }
-    }
-
-    // Collect all tool cards
-    const cards = document.querySelectorAll('.tool-card');
-    let matches = [];
-
-    cards.forEach(card => {
-        const titleElement = card.querySelector('h3');
-        const descElement = card.querySelector('.tool-info p');
-        
-        const title = titleElement ? titleElement.innerText : '';
-        const desc = descElement ? descElement.innerText.toLowerCase() : '';
-        
-        // Main Search Matching Logic
-        if (title.toLowerCase().includes(input) || desc.includes(input)) {
-            card.style.display = "flex";
-            // If user typed something, gather tool names matching the query for autocomplete
-            if (input.length > 0 && title.toLowerCase().includes(input)) {
-                matches.push(title);
-            }
-        } else {
-            card.style.display = "none";
-        }
-    });
-
-    // Google-like Dropdown Builder Logic
-    if (matches.length > 0 && input.length > 0) {
-        suggestionsBox.style.display = 'block';
-        
-        // Limit suggestions list to top 6 items to keep it compact
-        matches.slice(0, 6).forEach(toolName => {
-            const item = document.createElement('div');
-            item.className = 'suggestion-item';
-            item.innerHTML = `🤖 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
-            
-            // On click behavior: fill search input box, filter to that tool, and close dropdown
-            item.onclick = function() {
-                document.getElementById('searchBar').value = toolName;
-                suggestionsBox.style.display = 'none';
-                window.filterSearch(); // Re-trigger filter with absolute tool string
-            };
-            suggestionsBox.appendChild(item);
         });
-    } else {
-        suggestionsBox.style.display = 'none';
-    }
-};
+        
+        const header = document.querySelector('header');
+        if (header) {
+            window.scrollTo({ top: header.offsetHeight, behavior: 'smooth' });
+        }
+    };
 
-// Global listener: Hide the suggestion panel instantly if user clicks anywhere else on the window screen
-document.addEventListener('click', function(e) {
-    const suggestionsBox = document.getElementById('searchSuggestions');
-    const searchInput = document.getElementById('searchBar');
-    if (suggestionsBox && e.target !== searchInput && e.target !== suggestionsBox) {
-        suggestionsBox.style.display = 'none';
-    }
-});
-    
-    // --- UTILITIES ---
+    window.filterSearch = function() {
+        const input = document.getElementById('searchBar').value.toLowerCase();
+        const spotlight = document.getElementById('leonardoSpotlight');
+        const suggestionsBox = document.getElementById('searchSuggestions');
+        
+        suggestionsBox.innerHTML = '';
+
+        if (spotlight) {
+            if (input.length > 0) {
+                spotlight.style.display = 'none';
+            } else {
+                const activeBtn = document.querySelector('.filter-btn.active');
+                const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : 'all';
+                if (currentCat === 'all' || currentCat === 'design') {
+                    spotlight.style.display = 'block';
+                }
+            }
+        }
+
+        const cards = document.querySelectorAll('.tool-card');
+        let matches = [];
+
+        cards.forEach(card => {
+            const titleElement = card.querySelector('h3');
+            const descElement = card.querySelector('.tool-info p');
+            
+            const title = titleElement ? titleElement.innerText : '';
+            const desc = descElement ? descElement.innerText.toLowerCase() : '';
+            
+            if (title.toLowerCase().includes(input) || desc.includes(input)) {
+                card.style.display = "flex";
+                if (input.length > 0 && title.toLowerCase().includes(input)) {
+                    matches.push(title);
+                }
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        if (matches.length > 0 && input.length > 0) {
+            suggestionsBox.style.display = 'block';
+            matches.slice(0, 6).forEach(toolName => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.innerHTML = `🤖 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
+                
+                item.onclick = function() {
+                    document.getElementById('searchBar').value = toolName;
+                    suggestionsBox.style.display = 'none';
+                    window.filterSearch();
+                };
+                suggestionsBox.appendChild(item);
+            });
+        } else {
+            suggestionsBox.style.display = 'none';
+        }
+    };
+
+    document.addEventListener('click', function(e) {
+        const suggestionsBox = document.getElementById('searchSuggestions');
+        const searchInput = document.getElementById('searchBar');
+        if (suggestionsBox && e.target !== searchInput && e.target !== suggestionsBox) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+        
     window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
 
-   // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
+    // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
     const firebaseConfig = {
         apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
         authDomain: "freeai-ratings.firebaseapp.com",
@@ -2297,7 +2172,6 @@ document.addEventListener('click', function(e) {
 
     const app = initializeApp(firebaseConfig);
 
-   // 🚀 FIXED: Automatically enables debug mode on localhost but keeps production console 100% clean
     if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
         self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     }
@@ -2310,7 +2184,6 @@ document.addEventListener('click', function(e) {
     const db = getDatabase(app);
     const ratingRef = ref(db, 'site-stats');
 
-    // --- FIREBASE DOM HOOKS & SELECTION ---
     const ratingCard = document.getElementById('rating-card');
     const ratingContent = document.getElementById('rating-content');
     const thankYouMsg = document.getElementById('thank-you-msg');
@@ -2320,7 +2193,6 @@ document.addEventListener('click', function(e) {
         ratingCard.style.display = 'none'; 
     }
 
-    // --- STREAMING LIVE SITE RATINGS ---
     onValue(ratingRef, (snapshot) => {
         const data = snapshot.val();
         const statsHeader = document.querySelector('#live-rating');
@@ -2330,7 +2202,6 @@ document.addEventListener('click', function(e) {
         }
     });
 
-    // --- TRANSACTION INTERACTION PROCESSING ---
     starElements.forEach(star => {
         star.addEventListener('click', async () => {
             const val = parseInt(star.getAttribute('data-value'));
@@ -2365,14 +2236,13 @@ document.addEventListener('click', function(e) {
         });
     });
 
- // --- SAFE MEMORY ENGINE INITIALIZATION ---
+    // --- SAFE MEMORY ENGINE INITIALIZATION ---
     const gameOverlay = document.getElementById('game-modal-overlay');
     const openGameTrigger = document.getElementById('open-game-trigger');
     const closeGameBtn = document.getElementById('close-game-btn');
     const memoryGrid = document.getElementById('memory-grid');
     const movesDisplay = document.getElementById('game-moves');
     
-    // Perfectly paired 5 identities across 16 slots (8 total distinct pairs)
     const rawDeck = [
         { id: 'fahad', emoji: '🤖', name: 'Fahad' },
         { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
@@ -2384,7 +2254,6 @@ document.addEventListener('click', function(e) {
         { id: 'fawad', emoji: '🐂', name: 'Fawad' },
         { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
         { id: 'wahid', emoji: '🦁', name: 'Wahid' },
-        // Remaining 6 slots completed as pairs to build a balanced 16 deck matrix
         { id: 'fahad', emoji: '🤖', name: 'Fahad' },
         { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
         { id: 'fawad', emoji: '🐂', name: 'Fawad' },
@@ -2398,7 +2267,6 @@ document.addEventListener('click', function(e) {
     let movesCount = 0;
     let lockBoard = false;
 
-    // Open Modal Window
     openGameTrigger?.addEventListener('click', () => {
         if (gameOverlay) {
             gameOverlay.style.setProperty('display', 'flex', 'important');
@@ -2406,7 +2274,6 @@ document.addEventListener('click', function(e) {
         }
     });
 
-    // Close Modal Window
     function hideGameModal() {
         if (gameOverlay) {
             gameOverlay.style.setProperty('display', 'none', 'important');
@@ -2422,9 +2289,8 @@ document.addEventListener('click', function(e) {
         matchedCount = 0;
         movesCount = 0;
         lockBoard = false;
-        movesDisplay.innerText = `MOVES: ${movesCount}`;
+        if(movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
 
-        // Shuffling algorithm
         const shuffledDeck = [...rawDeck].sort(() => 0.5 - Math.random());
 
         shuffledDeck.forEach(data => {
@@ -2454,7 +2320,7 @@ document.addEventListener('click', function(e) {
 
         if (flippedCards.length === 2) {
             movesCount++;
-            movesDisplay.innerText = `MOVES: ${movesCount}`;
+            if(movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
             lockBoard = true;
             checkMatch();
         }
@@ -2481,7 +2347,6 @@ document.addEventListener('click', function(e) {
                 }, 300);
             }
         } else {
-            // Flips cards back over smoothly if match fails
             setTimeout(() => {
                 if (flippedCards && flippedCards) {
                     flippedCards.querySelector('.card-face').style.setProperty('display', 'none', 'important');
@@ -2522,8 +2387,9 @@ document.addEventListener('click', function(e) {
             if (listContainer) {
                 listContainer.innerHTML = '';
                 if (boardData && boardData.length > 0) {
-                    boardData.forEach((entry, idx) => {
+                    boardData.forEach((entry) => {
                         const row = document.createElement('li');
+                        row.style.styleFloat = 'none';
                         row.style.marginBottom = '4px';
                         row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
                         listContainer.appendChild(row);
@@ -2564,7 +2430,6 @@ document.addEventListener('click', function(e) {
             }
         }, true);
     })();
-    
 </script>
 </body>
 </html>
