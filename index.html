@@ -2172,7 +2172,7 @@
         left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        background: rgba(11, 15, 25, 0.85) !important; 
+        background: rgba(11, 15, 25, 0.95) !important; 
         backdrop-filter: blur(12px) !important;
         -webkit-backdrop-filter: blur(12px) !important;
         z-index: 2147483647 !important;
@@ -2180,7 +2180,6 @@
         margin: 0 !important;
         padding: 12px !important;
         overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
     }
 
     body.game-active {
@@ -2191,7 +2190,7 @@
     /* 🧠 CLEAN CARD STATE ENGINE */
     .memory-card-item {
         aspect-ratio: 1/1 !important;
-        background: #1e1b4b !important; /* Default dark closed look */
+        background: #1e1b4b !important;
         border: 2px solid #1e293b !important;
         border-radius: 10px !important;
         display: flex !important;
@@ -2204,9 +2203,8 @@
         transition: background 0.2s, border-color 0.2s !important;
     }
 
-    /* Target the hidden inner content wrapper */
     .memory-card-item .inner-face {
-        display: none !important; /* Hidden by default when card is closed */
+        display: none !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2215,16 +2213,16 @@
         height: 100% !important;
     }
 
-    /* 🔄 STATE 1: FLIPPED STATE (Active guess temporary reveal) */
+    /* 🔄 STATE 1: FLIPPED STATE */
     .memory-card-item.flipped {
         background: #312e81 !important;
         border-color: #4f46e5 !important;
     }
     .memory-card-item.flipped .inner-face {
-        display: flex !important; /* Shows emoji & text */
+        display: flex !important;
     }
 
-    /* ✅ STATE 2: MATCHED STATE (Locked Green Permanent Success) */
+    /* ✅ STATE 2: MATCHED STATE */
     .memory-card-item.matched {
         background: #064e3b !important;
         border-color: #10b981 !important;
@@ -2236,7 +2234,7 @@
 </style>
 
 <div style="text-align: center; margin: 30px auto;">
-    <button id="open-game-trigger" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: white; border: none; padding: 12px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); transition: transform 0.2s, box-shadow 0.2s;">
+    <button id="open-game-trigger" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: white; border: none; padding: 12px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);">
         🎮 Play Memory Game
     </button>
 </div>
@@ -2272,230 +2270,14 @@
             <div id="leaderboard-section" style="border-top: 1px solid #1e293b !important; padding-top: 12px !important; box-sizing: border-box !important;">
                 <h3 style="font-size: 0.9rem !important; margin: 0 0 8px 0 !important; color: #f3f4f6 !important;">🏆 TOP CHAMPIONS</h3>
                 <ol id="leaderboard-list" style="text-align: left !important; max-width: 280px !important; margin: 0 auto !important; padding-left: 20px !important; color: #d1d5db !important; font-size: 0.8rem !important; line-height: 1.4 !important;">
-                    <li>Loading rankings...</li>
+                    <li>No records logged yet!</li>
                 </ol>
             </div>
         </div>
     </div>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
-    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    // --- INSTANT ANTI-FLASH GUARD ---
-    (function() {
-        if (sessionStorage.getItem('siteEntered') === 'true') {
-            document.documentElement.classList.add('portal-skipped');
-        }
-    })();
-
-    // --- NAVIGATION & PORTAL FRAMEWORK ---
-    function checkNavigation() {
-        if (sessionStorage.getItem('siteEntered') === 'true') {
-            const portal = document.getElementById('welcomePortal');
-            if (portal) {
-                portal.style.display = 'none'; 
-                document.body.style.overflow = 'auto'; 
-            }
-        }
-    }
-    checkNavigation();
-
-    if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
-        document.body.style.overflow = 'hidden';
-    } else if (document.getElementById('welcomePortal')) {
-        document.getElementById('welcomePortal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    window.enterSite = function() {
-        const portal = document.getElementById('welcomePortal');
-        if (portal) {
-            portal.classList.add('disappearing');
-            document.body.style.overflow = 'auto';
-            sessionStorage.setItem('siteEntered', 'true');
-            document.documentElement.classList.add('portal-skipped');
-            
-            setTimeout(() => {
-                portal.remove();
-            }, 700);
-        }
-    };
-
-    // --- NAVIGATION FILTERING ENGINE ---
-    window.filterCat = function(cat, btn) {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-
-        const spotlight = document.getElementById('leonardoSpotlight');
-        if (spotlight) {
-            if (cat === 'all' || cat === 'design') {
-                spotlight.style.display = 'block';
-            } else {
-                spotlight.style.display = 'none';
-            }
-        }
-
-        const cards = document.querySelectorAll('.tool-card');
-        cards.forEach(card => {
-            const cardCategory = card.getAttribute('data-cat');
-            if (cat === 'all' || cardCategory === cat) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        
-        const header = document.querySelector('header');
-        if (header) {
-            window.scrollTo({ top: header.offsetHeight, behavior: 'smooth' });
-        }
-    };
-
-    window.filterSearch = function() {
-        const input = document.getElementById('searchBar').value.toLowerCase();
-        const spotlight = document.getElementById('leonardoSpotlight');
-        const suggestionsBox = document.getElementById('searchSuggestions');
-        
-        suggestionsBox.innerHTML = '';
-
-        if (spotlight) {
-            if (input.length > 0) {
-                spotlight.style.display = 'none';
-            } else {
-                const activeBtn = document.querySelector('.filter-btn.active');
-                const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : 'all';
-                if (currentCat === 'all' || currentCat === 'design') {
-                    spotlight.style.display = 'block';
-                }
-            }
-        }
-
-        const cards = document.querySelectorAll('.tool-card');
-        let matches = [];
-
-        cards.forEach(card => {
-            const titleElement = card.querySelector('h3');
-            const descElement = card.querySelector('.tool-info p');
-            
-            const title = titleElement ? titleElement.innerText : '';
-            const desc = descElement ? descElement.innerText.toLowerCase() : '';
-            
-            if (title.toLowerCase().includes(input) || desc.includes(input)) {
-                card.style.display = "flex";
-                if (input.length > 0 && title.toLowerCase().includes(input)) {
-                    matches.push(title);
-                }
-            } else {
-                card.style.display = "none";
-            }
-        });
-
-        if (matches.length > 0 && input.length > 0) {
-            suggestionsBox.style.display = 'block';
-            matches.slice(0, 6).forEach(toolName => {
-                const item = document.createElement('div');
-                item.className = 'suggestion-item';
-                item.innerHTML = `🤖 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
-                
-                item.onclick = function() {
-                    document.getElementById('searchBar').value = toolName;
-                    suggestionsBox.style.display = 'none';
-                    window.filterSearch();
-                };
-                suggestionsBox.appendChild(item);
-            });
-        } else {
-            suggestionsBox.style.display = 'none';
-        }
-    };
-
-    document.addEventListener('click', function(e) {
-        const suggestionsBox = document.getElementById('searchSuggestions');
-        const searchInput = document.getElementById('searchBar');
-        if (suggestionsBox && e.target !== searchInput && e.target !== suggestionsBox) {
-            suggestionsBox.style.display = 'none';
-        }
-    });
-        
-    window.sendFeedback = () => {
-        window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
-    };
-
-    // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
-        authDomain: "freeai-ratings.firebaseapp.com",
-        databaseURL: "https://freeai-ratings-default-rtdb.firebaseio.com",
-        projectId: "freeai-ratings",
-        storageBucket: "freeai-ratings.firebasestorage.app",
-        messagingSenderId: "735292410645",
-        appId: "1:735292410645:web:4a79f607dad95b81ec771c"
-    };
-
-    const app = initializeApp(firebaseConfig);
-
-    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-    }
-
-    const appCheck = initializeAppCheck(app, {
-        provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
-        isTokenAutoRefreshEnabled: true
-    });
-
-    const db = getDatabase(app);
-    const ratingRef = ref(db, 'site-stats');
-
-    const ratingCard = document.getElementById('rating-card');
-    const ratingContent = document.getElementById('rating-content');
-    const thankYouMsg = document.getElementById('thank-you-msg');
-    const starElements = document.querySelectorAll('.star');
-
-    if (localStorage.getItem('hasVoted') && ratingCard) {
-        ratingCard.style.display = 'none'; 
-    }
-
-    onValue(ratingRef, (snapshot) => {
-        const data = snapshot.val();
-        const statsHeader = document.querySelector('#live-rating');
-        if (data && data.count > 0 && statsHeader) {
-            const average = (data.sum / data.count).toFixed(1);
-            statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
-        }
-    });
-
-    starElements.forEach(star => {
-        star.addEventListener('click', async () => {
-            const val = parseInt(star.getAttribute('data-value'));
-            try {
-                await runTransaction(ratingRef, (currentData) => {
-                    if (!currentData) return { count: 1, sum: val };
-                    return {
-                        count: (currentData.count || 0) + 1,
-                        sum: (currentData.sum || 0) + val
-                    };
-                });
-
-                if (ratingContent) ratingContent.style.display = 'none';
-                if (thankYouMsg) thankYouMsg.style.display = 'block';
-                localStorage.setItem('hasVoted', 'true');
-
-                setTimeout(() => {
-                    if (ratingCard) {
-                        ratingCard.style.transition = 'opacity 0.5s ease';
-                        ratingCard.style.opacity = '0';
-                        setTimeout(() => { ratingCard.style.display = 'none'; }, 500); 
-                    }
-                }, 3000);
-           } catch (error) {
-                console.error("Rating transaction dropped:", error);
-            }
-        });
-    });
-
+<script>
     // --- MEMORY ENGINE MAIN DATA ---
     const gameOverlay = document.getElementById('game-modal-overlay');
     const openGameTrigger = document.getElementById('open-game-trigger');
@@ -2531,6 +2313,7 @@
             document.body.classList.add('game-active');
             gameOverlay.style.setProperty('display', 'flex', 'important');
             initMemoryGame();
+            renderLocalLeaderboard();
         }
     });
 
@@ -2571,37 +2354,24 @@
     }
 
     function flipCard(card) {
-        // COUNT ENGINE: Check how many cards are currently in the process of a visual guess check
         const activeFlips = document.querySelectorAll('.memory-card-item.flipped');
-        
-        // 🛑 Hard stop block: If 2 cards are already open, block any other clicks instantly!
         if (activeFlips.length >= 2) return;
-        
-        // Don't flip if it's already matched or already selected
         if (card.classList.contains('matched') || card.classList.contains('flipped')) return;
 
-        // Safely flip this card open
         card.classList.add('flipped');
-
-        // Re-calculate open flips right after this card flipped open
         const updatedFlips = document.querySelectorAll('.memory-card-item.flipped');
 
         if (updatedFlips.length === 2) {
             movesCount++;
             if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-            
-            // Pass the exact two cards to prevent loop cross-overs
             checkMatch(updatedFlips, updatedFlips);
         }
     }
 
     function checkMatch(card1, card2) {
-        if (!card1 || !card2) return;
-
         const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
         
         if (isMatch) {
-            // ✅ CORRRECT PAIR: Swap .flipped with .matched instantly
             card1.classList.remove('flipped');
             card2.classList.remove('flipped');
             card1.classList.add('matched');
@@ -2612,11 +2382,10 @@
             if (matchedCount === rawDeck.length) {
                 setTimeout(() => {
                     alert(`🎉 Amazing job! Cleared in ${movesCount} moves.`);
-                    saveHighScore(movesCount);
+                    saveLocalScore(movesCount);
                 }, 300);
             }
         } else {
-            // ❌ WRONG PAIR: Keep them flipped open for 800ms so they can see, then clear classes
             setTimeout(() => {
                 card1.classList.remove('flipped');
                 card2.classList.remove('flipped');
@@ -2624,43 +2393,37 @@
         }
     }
 
-    async function saveHighScore(score) {
+    function saveLocalScore(score) {
         const userAlias = prompt("Enter your name for the Leaderboard:");
         if (userAlias) {
-            try {
-                const memoryLeaderboardRef = ref(db, 'memory-leaderboard');
-                await runTransaction(memoryLeaderboardRef, (currentData) => {
-                    if (!currentData) currentData = [];
-                    currentData.push({ username: userAlias, score: score, timestamp: Date.now() });
-                    currentData.sort((a, b) => a.score - b.score);
-                    return currentData.slice(0, 5);
-                });
-            } catch (err) { console.error("Database error:", err); }
+            let scores = JSON.parse(localStorage.getItem('localMemoryLeaderboard')) || [];
+            scores.push({ username: userAlias, score: score });
+            scores.sort((a, b) => a.score - b.score);
+            scores = scores.slice(0, 5);
+            localStorage.setItem('localMemoryLeaderboard', JSON.stringify(scores));
+            renderLocalLeaderboard();
         }
         initMemoryGame();
     }
 
-    // --- STREAM LEADERBOARD ---
-    try {
-        const memoryDisplayRef = ref(db, 'memory-leaderboard');
-        onValue(memoryDisplayRef, (snapshot) => {
-            const boardData = snapshot.val();
-            const listContainer = document.getElementById('leaderboard-list');
-            if (listContainer) {
-                listContainer.innerHTML = '';
-                if (boardData && boardData.length > 0) {
-                    boardData.forEach((entry) => {
-                        const row = document.createElement('li');
-                        row.style.marginBottom = '4px';
-                        row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
-                        listContainer.appendChild(row);
-                    });
-                } else {
-                    listContainer.innerHTML = '<li>No records logged yet!</li>';
-                }
-            }
-        });
-    } catch (e) { console.error("Leaderboard loading failed:", e); }
+    function renderLocalLeaderboard() {
+        const listContainer = document.getElementById('leaderboard-list');
+        if (!listContainer) return;
+        
+        const boardData = JSON.parse(localStorage.getItem('localMemoryLeaderboard')) || [];
+        listContainer.innerHTML = '';
+        
+        if (boardData.length > 0) {
+            boardData.forEach((entry) => {
+                const row = document.createElement('li');
+                row.style.marginBottom = '4px';
+                row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
+                listContainer.appendChild(row);
+            });
+        } else {
+            listContainer.innerHTML = '<li>No records logged yet!</li>';
+        }
+    }
 </script>
 </body>
 </html>
