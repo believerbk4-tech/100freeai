@@ -334,40 +334,42 @@
     }
 }
         
-    /* Container for the background robots */
-    .robot-ambient-container {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        pointer-events: none !important;
-        z-index: -1 !important;
-        overflow: hidden;
-    }
+   /* Container for the background robots - Must be fixed to the viewport */
+.robot-ambient-container {
+    position: fixed !important; 
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important; /* Click-through */
+    z-index: -1 !important; /* Stays behind EVERYTHING */
+    overflow: hidden;
+}
 
-    /* Floating animation for particles */
-    .floating-bot-particle {
-        position: absolute;
-        font-size: 30px;
-        animation: floatParticle 10s infinite ease-in-out;
-    }
+/* Floating animation for particles */
+.floating-bot-particle {
+    position: absolute;
+    font-size: 40px; /* Increased size so they are visible */
+    animation: floatParticle 10s infinite ease-in-out;
+    opacity: 0.6; /* Slight transparency for "ambience" */
+}
 
-    @keyframes floatParticle {
-        0%, 100% { transform: translateY(0) translateX(0); }
-        50% { transform: translateY(-50px) translateX(20px); }
-    }
+@keyframes floatParticle {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-50px) translateX(20px); }
+}
 
-    /* Randomize positions */
-    .bot-1 { top: 10%; left: 10%; animation-delay: 0s; }
-    .bot-2 { top: 20%; right: 15%; animation-delay: 2s; }
-    .bot-3 { top: 70%; left: 20%; animation-delay: 4s; }
-    .bot-4 { top: 80%; right: 10%; animation-delay: 6s; }
-    .bot-5 { top: 40%; left: 50%; animation-delay: 8s; }
+/* Randomize positions so they fill the screen */
+.bot-1 { top: 15%; left: 10%; animation-delay: 0s; }
+.bot-2 { top: 20%; right: 15%; animation-delay: 2s; }
+.bot-3 { top: 75%; left: 25%; animation-delay: 4s; }
+.bot-4 { top: 80%; right: 10%; animation-delay: 6s; }
+.bot-5 { top: 50%; left: 50%; animation-delay: 8s; }
+        
 </style>
 </head>
 <body>
-
+    
     <div class="robot-ambient-container">
         <div class="floating-bot-particle bot-1">🤖</div>
         <div class="floating-bot-particle bot-2">⚙️</div>
@@ -378,8 +380,6 @@
 
     <div id="directory-content">
         </div>
-
-</body>
     
     <div class="robot-ambient-container">...</div> 
     
