@@ -317,6 +317,7 @@ header {
     z-index: 1;
 }
 
+/* 1. Base style (Applies to all devices) */
 header::before {
     content: "";
     position: absolute;
@@ -324,14 +325,23 @@ header::before {
     left: 0;
     width: 100%;
     height: 100%;
-    /* UPDATE THIS URL TO YOUR IMAGE PATH */
     background-image: url('images/welcome-bg (2).png');
-    background-size: cover;
-    background-position: center;
+    background-size: cover; /* Fills the area */
+    background-position: center center; /* Default center focus */
     background-repeat: no-repeat;
-    opacity: 0.2; /* 80% transparency */
-    z-index: -1;  /* Keeps the image behind all text and buttons */
-    pointer-events: none; /* Ensures the image doesn't block clicks */
+    opacity: 0.2; 
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 2. Mobile Optimization (Screens smaller than 640px) */
+@media (max-width: 640px) {
+    header::before {
+        /* On mobile, we might want to shift the focus 
+           so the person's face/subject isn't cut off */
+        background-position: 70% center; 
+        background-size: cover;
+    }
 }
         
     </style>
