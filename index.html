@@ -373,23 +373,39 @@
         50% { transform: translateY(-30px) translateX(10px); }
     }
 
-    body { background-color: #000000 !important; margin: 0; }
-    
-    .hero-section-container {
-        /* Use the direct image link, not a webpage URL */
-        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                    url('https://images.unsplash.com/photo-1451187580459-43490279c0fa') no-repeat center center;
-        background-size: cover;
-        padding: 60px 20px;
-        border-radius: 24px;
-        margin: 20px auto;
-        max-width: 1200px;
-        text-align: center;
-        color: white; /* Ensure text is visible */
+    /* Ensure the body is black */
+body {
+    background-color: #000000 !important;
+    margin: 0;
+    color: white;
+}
+
+/* This is the container that will hold your image */
+.hero-section-container {
+    /* This URL is a direct image link */
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                      url('https://images.unsplash.com/photo-1451187580459-43490279c0fa');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 20px;
+    border-radius: 24px;
+    margin: 40px auto;
+    max-width: 1000px;
+    text-align: center;
+}
         
 </style>
 </head>
 <body>
+   
+    <div class="hero-section-container">
+        <h1>The Ultimate AI Toolkit</h1>
+        <p>Explore a professional collection of the world's most powerful AI engines.</p>
+        <button>Launch Directory</button>
+    </div>
+
+    <div class="robot-ambient-container">
+        </div>
     
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
