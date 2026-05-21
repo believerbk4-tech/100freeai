@@ -310,28 +310,33 @@
         position: relative !important;
         z-index: 2 !important; 
     }
+        /* Header Background Layering */
+header {
+    position: relative;
+    /* Ensure the header has a high enough z-index if needed */
+    z-index: 1;
+}
 
-/* MAIN PAGE BACKGROUND (Appears after Launch) */
-        .main-bg-overlay {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            z-index: -1 !important; 
-            background-image: url('images/welcome-bg (2).png') !important;
-            background-size: cover !important;
-            background-position: top !important; 
-            opacity: 0.2 !important; 
-            pointer-events: none !important;
-        }
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* UPDATE THIS URL TO YOUR IMAGE PATH */
+    background-image: url('images/welcome-bg (2).png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.2; /* 80% transparency */
+    z-index: -1;  /* Keeps the image behind all text and buttons */
+    pointer-events: none; /* Ensures the image doesn't block clicks */
+}
+        
     </style>
 </head>
 <body>
-    <div class="main-bg-overlay"></div>
-    <div class="tool-grid"></div>
-</body>
-</html>
 
     <div id="welcomePortal">
         <div class="robot-ambient-container">
