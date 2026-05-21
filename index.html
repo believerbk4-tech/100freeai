@@ -326,8 +326,12 @@ header::before {
     width: 100%;
     height: 100%;
     background-image: url('images/welcome-bg (2).png');
-    background-size: cover; /* Fills the area */
-    background-position: center center; /* Default center focus */
+    
+    /* Laptop Optimization: Use 'contain' to ensure the full image is visible */
+    background-size: contain; 
+    
+    /* Keep the image centered */
+    background-position: center center; 
     background-repeat: no-repeat;
     opacity: 0.2; 
     z-index: -1;
@@ -337,10 +341,9 @@ header::before {
 /* 2. Mobile Optimization (Screens smaller than 640px) */
 @media (max-width: 640px) {
     header::before {
-        /* On mobile, we might want to shift the focus 
-           so the person's face/subject isn't cut off */
-        background-position: 70% center; 
+        /* On mobile, 'cover' is often better to fill the tall, narrow screen */
         background-size: cover;
+        background-position: 70% center; 
     }
 }
         
