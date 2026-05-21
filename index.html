@@ -372,49 +372,6 @@
         0%, 100% { transform: translateY(0) translateX(0); }
         50% { transform: translateY(-30px) translateX(10px); }
     }
-        /* 1. Apply a premium dark mesh gradient */
-body {
-    margin: 0;
-    padding: 0;
-    background: radial-gradient(circle at 50% -20%, #312e81 0%, #0f172a 40%, #000000 80%) !important;
-    color: #ffffff;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    min-height: 100vh;
-}
-
-/* 2. Add subtle light "lightning" glow behind your content */
-.hero-content {
-    position: relative;
-    padding: 100px 20px;
-    text-align: center;
-}
-
-.hero-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 400px;
-    background: radial-gradient(ellipse at center, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* 3. Refine the cards for a professional UI */
-.tool-card {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.tool-card:hover {
-    border-color: rgba(99, 102, 241, 0.5);
-    transform: translateY(-5px);
-}
 </style>
 </head>
 <body>
