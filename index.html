@@ -2165,7 +2165,7 @@
 </section>
 
 <style>
-    /* 🎮 BULLETPROOF FULL SCREEN OVERLAY ENGINE FIX */
+    /* 🎮 FULL SCREEN OVERLAY ENGINE */
     #game-modal-overlay {
         position: fixed !important;
         top: 0 !important;
@@ -2183,10 +2183,55 @@
         -webkit-overflow-scrolling: touch !important;
     }
 
-    /* Freezes back-page window content layout when the game is launched */
     body.game-active {
         overflow: hidden !important;
         height: 100vh !important;
+    }
+
+    /* 🧠 CLEAN CARD STATE ENGINE */
+    .memory-card-item {
+        aspect-ratio: 1/1 !important;
+        background: #1e1b4b !important; /* Default dark closed color */
+        border: 2px solid #1e293b !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        user-select: none !important;
+        position: relative !important;
+        box-sizing: border-box !important;
+        transition: background 0.2s, border-color 0.2s !important;
+    }
+
+    /* Target the hidden inner content wrapper */
+    .memory-card-item .inner-face {
+        display: none !important; /* Hidden by default when card is closed */
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        pointer-events: none !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    /* 🔄 STATE 1: FLIPPED STATE (When selected) */
+    .memory-card-item.flipped {
+        background: #312e81 !important;
+        border-color: #4f46e5 !important;
+    }
+    .memory-card-item.flipped .inner-face {
+        display: flex !important; /* Shows emoji & text */
+    }
+
+    /* ✅ STATE 2: MATCHED STATE (Locked Green Permanent Success) */
+    .memory-card-item.matched {
+        background: #064e3b !important;
+        border-color: #10b981 !important;
+        cursor: default !important;
+    }
+    .memory-card-item.matched .inner-face {
+        display: flex !important;
     }
 </style>
 
@@ -2514,14 +2559,11 @@
 
         shuffledDeck.forEach(data => {
             const cardItem = document.createElement('div');
-            // Hardcoded initial dark styling to prevent CSS class overriding completely
-            cardItem.style.cssText = 'aspect-ratio: 1/1 !important; background: #1e1b4b !important; border: 2px solid #1e293b !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; user-select: none !important; position: relative !important; box-sizing: border-box !important;';
+            cardItem.className = 'memory-card-item';
             cardItem.setAttribute('data-id', data.id);
-            cardItem.setAttribute('data-matched', 'false');
-            cardItem.setAttribute('data-flipped', 'false');
             
             cardItem.innerHTML = `
-                <div class="inner-face" style="display: none !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; width: 100% !important; height: 100% !important;">
+                <div class="inner-face">
                     <span style="font-size: 1.5rem !important; line-height: 1 !important;">${data.emoji}</span>
                     <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
                 </div>
@@ -2533,17 +2575,12 @@
     }
 
     function flipCard(card) {
+        // Prevent clicking if the board is locked, or if the card is already flipped/matched
         if (lockBoard) return;
-        if (card.getAttribute('data-matched') === 'true') return;
-        if (card.getAttribute('data-flipped') === 'true') return;
+        if (card.classList.contains('matched') || card.classList.contains('flipped')) return;
 
-        // Visual Reveal
-        card.setAttribute('data-flipped', 'true');
-        const inner = card.querySelector('.inner-face');
-        if (inner) inner.style.setProperty('display', 'flex', 'important');
-        card.style.setProperty('background', '#312e81', 'important');
-        card.style.setProperty('border-color', '#4f46e5', 'important');
-
+        // Open the clicked card visually using CSS classes
+        card.classList.add('flipped');
         flippedCards.push(card);
 
         if (flippedCards.length === 2) {
@@ -2551,15 +2588,7 @@
             if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
             lockBoard = true;
             
-            // Safety wrapped comparison engine to make it completely crash-proof
-            try {
-                checkMatch();
-            } catch (err) {
-                console.error("Match verification bypass:", err);
-                // Emergency reset if anything breaks in the backend data
-                flippedCards = [];
-                lockBoard = false;
-            }
+            checkMatch();
         }
     }
 
@@ -2567,23 +2596,14 @@
         const card1 = flippedCards;
         const card2 = flippedCards;
         
-        if (!card1 || !card2) {
-            flippedCards = [];
-            lockBoard = false;
-            return;
-        }
-        
         const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
         
         if (isMatch) {
-            // Lock matched cards in green state instantly
-            card1.setAttribute('data-matched', 'true');
-            card2.setAttribute('data-matched', 'true');
-            
-            card1.style.setProperty('background', '#064e3b', 'important');
-            card2.style.setProperty('background', '#064e3b', 'important');
-            card1.style.setProperty('border-color', '#10b981', 'important');
-            card2.style.setProperty('border-color', '#10b981', 'important');
+            // ✅ MATCHED RIGHT: Convert state to green and lock them
+            card1.classList.remove('flipped');
+            card2.classList.remove('flipped');
+            card1.classList.add('matched');
+            card2.classList.add('matched');
             
             matchedCount += 2;
             flippedCards = [];
@@ -2596,27 +2616,12 @@
                 }, 300);
             }
         } else {
-            // Force unflips back automatically after 800ms
+            // ❌ WRONG MATCH: Wait 800ms so the player sees it, then automatically flip back closed
             setTimeout(() => {
-                try {
-                    const inner1 = card1.querySelector('.inner-face');
-                    const inner2 = card2.querySelector('.inner-face');
-                    
-                    if (inner1) inner1.style.setProperty('display', 'none', 'important');
-                    if (inner2) inner2.style.setProperty('display', 'none', 'important');
-                    
-                    card1.style.setProperty('background', '#1e1b4b', 'important');
-                    card2.style.setProperty('background', '#1e1b4b', 'important');
-                    card1.style.setProperty('border-color', '#1e293b', 'important');
-                    card2.style.setProperty('border-color', '#1e293b', 'important');
-                    
-                    card1.setAttribute('data-flipped', 'false');
-                    card2.setAttribute('data-flipped', 'false');
-                } catch(e) {
-                    console.error("Unflip clean up caught:", e);
-                }
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
                 
-                // CRITICAL SAFETY RELEASE: Ensures the board unlocks no matter what
+                // Clear active array and unlock board for next moves
                 flippedCards = [];
                 lockBoard = false;
             }, 800);
