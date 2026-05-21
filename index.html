@@ -272,7 +272,7 @@
             .tool-card { padding: 1.25rem; }
         }
         
-      /* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
+    /* --- FLOATING ROBOT BACKDROP AMBIENCE --- */
     .robot-ambient-container {
         position: absolute !important;
         top: 0 !important;
@@ -280,10 +280,10 @@
         width: 100% !important;
         height: 100% !important;
         pointer-events: none !important;
-        z-index: 0 !important; /* Backmost layer */
+        z-index: 0 !important;
     }
 
-    /* CONTAINER FOR YOUR TWO PORTRAIT IMAGES (Portal Page) */
+    /* CONTAINER FOR PORTRAIT IMAGES */
     .user-images-container {
         position: absolute !important;
         top: 0 !important;
@@ -305,52 +305,65 @@
         box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
     }
 
+    /* --- MAIN HEADER STYLES --- */
+    header {
+        position: relative;
+        z-index: 1;
+        padding: 140px 20px 0;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: #000000;
+        min-height: 500px;
+    }
+
     /* Ensure content box stays on top */
     .portal-content-box {
         position: relative !important;
         z-index: 2 !important; 
     }
-        /* Header Background Layering */
-header {
-    position: relative;
-    /* Ensure the header has a high enough z-index if needed */
-    z-index: 1;
-}
 
-/* 1. Base style (Applies to all devices) */
-header::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('images/welcome-bg (2).png');
-    
-    /* Laptop Optimization: Use 'contain' to ensure the full image is visible */
-    background-size: contain; 
-    
-    /* Keep the image centered */
-    background-position: center center; 
-    background-repeat: no-repeat;
-    opacity: 0.2; 
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* 2. Mobile Optimization (Screens smaller than 640px) */
-@media (max-width: 640px) {
+    /* Header Background Image Layering */
     header::before {
-        /* On mobile, 'cover' is often better to fill the tall, narrow screen */
-        background-size: cover;
-        background-position: 70% center; 
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('images/welcome-bg (2).png');
+        background-size: contain; 
+        background-position: center center; 
+        background-repeat: no-repeat;
+        opacity: 0.2; 
+        z-index: -1;
+        pointer-events: none;
     }
-}
-        
-    </style>
+
+    /* Mobile Optimization */
+    @media (max-width: 640px) {
+        header::before {
+            background-size: cover;
+            background-position: 70% center; 
+        }
+    }
+</style>
 </head>
 <body>
 
+    <header>
+        <div class="robot-ambient-container"></div>
+        
+        <div class="user-images-container">
+            </div>
+
+        <div class="portal-content-box">
+            <span style="color: #818cf8; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">
+                Curated Creation Matrix
+            </span>
+            </div>
+    </header>
+    
     <div id="welcomePortal">
         <div class="robot-ambient-container">
             <div class="floating-bot-particle bot-1">🤖</div>
