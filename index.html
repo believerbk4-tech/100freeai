@@ -2191,7 +2191,7 @@
     /* 🧠 CLEAN CARD STATE ENGINE */
     .memory-card-item {
         aspect-ratio: 1/1 !important;
-        background: #1e1b4b !important; /* Default dark closed color */
+        background: #1e1b4b !important; /* Default dark closed look */
         border: 2px solid #1e293b !important;
         border-radius: 10px !important;
         display: flex !important;
@@ -2215,7 +2215,7 @@
         height: 100% !important;
     }
 
-    /* 🔄 STATE 1: FLIPPED STATE (When selected) */
+    /* 🔄 STATE 1: FLIPPED STATE (Active guess temporary reveal) */
     .memory-card-item.flipped {
         background: #312e81 !important;
         border-color: #4f46e5 !important;
@@ -2523,10 +2523,8 @@
         { id: 'ghost', emoji: '👻', name: 'Ghost' }
     ];
 
-    let flippedCards = [];
     let matchedCount = 0;
     let movesCount = 0;
-    let lockBoard = false;
 
     openGameTrigger?.addEventListener('click', () => {
         if (gameOverlay) {
@@ -2549,11 +2547,9 @@
     function initMemoryGame() {
         if (!memoryGrid) return;
         memoryGrid.innerHTML = '';
-        flippedCards = [];
         matchedCount = 0;
         movesCount = 0;
         if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-        lockBoard = false;
 
         const shuffledDeck = [...rawDeck].sort(() => 0.5 - Math.random());
 
@@ -2575,39 +2571,43 @@
     }
 
     function flipCard(card) {
-        // Prevent clicking if the board is locked, or if the card is already flipped/matched
-        if (lockBoard) return;
+        // COUNT ENGINE: Check how many cards are currently in the process of a visual guess check
+        const activeFlips = document.querySelectorAll('.memory-card-item.flipped');
+        
+        // 🛑 Hard stop block: If 2 cards are already open, block any other clicks instantly!
+        if (activeFlips.length >= 2) return;
+        
+        // Don't flip if it's already matched or already selected
         if (card.classList.contains('matched') || card.classList.contains('flipped')) return;
 
-        // Open the clicked card visually using CSS classes
+        // Safely flip this card open
         card.classList.add('flipped');
-        flippedCards.push(card);
 
-        if (flippedCards.length === 2) {
+        // Re-calculate open flips right after this card flipped open
+        const updatedFlips = document.querySelectorAll('.memory-card-item.flipped');
+
+        if (updatedFlips.length === 2) {
             movesCount++;
             if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-            lockBoard = true;
             
-            checkMatch();
+            // Pass the exact two cards to prevent loop cross-overs
+            checkMatch(updatedFlips, updatedFlips);
         }
     }
 
-    function checkMatch() {
-        const card1 = flippedCards;
-        const card2 = flippedCards;
-        
+    function checkMatch(card1, card2) {
+        if (!card1 || !card2) return;
+
         const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
         
         if (isMatch) {
-            // ✅ MATCHED RIGHT: Convert state to green and lock them
+            // ✅ CORRRECT PAIR: Swap .flipped with .matched instantly
             card1.classList.remove('flipped');
             card2.classList.remove('flipped');
             card1.classList.add('matched');
             card2.classList.add('matched');
             
             matchedCount += 2;
-            flippedCards = [];
-            lockBoard = false;
 
             if (matchedCount === rawDeck.length) {
                 setTimeout(() => {
@@ -2616,14 +2616,10 @@
                 }, 300);
             }
         } else {
-            // ❌ WRONG MATCH: Wait 800ms so the player sees it, then automatically flip back closed
+            // ❌ WRONG PAIR: Keep them flipped open for 800ms so they can see, then clear classes
             setTimeout(() => {
                 card1.classList.remove('flipped');
                 card2.classList.remove('flipped');
-                
-                // Clear active array and unlock board for next moves
-                flippedCards = [];
-                lockBoard = false;
             }, 800);
         }
     }
