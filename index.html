@@ -322,9 +322,26 @@
         position: relative !important;
         z-index: 2 !important; 
     }
+        @media (max-width: 768px) {
+    .user-images-container {
+        flex-direction: column !important; /* Stack images vertically */
+        justify-content: center !important;
+        padding: 20px !important;
+        gap: 20px !important;
+    }
+    .user-portrait {
+        width: 200px !important; /* Shrink images on mobile */
+    }
+}
 </style>
 </head>
 <body>
+    
+    <div class="robot-ambient-container">...</div> 
+    
+    <div class="user-images-container">...</div> 
+    
+    <div class="portal-content-box">...</div> 
         
     <div id="welcomePortal">
         <div class="robot-ambient-container">
