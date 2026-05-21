@@ -283,7 +283,7 @@
         z-index: 0 !important; /* Backmost layer */
     }
 
-    /* CONTAINER FOR YOUR TWO PNG IMAGES */
+   /* CONTAINER FOR YOUR TWO PNG IMAGES */
     .user-images-container {
         position: absolute !important;
         top: 0 !important;
@@ -292,12 +292,13 @@
         height: 100% !important;
         z-index: 1 !important; /* Middle layer */
         display: flex !important;
-        justify-content: center !important;
+        /* UPDATED: Pushes images to left and right edges */
+        justify-content: space-between !important;
         align-items: center !important;
-        gap: 80px !important;
+        /* Adds space so images aren't stuck to the very edge of the screen */
+        padding: 0 50px !important; 
         pointer-events: none !important; 
     }
-
     .user-portrait {
         width: 300px !important;
         height: auto !important;
