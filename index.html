@@ -2164,81 +2164,6 @@
     </div>
 </section>
 
-<style>
-    /* 🎮 FULL SCREEN OVERLAY ENGINE */
-    #game-modal-overlay {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        background: rgba(11, 15, 25, 0.95) !important; 
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        z-index: 2147483647 !important;
-        box-sizing: border-box !important;
-        margin: 0 !important;
-        padding: 12px !important;
-        overflow-y: auto !important;
-    }
-
-    body.game-active {
-        overflow: hidden !important;
-        height: 100vh !important;
-    }
-
-    /* 🧠 CLEAN CARD STATE ENGINE */
-    .memory-card-item {
-        aspect-ratio: 1/1 !important;
-        background: #1e1b4b !important;
-        border: 2px solid #1e293b !important;
-        border-radius: 10px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-        user-select: none !important;
-        position: relative !important;
-        box-sizing: border-box !important;
-        transition: background 0.2s, border-color 0.2s !important;
-    }
-
-    .memory-card-item .inner-face {
-        display: none !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        pointer-events: none !important;
-        width: 100% !important;
-        height: 100% !important;
-    }
-
-    /* 🔄 STATE 1: FLIPPED STATE */
-    .memory-card-item.flipped {
-        background: #312e81 !important;
-        border-color: #4f46e5 !important;
-    }
-    .memory-card-item.flipped .inner-face {
-        display: flex !important;
-    }
-
-    /* ✅ STATE 2: MATCHED STATE */
-    .memory-card-item.matched {
-        background: #064e3b !important;
-        border-color: #10b981 !important;
-        cursor: default !important;
-    }
-    .memory-card-item.matched .inner-face {
-        display: flex !important;
-    }
-</style>
-
-<div style="text-align: center; margin: 30px auto;">
-    <button id="open-game-trigger" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: white; border: none; padding: 12px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);">
-        🎮 Play Memory Game
-    </button>
-</div>
-    
 <footer style="padding: 50px 20px; text-align: center; border-top: 1px solid #222; background: #000; color: #fff;">
     <p style="margin-bottom: 10px; font-size: 1.1rem;"><strong>Owner: Fahad Khan S/O Wahid Sher</strong></p>
     <p style="color: #888; margin-bottom: 25px;">Email: believerbk4@Gmail.com | Contact: +92 3175006728</p>
@@ -2250,180 +2175,222 @@
     <p style="margin-top: 30px; font-size: 0.85rem; color: #444;">© 2026 AI Hub - Handcrafted with precision by Fahad Khan.</p>
 </footer>
 
-<div id="game-modal-overlay" style="display: none;">
-    <div style="display: flex !important; align-items: center !important; justify-content: center !important; min-height: 100% !important; width: 100% !important; padding: 20px !important; box-sizing: border-box !important;">
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
+    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // --- INSTANT ANTI-FLASH GUARD ---
+    (function() {
+        if (sessionStorage.getItem('siteEntered') === 'true') {
+            document.documentElement.classList.add('portal-skipped');
+        }
+    })();
+
+    // --- NAVIGATION & PORTAL FRAMEWORK ---
+    function checkNavigation() {
+        if (sessionStorage.getItem('siteEntered') === 'true') {
+            const portal = document.getElementById('welcomePortal');
+            if (portal) {
+                portal.style.display = 'none'; 
+                document.body.style.overflow = 'auto'; 
+            }
+        }
+    }
+    checkNavigation();
+
+    if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
+        document.body.style.overflow = 'hidden';
+    } else if (document.getElementById('welcomePortal')) {
+        document.getElementById('welcomePortal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    window.enterSite = function() {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            portal.classList.add('disappearing');
+            document.body.style.overflow = 'auto';
+            sessionStorage.setItem('siteEntered', 'true');
+            document.documentElement.classList.add('portal-skipped');
+            
+            setTimeout(() => {
+                portal.remove();
+            }, 700);
+        }
+    };
+
+    // --- NAVIGATION FILTERING ENGINE (LAUNCH DIRECTORY) ---
+    window.filterCat = function(cat, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        const spotlight = document.getElementById('leonardoSpotlight');
+        if (spotlight) {
+            if (cat === 'all' || cat === 'design') {
+                spotlight.style.display = 'block';
+            } else {
+                spotlight.style.display = 'none';
+            }
+        }
+
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute('data-cat');
+            if (cat === 'all' || cardCategory === cat) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
         
-        <div id="game-container" style="width: 100% !important; max-width: 400px !important; background: #0b0f19 !important; border: 2px solid #4f46e5 !important; border-radius: 16px !important; padding: 20px !important; color: white !important; font-family: system-ui, sans-serif !important; text-align: center; position: relative !important; box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important; box-sizing: border-box !important;">
+        const header = document.querySelector('header');
+        if (header) {
+            window.scrollTo({ top: header.offsetHeight, behavior: 'smooth' });
+        }
+    };
+
+    window.filterSearch = function() {
+        const input = document.getElementById('searchBar').value.toLowerCase();
+        const spotlight = document.getElementById('leonardoSpotlight');
+        const suggestionsBox = document.getElementById('searchSuggestions');
+        
+        suggestionsBox.innerHTML = '';
+
+        if (spotlight) {
+            if (input.length > 0) {
+                spotlight.style.display = 'none';
+            } else {
+                const activeBtn = document.querySelector('.filter-btn.active');
+                const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : 'all';
+                if (currentCat === 'all' || currentCat === 'design') {
+                    spotlight.style.display = 'block';
+                }
+            }
+        }
+
+        const cards = document.querySelectorAll('.tool-card');
+        let matches = [];
+
+        cards.forEach(card => {
+            const titleElement = card.querySelector('h3');
+            const descElement = card.querySelector('.tool-info p');
             
-            <button id="close-game-btn" style="position: absolute !important; top: 12px !important; right: 15px !important; background: none !important; border: none !important; color: #9ca3af !important; font-size: 1.8rem !important; cursor: pointer !important; line-height: 1 !important; padding: 0 !important;">&times;</button>
-
-            <h2 style="font-size: 1.2rem !important; margin: 10px 0 5px 0 !important; font-weight: 800 !important;">🧠 MEMORY MATCH CHALLENGE 🧠</h2>
-            <p style="font-size: 0.8rem !important; color: #9ca3af !important; margin: 0 0 15px 0 !important;">Match the inner circle pairs in the fewest moves!</p>
+            const title = titleElement ? titleElement.innerText : '';
+            const desc = descElement ? descElement.innerText.toLowerCase() : '';
             
-            <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 15px !important; background: #111827 !important; padding: 10px 15px !important; border-radius: 8px !important; border: 1px solid #1e293b !important; box-sizing: border-box !important;">
-                <div id="game-moves" style="font-size: 0.85rem !important; color: #a5b4fc !important; font-weight: bold !important;">MOVES: 0</div>
-                <button id="restart-game-btn" style="background: #4f46e5 !important; color: white !important; border: none !important; padding: 6px 14px !important; font-size: 0.75rem !important; font-weight: bold !important; border-radius: 6px !important; cursor: pointer !important;">RESET</button>
-            </div>
+            if (title.toLowerCase().includes(input) || desc.includes(input)) {
+                card.style.display = "flex";
+                if (input.length > 0 && title.toLowerCase().includes(input)) {
+                    matches.push(title);
+                }
+            } else {
+                card.style.display = "none";
+            }
+        });
 
-            <div id="memory-grid" style="display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; margin: 0 auto 15px auto !important; width: 100% !important; box-sizing: border-box !important;"></div>
+        if (matches.length > 0 && input.length > 0) {
+            suggestionsBox.style.display = 'block';
+            matches.slice(0, 6).forEach(toolName => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.innerHTML = `🤖 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
+                
+                item.onclick = function() {
+                    document.getElementById('searchBar').value = toolName;
+                    suggestionsBox.style.display = 'none';
+                    window.filterSearch();
+                };
+                suggestionsBox.appendChild(item);
+            });
+        } else {
+            suggestionsBox.style.display = 'none';
+        }
+    };
 
-            <div id="leaderboard-section" style="border-top: 1px solid #1e293b !important; padding-top: 12px !important; box-sizing: border-box !important;">
-                <h3 style="font-size: 0.9rem !important; margin: 0 0 8px 0 !important; color: #f3f4f6 !important;">🏆 TOP CHAMPIONS</h3>
-                <ol id="leaderboard-list" style="text-align: left !important; max-width: 280px !important; margin: 0 auto !important; padding-left: 20px !important; color: #d1d5db !important; font-size: 0.8rem !important; line-height: 1.4 !important;">
-                    <li>No records logged yet!</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</div>
+    document.addEventListener('click', function(e) {
+        const suggestionsBox = document.getElementById('searchSuggestions');
+        const searchInput = document.getElementById('searchBar');
+        if (suggestionsBox && e.target !== searchInput && e.target !== suggestionsBox) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+        
+    window.sendFeedback = () => {
+        window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
+    };
 
-<script>
-    // --- MEMORY ENGINE MAIN DATA ---
-    const gameOverlay = document.getElementById('game-modal-overlay');
-    const openGameTrigger = document.getElementById('open-game-trigger');
-    const closeGameBtn = document.getElementById('close-game-btn');
-    const restartGameBtn = document.getElementById('restart-game-btn');
-    const memoryGrid = document.getElementById('memory-grid');
-    const movesDisplay = document.getElementById('game-moves');
+    // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
+        authDomain: "freeai-ratings.firebaseapp.com",
+        databaseURL: "https://freeai-ratings-default-rtdb.firebaseio.com",
+        projectId: "freeai-ratings",
+        storageBucket: "freeai-ratings.firebasestorage.app",
+        messagingSenderId: "735292410645",
+        appId: "1:735292410645:web:4a79f607dad95b81ec771c"
+    };
 
-    const rawDeck = [
-        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-        { id: 'fawad', emoji: '🐂', name: 'Fawad' },
-        { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
-        { id: 'wahid', emoji: '🦁', name: 'Wahid' },
-        { id: 'alien', emoji: '👽', name: 'Alien' },
-        { id: 'rocket', emoji: '🚀', name: 'Rocket' },
-        { id: 'ghost', emoji: '👻', name: 'Ghost' },
-        { id: 'fahad', emoji: '🤖', name: 'Fahad' },
-        { id: 'mahaz', emoji: '🐯', name: 'Mahaz' },
-        { id: 'fawad', emoji: '🐂', name: 'Fawad' },
-        { id: 'hamad', emoji: '👨‍⚕️', name: 'Hamad' },
-        { id: 'wahid', emoji: '🦁', name: 'Wahid' },
-        { id: 'alien', emoji: '👽', name: 'Alien' },
-        { id: 'rocket', emoji: '🚀', name: 'Rocket' },
-        { id: 'ghost', emoji: '👻', name: 'Ghost' }
-    ];
+    const app = initializeApp(firebaseConfig);
 
-    let matchedCount = 0;
-    let movesCount = 0;
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+    }
 
-    openGameTrigger?.addEventListener('click', () => {
-        if (gameOverlay) {
-            document.body.classList.add('game-active');
-            gameOverlay.style.setProperty('display', 'flex', 'important');
-            initMemoryGame();
-            renderLocalLeaderboard();
+    const appCheck = initializeAppCheck(app, {
+        provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
+        isTokenAutoRefreshEnabled: true
+    });
+
+    const db = getDatabase(app);
+    const ratingRef = ref(db, 'site-stats');
+
+    const ratingCard = document.getElementById('rating-card');
+    const ratingContent = document.getElementById('rating-content');
+    const thankYouMsg = document.getElementById('thank-you-msg');
+    const starElements = document.querySelectorAll('.star');
+
+    if (localStorage.getItem('hasVoted') && ratingCard) {
+        ratingCard.style.display = 'none'; 
+    }
+
+    onValue(ratingRef, (snapshot) => {
+        const data = snapshot.val();
+        const statsHeader = document.querySelector('#live-rating');
+        if (data && data.count > 0 && statsHeader) {
+            const average = (data.sum / data.count).toFixed(1);
+            statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
         }
     });
 
-    function hideGameModal() {
-        if (gameOverlay) {
-            document.body.classList.remove('game-active');
-            gameOverlay.style.setProperty('display', 'none', 'important');
-            if (memoryGrid) memoryGrid.innerHTML = '';
-        }
-    }
-    closeGameBtn?.addEventListener('click', hideGameModal);
-    restartGameBtn?.addEventListener('click', initMemoryGame);
+    starElements.forEach(star => {
+        star.addEventListener('click', async () => {
+            const val = parseInt(star.getAttribute('data-value'));
+            try {
+                await runTransaction(ratingRef, (currentData) => {
+                    if (!currentData) return { count: 1, sum: val };
+                    return {
+                        count: (currentData.count || 0) + 1,
+                        sum: (currentData.sum || 0) + val
+                    };
+                });
 
-    function initMemoryGame() {
-        if (!memoryGrid) return;
-        memoryGrid.innerHTML = '';
-        matchedCount = 0;
-        movesCount = 0;
-        if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
+                if (ratingContent) ratingContent.style.display = 'none';
+                if (thankYouMsg) thankYouMsg.style.display = 'block';
+                localStorage.setItem('hasVoted', 'true');
 
-        const shuffledDeck = [...rawDeck].sort(() => 0.5 - Math.random());
-
-        shuffledDeck.forEach(data => {
-            const cardItem = document.createElement('div');
-            cardItem.className = 'memory-card-item';
-            cardItem.setAttribute('data-id', data.id);
-            
-            cardItem.innerHTML = `
-                <div class="inner-face">
-                    <span style="font-size: 1.5rem !important; line-height: 1 !important;">${data.emoji}</span>
-                    <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
-                </div>
-            `;
-            
-            cardItem.addEventListener('click', () => flipCard(cardItem));
-            memoryGrid.appendChild(cardItem);
-        });
-    }
-
-    function flipCard(card) {
-        const activeFlips = document.querySelectorAll('.memory-card-item.flipped');
-        if (activeFlips.length >= 2) return;
-        if (card.classList.contains('matched') || card.classList.contains('flipped')) return;
-
-        card.classList.add('flipped');
-        const updatedFlips = document.querySelectorAll('.memory-card-item.flipped');
-
-        if (updatedFlips.length === 2) {
-            movesCount++;
-            if (movesDisplay) movesDisplay.innerText = `MOVES: ${movesCount}`;
-            checkMatch(updatedFlips, updatedFlips);
-        }
-    }
-
-    function checkMatch(card1, card2) {
-        const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
-        
-        if (isMatch) {
-            card1.classList.remove('flipped');
-            card2.classList.remove('flipped');
-            card1.classList.add('matched');
-            card2.classList.add('matched');
-            
-            matchedCount += 2;
-
-            if (matchedCount === rawDeck.length) {
                 setTimeout(() => {
-                    alert(`🎉 Amazing job! Cleared in ${movesCount} moves.`);
-                    saveLocalScore(movesCount);
-                }, 300);
+                    if (ratingCard) {
+                        ratingCard.style.transition = 'opacity 0.5s ease';
+                        ratingCard.style.opacity = '0';
+                        setTimeout(() => { ratingCard.style.display = 'none'; }, 500); 
+                    }
+                }, 3000);
+           } catch (error) {
+                console.error("Rating transaction dropped:", error);
             }
-        } else {
-            setTimeout(() => {
-                card1.classList.remove('flipped');
-                card2.classList.remove('flipped');
-            }, 800);
-        }
-    }
-
-    function saveLocalScore(score) {
-        const userAlias = prompt("Enter your name for the Leaderboard:");
-        if (userAlias) {
-            let scores = JSON.parse(localStorage.getItem('localMemoryLeaderboard')) || [];
-            scores.push({ username: userAlias, score: score });
-            scores.sort((a, b) => a.score - b.score);
-            scores = scores.slice(0, 5);
-            localStorage.setItem('localMemoryLeaderboard', JSON.stringify(scores));
-            renderLocalLeaderboard();
-        }
-        initMemoryGame();
-    }
-
-    function renderLocalLeaderboard() {
-        const listContainer = document.getElementById('leaderboard-list');
-        if (!listContainer) return;
-        
-        const boardData = JSON.parse(localStorage.getItem('localMemoryLeaderboard')) || [];
-        listContainer.innerHTML = '';
-        
-        if (boardData.length > 0) {
-            boardData.forEach((entry) => {
-                const row = document.createElement('li');
-                row.style.marginBottom = '4px';
-                row.innerHTML = `<strong>${entry.username}</strong> — <span style="color:#34d399;">${entry.score} Moves</span>`;
-                listContainer.appendChild(row);
-            });
-        } else {
-            listContainer.innerHTML = '<li>No records logged yet!</li>';
-        }
-    }
+        });
+    });
 </script>
 </body>
 </html>
