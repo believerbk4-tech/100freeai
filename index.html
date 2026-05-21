@@ -333,48 +333,58 @@
         width: 200px !important; /* Shrink images on mobile */
     }
 }
-  /* Fix for the background container */
-.robot-ambient-container {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    pointer-events: none !important;
-    z-index: -1 !important;
-    overflow: hidden;
-}
-
-/* Fix for the particle items */
-.floating-bot-particle {
-    position: absolute;
-    font-size: 40px;
-    animation: floatParticle 10s infinite ease-in-out;
-    opacity: 0.5;
-}
-
-@keyframes floatParticle {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-30px) translateX(10px); }
-}
-
-/* Ensure directory content is visible and not hidden behind black backgrounds */
-#directory-content {
-    position: relative;
-    z-index: 1;
-    background: transparent; /* Changed from #000000 to see robots behind */
-}
         
+    /* 1. Apply the black background to the BODY, not the header/content */
+    body {
+        background-color: #000000 !important;
+        margin: 0;
+        padding: 0;
+        color: white; /* Ensure text is visible */
+    }
+
+    /* 2. Container for the background robots */
+    .robot-ambient-container {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none !important;
+        z-index: 0 !important; /* Robots are at the bottom layer */
+        overflow: hidden;
+    }
+
+    /* 3. Content sits on top of robots */
+    #directory-content, header {
+        position: relative;
+        z-index: 1; /* Content is above robots */
+        background: transparent !important;
+    }
+
+    .floating-bot-particle {
+        position: absolute;
+        font-size: 40px;
+        animation: floatParticle 10s infinite ease-in-out;
+        opacity: 0.5;
+    }
+
+    @keyframes floatParticle {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-30px) translateX(10px); }
+    }
 </style>
 </head>
 <body>
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
-        <div class="floating-bot-particle" style="top: 20%; right: 15%;">⚙️</div>
+        <div class="floating-bot-particle" style="top: 25%; right: 15%;">⚙️</div>
         <div class="floating-bot-particle" style="top: 70%; left: 20%;">🛸</div>
-        <div class="floating-bot-particle" style="top: 80%; right: 10%;">🤖</div>
+        <div class="floating-bot-particle" style="top: 80%; right: 5%;">🤖</div>
         <div class="floating-bot-particle" style="top: 40%; left: 50%;">✨</div>
     </div>
+
+    <div id="directory-content">
+        </div>
 
     <div id="directory-content">
         <h1>The Ultimate AI Toolkit</h1>
