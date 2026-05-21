@@ -101,102 +101,86 @@
             background-color: var(--dark); color: var(--text); 
             overflow-x: hidden; width: 100%;
         }
-        
-       /* --- PORTAL BASE --- */
-#welcomePortal {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    z-index: 10000; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    text-align: center; 
-    color: white; 
-    padding: 20px;
-    box-sizing: border-box;
-    overflow: hidden;
-}
+    
+    /* Prevent scrolling completely while portal is active */
+    html.portal-active, body.portal-active {
+        overflow: hidden !important;
+        height: 100vh !important;
+    }
 
-/* --- THE SPLIT WIPE MOTOR --- */
-/* We turn the background into two halves that slide away */
-#welcomePortal::before,
-#welcomePortal::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: radial-gradient(circle at center, #1e1b4b 0%, #000000 100%);
-    z-index: -1;
-    transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1);
-}
+    /* Hide the default browser scrollbar while on the portal */
+    html.portal-active::-webkit-scrollbar, 
+    body.portal-active::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+    }
 
-/* Top half background position */
-#welcomePortal::before {
-    top: 0;
-    background-position: top center;
-}
+    #welcomePortal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        /* Premium deep dark space background */
+        background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
+        z-index: 9999999 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
 
-/* Bottom half background position */
-#welcomePortal::after {
-    bottom: 0;
-    background-position: bottom center;
-}
+    /* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
+    .robot-ambient-container {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+    }
 
-/* --- INNER CONTENT ANIMATION --- */
-/* Smoothly fades the text content and buttons from the center */
-#welcomePortal > div {
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
+    .floating-bot-particle {
+        position: absolute !important;
+        color: rgba(99, 102, 241, 0.12) !important; /* Soft glowing neon blue/purple */
+        font-family: system-ui !important;
+        user-select: none !important;
+        animation: floatAir 12s infinite ease-in-out !important;
+    }
 
-/* --- THE SPLIT TRIGGER WIPE EFFECT --- */
-.disappearing::before {
-    transform: translateY(-100%); /* Slides top half up */
-}
+    /* Randomize floating paths for different robot particles */
+    .bot-1 { font-size: 5rem !important; top: 15%; left: 10%; animation-duration: 14s !important; animation-delay: 0s !important; }
+    .bot-2 { font-size: 3.5rem !important; top: 25%; right: 12%; animation-duration: 11s !important; animation-delay: -3s !important; }
+    .bot-3 { font-size: 4.5rem !important; bottom: 18%; left: 15%; animation-duration: 16s !important; animation-delay: -5s !important; }
+    .bot-4 { font-size: 3rem !important; bottom: 22%; right: 18%; animation-duration: 13s !important; animation-delay: -2s !important; }
+    .bot-5 { font-size: 2.5rem !important; top: 50%; left: 45%; animation-duration: 9s !important; animation-delay: -7s !important; }
 
-.disappearing::after {
-    transform: translateY(100%); /* Slides bottom half down */
-}
+    @keyframes floatAir {
+        0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+        50% { transform: translateY(-25px) translateX(15px) rotate(5deg); }
+        100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    }
 
-.disappearing > div {
-    opacity: 0;
-    transform: scale(0.9); /* Subtle shrinking effect as it fades */
-}
+    /* Center Content Wrapper */
+    .portal-content-box {
+        position: relative !important;
+        z-index: 2 !important;
+        text-align: center !important;
+        padding: 20px !important;
+        max-width: 600px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
 
-.disappearing { 
-    pointer-events: none; 
-    visibility: hidden; 
-    /* Delays visibility toggling until slide animation finishes */
-    transition: visibility 0.7s step-end; 
-}
-
-/* Forces the portal to stay hidden if the user already clicked enter */
-.portal-skipped #welcomePortal {
-    display: none !important;
-}
-
-/* --- BUTTON STYLING --- */
-.enter-btn { 
-    background: var(--primary); 
-    color: #ffffff; 
-    padding: 20px 60px; 
-    border-radius: 50px; 
-    font-size: 1.1rem; 
-    font-weight: 800; 
-    border: none; 
-    cursor: pointer; 
-    text-transform: uppercase;
-    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.enter-btn:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-}
+    /* Smooth exit fade out */
+    #welcomePortal.disappearing {
+        opacity: 0 !important;
+        transform: scale(1.05) !important;
+        pointer-events: none !important;
+    }
         
         /* --- FIXED FLOATING ELEMENTS --- */
         #feedback-btn {
@@ -291,28 +275,35 @@
 </head>
 <body>
 
-<div id="welcomePortal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #030712; background-image: radial-gradient(rgba(79, 70, 229, 0.15) 1px, transparent 0), radial-gradient(rgba(79, 70, 229, 0.1) 1px, #030712 100%); background-size: 40px 40px; background-position: 0 0, 20px 20px; z-index: 10000; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 24px; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
-    <div class="portal-content" style="max-width: 640px; width: 100%; padding: 20px; backdrop-filter: blur(4px); border-radius: 24px;">
-        
-        <div style="background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.3); color: #818cf8; padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block; margin-bottom: 1.5rem;">
+<div id="welcomePortal">
+    <div class="robot-ambient-container">
+        <div class="floating-bot-particle bot-1">🤖</div>
+        <div class="floating-bot-particle bot-2">⚙️</div>
+        <div class="floating-bot-particle bot-3">🛸</div>
+        <div class="floating-bot-particle bot-4">🤖</div>
+        <div class="floating-bot-particle bot-5">✨</div>
+    </div>
+
+    <div class="portal-content-box">
+        <div style="display: inline-block; background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: #a5b4fc; padding: 6px 16px; font-size: 0.75rem; font-weight: 700; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(79, 70, 229, 0.15);">
             ⚡ V2 PRODUCTION ENGINE LIVE
         </div>
-
-        <h1 style="font-size: clamp(2.5rem, 7vw, 4.2rem); font-weight: 900; margin: 0 0 15px 0; line-height: 1.05; letter-spacing: -1px; color: #ffffff;">
-            100+ FREE <span style="background: linear-gradient(to right, #818cf8, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI TOOLS</span>
+        
+        <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem) !important; font-weight: 900 !important; color: white !important; line-height: 1.1 !important; margin: 0 0 20px 0 !important; letter-spacing: -2px !important;">
+            100+ FREE <span style="background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI TOOLS</span>
         </h1>
-
-        <p style="font-size: clamp(1rem, 2.5vw, 1.15rem); color: #94a3b8; margin: 0 auto 35px auto; max-width: 520px; line-height: 1.6; font-weight: 400;">
+        
+        <p style="font-size: clamp(0.95rem, 3vw, 1.15rem) !important; color: #94a3b8 !important; line-height: 1.6 !important; margin: 0 auto 35px auto !important; max-width: 480px !important; font-weight: 400 !important;">
             Stop jumping between infinite pricing loops. Access a hand-reviewed directory built for creators to scale delivery 10x faster.
         </p>
 
-        <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 45px; flex-wrap: wrap;">
-            <div style="font-size: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 8px; color: #e2e8f0; font-weight: 600; letter-spacing: 0.5px;">✓ 100% UNLOCKED</div>
-            <div style="font-size: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 8px; color: #e2e8f0; font-weight: 600; letter-spacing: 0.5px;">✓ EXPERT VERIFIED</div>
-            <div style="font-size: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 8px; color: #e2e8f0; font-weight: 600; letter-spacing: 0.5px;">✓ ZERO SIGN-UP</div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 40px; color: #64748b; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px;">
+            <span>✓ 100% UNLOCKED</span>
+            <span>✓ EXPERT VERIFIED</span>
+            <span>✓ ZERO SIGN-UP</span>
         </div>
-
-        <button class="enter-btn" onclick="enterSite()" style="background: #4f46e5; color: #ffffff; padding: 18px 50px; border-radius: 12px; font-size: 1rem; font-weight: 700; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3); transition: all 0.2s ease;">
+        
+        <button onclick="enterSite()" style="background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%); color: white; border: none; padding: 16px 40px; font-size: 1rem; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35); transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; text-transform: uppercase;">
             Launch Directory
         </button>
     </div>
@@ -2391,6 +2382,40 @@
             }
         });
     });
+    // --- INITIAL STATE SETUP ---
+// Apply classes to hide scrollbar immediately when the page reads the script
+if (sessionStorage.getItem('siteEntered') !== 'true') {
+    document.documentElement.classList.add('portal-active');
+    document.body.classList.add('portal-active');
+}
+
+// --- PORTAL FRAMEWORK & SCROLLBAR CONTROLLER ---
+window.enterSite = function() {
+    const portal = document.getElementById('welcomePortal');
+    if (portal) {
+        portal.classList.add('disappearing');
+        sessionStorage.setItem('siteEntered', 'true');
+        
+        // 🚀 THE FIX: Instantly release the classes to restore the slide down arrow & scrollbar
+        document.documentElement.classList.remove('portal-active');
+        document.body.classList.remove('portal-active');
+        
+        setTimeout(() => {
+            portal.remove();
+        }, 700);
+    }
+};
+
+// Check navigation status on fresh loads
+function checkPortalStatus() {
+    if (sessionStorage.getItem('siteEntered') === 'true') {
+        const portal = document.getElementById('welcomePortal');
+        if (portal) portal.remove();
+        document.documentElement.classList.remove('portal-active');
+        document.body.classList.remove('portal-active');
+    }
+}
+checkPortalStatus();
 </script>
 </body>
 </html>
