@@ -333,60 +333,53 @@
         width: 200px !important; /* Shrink images on mobile */
     }
 }
-        
-   /* Container for the background robots - Must be fixed to the viewport */
+  /* Fix for the background container */
 .robot-ambient-container {
-    position: fixed !important; 
+    position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    pointer-events: none !important; /* Click-through */
-    z-index: -1 !important; /* Stays behind EVERYTHING */
+    pointer-events: none !important;
+    z-index: -1 !important;
     overflow: hidden;
 }
 
-/* Floating animation for particles */
+/* Fix for the particle items */
 .floating-bot-particle {
     position: absolute;
-    font-size: 40px; /* Increased size so they are visible */
+    font-size: 40px;
     animation: floatParticle 10s infinite ease-in-out;
-    opacity: 0.6; /* Slight transparency for "ambience" */
+    opacity: 0.5;
 }
 
 @keyframes floatParticle {
     0%, 100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-50px) translateX(20px); }
+    50% { transform: translateY(-30px) translateX(10px); }
 }
 
-/* Randomize positions so they fill the screen */
-.bot-1 { top: 15%; left: 10%; animation-delay: 0s; }
-.bot-2 { top: 20%; right: 15%; animation-delay: 2s; }
-.bot-3 { top: 75%; left: 25%; animation-delay: 4s; }
-.bot-4 { top: 80%; right: 10%; animation-delay: 6s; }
-.bot-5 { top: 50%; left: 50%; animation-delay: 8s; }
+/* Ensure directory content is visible and not hidden behind black backgrounds */
+#directory-content {
+    position: relative;
+    z-index: 1;
+    background: transparent; /* Changed from #000000 to see robots behind */
+}
         
 </style>
 </head>
 <body>
-    
     <div class="robot-ambient-container">
-        <div class="floating-bot-particle bot-1">🤖</div>
-        <div class="floating-bot-particle bot-2">⚙️</div>
-        <div class="floating-bot-particle bot-3">🛸</div>
-        <div class="floating-bot-particle bot-4">🤖</div>
-        <div class="floating-bot-particle bot-5">✨</div>
+        <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
+        <div class="floating-bot-particle" style="top: 20%; right: 15%;">⚙️</div>
+        <div class="floating-bot-particle" style="top: 70%; left: 20%;">🛸</div>
+        <div class="floating-bot-particle" style="top: 80%; right: 10%;">🤖</div>
+        <div class="floating-bot-particle" style="top: 40%; left: 50%;">✨</div>
     </div>
 
     <div id="directory-content">
+        <h1>The Ultimate AI Toolkit</h1>
         </div>
-    
-    <div class="robot-ambient-container">...</div> 
-    
-    <div class="user-images-container">...</div> 
-    
-    <div class="portal-content-box">...</div> 
-        
+
     <div id="welcomePortal">
         <div class="robot-ambient-container">
             <div class="floating-bot-particle bot-1">🤖</div>
