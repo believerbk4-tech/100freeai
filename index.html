@@ -372,6 +372,30 @@
         0%, 100% { transform: translateY(0) translateX(0); }
         50% { transform: translateY(-30px) translateX(10px); }
     }
+
+        /* 1. Apply the professional dark space background */
+body {
+    margin: 0;
+    padding: 0;
+    /* Use a dark radial gradient as a fallback, then your space image */
+    background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%), 
+                url('https://www.nhm.ac.uk/discover/what-is-space.html') no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 2. Ensure your containers are transparent so the space background shows through */
+header, .portal-content-box {
+    background: transparent !important;
+}
+
+/* 3. Add a subtle 'glassmorphism' effect to your tool cards */
+.tool-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 </style>
 </head>
 <body>
