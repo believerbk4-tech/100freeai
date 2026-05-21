@@ -101,31 +101,6 @@
             background-color: var(--dark); color: var(--text); 
             overflow-x: hidden; width: 100%;
         }
-
-        /* 🎮 BULLETPROOF FULL SCREEN OVERLAY ENGINE FIX */
-#game-modal-overlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    /* Changed from radial-gradient to translucent backdrop so the underlying site looks blurred and beautiful */
-    background: rgba(11, 15, 25, 0.85) !important; 
-    backdrop-filter: blur(12px) !important; /* Premium blur effect */
-    -webkit-backdrop-filter: blur(12px) !important;
-    z-index: 2147483647 !important; /* Locks it above everything else on screen */
-    box-sizing: border-box !important;
-    margin: 0 !important;
-    padding: 12px !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-}
-
-/* Freezes back-page window content layout when the game is launched */
-body.game-active {
-    overflow: hidden !important;
-    height: 100vh !important;
-}
         
        /* --- PORTAL BASE --- */
 #welcomePortal {
@@ -2189,6 +2164,33 @@ body.game-active {
     </div>
 </section>
 
+<style>
+    /* 🎮 BULLETPROOF FULL SCREEN OVERLAY ENGINE FIX */
+    #game-modal-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        /* Translucent backdrop so the underlying site looks blurred and beautiful */
+        background: rgba(11, 15, 25, 0.85) !important; 
+        backdrop-filter: blur(12px) !important; /* Premium blur effect */
+        -webkit-backdrop-filter: blur(12px) !important;
+        z-index: 2147483647 !important; /* Locks it above everything else on screen */
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        padding: 12px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Freezes back-page window content layout when the game is launched */
+    body.game-active {
+        overflow: hidden !important;
+        height: 100vh !important;
+    }
+</style>
+
 <div style="text-align: center; margin: 30px auto;">
     <button id="open-game-trigger" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: white; border: none; padding: 12px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); transition: transform 0.2s, box-shadow 0.2s;">
         🎮 Play Memory Game
@@ -2545,7 +2547,7 @@ body.game-active {
     }
 
     function checkMatch() {
-        // ✅ DEFINITIVELY FIXED: Explicitly targeting distinct elements using array keys and
+        // ✅ DEFINITIVELY FIXED: Extracted explicit array indices and to pull separate card nodes
         const card1 = flippedCards;
         const card2 = flippedCards;
         
@@ -2573,7 +2575,7 @@ body.game-active {
                 }, 300);
             }
         } else {
-            // Improper choices will now flip closed automatically after 800ms
+            // Unmatched choices will now auto-flip back down elegantly after 800ms
             setTimeout(() => {
                 const face1 = card1.querySelector('.card-face');
                 const face2 = card2.querySelector('.card-face');
