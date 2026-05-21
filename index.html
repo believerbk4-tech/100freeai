@@ -373,30 +373,23 @@
         50% { transform: translateY(-30px) translateX(10px); }
     }
 
-/* 1. Remove the background from the body */
-body {
-    background-color: #000000 !important; /* Keep the site dark */
-    margin: 0;
-}
-
-/* 2. Target the specific area where you want the space image */
-.hero-section-container {
-    /* Replace the URL below with your preferred image link from Google */
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('https://www.nhm.ac.uk/discover/what-is-space.html') no-repeat center center;
-    background-size: cover;
-    padding: 60px 20px;
-    border-radius: 24px;
-    margin: 20px auto;
-    max-width: 1200px;
-    text-align: center;
-}
+    body { background-color: #000000 !important; margin: 0; }
+    
+    .hero-section-container {
+        /* Use the direct image link, not a webpage URL */
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                    url('https://images.unsplash.com/photo-1451187580459-43490279c0fa') no-repeat center center;
+        background-size: cover;
+        padding: 60px 20px;
+        border-radius: 24px;
+        margin: 20px auto;
+        max-width: 1200px;
+        text-align: center;
+        color: white; /* Ensure text is visible */
+        
 </style>
 </head>
 <body>
-    <div class="hero-section-container">
-    url('https://www.nhm.ac.uk/discover/what-is-space.html') no-repeat center center;
-    </div>
     
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
