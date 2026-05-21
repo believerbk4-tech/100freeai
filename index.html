@@ -271,26 +271,46 @@
             .tool-grid { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
             .tool-card { padding: 1.25rem; }
         }
-        /* NEW CONTAINER FOR YOUR TWO IMAGES */
+        
+      /* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
+    .robot-ambient-container {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none !important;
+        z-index: 0 !important; /* Backmost layer */
+    }
+
+    /* CONTAINER FOR YOUR TWO PNG IMAGES */
     .user-images-container {
         position: absolute !important;
-        z-index: 1 !important; /* Above the background, behind the text */
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 1 !important; /* Middle layer */
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         gap: 80px !important;
-        width: 100% !important;
-        pointer-events: none !important;
+        pointer-events: none !important; 
     }
 
     .user-portrait {
-        width: 300px !important; /* Adjust size as needed */
+        width: 300px !important;
         height: auto !important;
         border-radius: 20px !important;
         box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
-        pointer-events: auto !important;
     }
-    </style>
+
+    /* Ensure content box stays on top */
+    .portal-content-box {
+        position: relative !important;
+        z-index: 2 !important; /* Frontmost layer */
+    }
+</style>
 </head>
 <body>
 
@@ -303,11 +323,12 @@
         <div class="floating-bot-particle bot-5">✨</div>
     </div>
 
-    <div class="portal-content-box">
-        <div class="user-images-container">
+    <div class="user-images-container">
         <img src="images/welcome-bg.png" alt="Fahad" class="user-portrait">
         <img src="images/welcome-bg (2).png" alt="Fahad on Robot" class="user-portrait">
     </div>
+
+    <div class="portal-content-box">
         <div style="display: inline-block; background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: #a5b4fc; padding: 6px 16px; font-size: 0.75rem; font-weight: 700; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(79, 70, 229, 0.15);">
             ⚡ V2 PRODUCTION ENGINE LIVE
         </div>
