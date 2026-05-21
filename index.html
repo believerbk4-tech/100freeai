@@ -2172,7 +2172,6 @@
         left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        /* Translucent backdrop so the underlying site looks blurred and beautiful */
         background: rgba(11, 15, 25, 0.85) !important; 
         backdrop-filter: blur(12px) !important; /* Premium blur effect */
         -webkit-backdrop-filter: blur(12px) !important;
@@ -2188,6 +2187,66 @@
     body.game-active {
         overflow: hidden !important;
         height: 100vh !important;
+    }
+
+    /* 🏎️ SMOOTH PRO FLIP EFFECTS */
+    .memory-card-item {
+        perspective: 1000px !important;
+        position: relative !important;
+        aspect-ratio: 1/1 !important;
+        cursor: pointer !important;
+    }
+
+    .card-inner {
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        transform-style: preserve-3d !important;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        border-radius: 12px !important;
+    }
+
+    /* When active/flipped, rotate the inner container */
+    .memory-card-item.is-flipped .card-inner {
+        transform: rotateY(180deg) !important;
+    }
+
+    .card-front, .card-back {
+        position: absolute !important;
+        width: 100% !important;
+        height: 100% !important;
+        backface-visibility: hidden !important;
+        -webkit-backface-visibility: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Card Back (What users see when closed) */
+    .card-back {
+        background: radial-gradient(circle, #1e1b4b 0%, #11103c 100%) !important;
+        border: 2px solid #312e81 !important;
+    }
+    
+    .memory-card-item:hover .card-back {
+        border-color: #4f46e5 !important;
+        box-shadow: 0 0 12px rgba(79, 70, 229, 0.3) !important;
+    }
+
+    /* Card Front (The revealed emoji face) */
+    .card-front {
+        background: #1e1b4b !important;
+        border: 2px solid #4f46e5 !important;
+        transform: rotateY(180deg) !important;
+    }
+
+    /* Green state when successfully matched */
+    .memory-card-item.is-matched .card-front {
+        background: #064e3b !important;
+        border-color: #10b981 !important;
     }
 </style>
 
@@ -2452,7 +2511,7 @@
         });
     });
 
-    // --- SAFE MEMORY ENGINE INITIALIZATION ---
+    // --- MEMORY ENGINE MAIN DATA ---
     const gameOverlay = document.getElementById('game-modal-overlay');
     const openGameTrigger = document.getElementById('open-game-trigger');
     const closeGameBtn = document.getElementById('close-game-btn');
@@ -2515,13 +2574,19 @@
 
         shuffledDeck.forEach(data => {
             const cardItem = document.createElement('div');
-            cardItem.style.cssText = 'aspect-ratio: 1/1 !important; background: #1e1b4b !important; border: 2px solid #1e293b !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; user-select: none !important; transition: transform 0.2s ease !important; position: relative !important; box-sizing: border-box !important;';
+            cardItem.className = 'memory-card-item';
             cardItem.setAttribute('data-id', data.id);
             
-            cardItem.innerHTML = `<div class="card-face" style="display: none !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; width: 100% !important; height: 100% !important;">
-                <span style="font-size: 1.5rem !important; line-height: 1 !important;">${data.emoji}</span>
-                <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
-            </div>`;
+            // ✅ REMOVED DISPLAY:NONE INLINE INTERFERENCE entirely, replacing with a pro transform wrapper
+            cardItem.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-back"></div>
+                    <div class="card-front">
+                        <span style="font-size: 1.6rem !important; line-height: 1 !important;">${data.emoji}</span>
+                        <span style="font-size: 9px !important; font-weight: bold !important; color: #a5b4fc !important; margin-top: 4px !important; text-transform: uppercase !important;">${data.name}</span>
+                    </div>
+                </div>
+            `;
             
             cardItem.addEventListener('click', () => flipCard(cardItem));
             memoryGrid.appendChild(cardItem);
@@ -2529,13 +2594,10 @@
     }
 
     function flipCard(card) {
-        if (lockBoard || flippedCards.includes(card) || card.getAttribute('data-matched') === 'true') return;
+        if (lockBoard || flippedCards.includes(card) || card.classList.contains('is-matched')) return;
 
-        const face = card.querySelector('.card-face');
-        if (face) face.style.setProperty('display', 'flex', 'important');
-        card.style.setProperty('background', '#312e81', 'important');
-        card.style.setProperty('border-color', '#4f46e5', 'important');
-
+        // Visual class rotation switch
+        card.classList.add('is-flipped');
         flippedCards.push(card);
 
         if (flippedCards.length === 2) {
@@ -2547,7 +2609,6 @@
     }
 
     function checkMatch() {
-        // ✅ DEFINITIVELY FIXED: Extracted explicit array indices and to pull separate card nodes
         const card1 = flippedCards;
         const card2 = flippedCards;
         
@@ -2556,13 +2617,9 @@
         const isMatch = card1.getAttribute('data-id') === card2.getAttribute('data-id');
         
         if (isMatch) {
-            card1.setAttribute('data-matched', 'true');
-            card2.setAttribute('data-matched', 'true');
-            
-            card1.style.setProperty('background', '#064e3b', 'important');
-            card2.style.setProperty('background', '#064e3b', 'important');
-            card1.style.setProperty('border-color', '#10b981', 'important');
-            card2.style.setProperty('border-color', '#10b981', 'important');
+            // ✅ Match state: Lock them green seamlessly
+            card1.classList.add('is-matched');
+            card2.classList.add('is-matched');
             
             matchedCount += 2;
             flippedCards = [];
@@ -2572,21 +2629,13 @@
                 setTimeout(() => {
                     alert(`🎉 Amazing job! Cleared in ${movesCount} moves.`);
                     saveHighScore(movesCount);
-                }, 300);
+                }, 400);
             }
         } else {
-            // Unmatched choices will now auto-flip back down elegantly after 800ms
+            // ✅ AUTOMATIC UNFLIP: Unmatched pairs rotate back down elegantly without breaking the board loop
             setTimeout(() => {
-                const face1 = card1.querySelector('.card-face');
-                const face2 = card2.querySelector('.card-face');
-                
-                if (face1) face1.style.setProperty('display', 'none', 'important');
-                if (face2) face2.style.setProperty('display', 'none', 'important');
-                
-                card1.style.setProperty('background', '#1e1b4b', 'important');
-                card2.style.setProperty('background', '#1e1b4b', 'important');
-                card1.style.setProperty('border-color', '#1e293b', 'important');
-                card2.style.setProperty('border-color', '#1e293b', 'important');
+                card1.classList.remove('is-flipped');
+                card2.classList.remove('is-flipped');
                 
                 flippedCards = [];
                 lockBoard = false;
