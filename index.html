@@ -323,7 +323,7 @@
         z-index: 2 !important; 
     }
 
-   header::before {
+ header::before {
     content: "";
     position: absolute;
     top: 0;
@@ -332,25 +332,25 @@
     height: 100%;
     background-image: url('images/welcome-bg (2).png');
     
-    /* 'contain' ensures the WHOLE image is visible at all times */
-    /* This prevents any cropping on desktop or mobile */
-    background-size: contain; 
+    /* Use cover to fill the area */
+    background-size: cover; 
     
-    /* Keep it centered */
-    background-position: center center; 
+    /* 50% horizontally, 30% vertically. 
+       This tells the browser to keep the focus slightly 
+       higher so the heads aren't chopped off! */
+    background-position: 50% 30%; 
+    
     background-repeat: no-repeat;
-    
     opacity: 0.2; 
     z-index: -1;
     pointer-events: none;
 }
-
-/* Optional: To make it look "premium" on desktops specifically */
-@media (min-width: 1024px) {
-    header {
-        /* Set a max-height so the header doesn't get 
-           ridiculously tall on huge monitors */
-        max-height: 700px;
+        
+/* Use this for Desktop */
+@media (min-width: 769px) {
+    header::before {
+        background-image: url('images/welcome-bg-wide.png');
+        background-size: cover;
     }
 }
 </style>
