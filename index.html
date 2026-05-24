@@ -372,10 +372,42 @@
         0%, 100% { transform: translateY(0) translateX(0); }
         50% { transform: translateY(-30px) translateX(10px); }
     }
+        
+        /* 1. Keep the body solid black so the space doesn't bleed out */
+body {
+    background-color: #000000 !important;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* 2. Target the specific "Toolkit" card area */
+.toolkit-hero-container {
+    /* The space image link goes here */
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                url('https://images.unsplash.com/photo-1451187580459-43490279c0fa') no-repeat center center;
+    background-size: cover;
+    
+    /* Layout styling to keep it contained */
+    max-width: 1000px;
+    margin: 50px auto; /* Centers it and gives space top/bottom */
+    padding: 60px 40px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
 </style>
 </head>
 <body>
     
+    <div class="toolkit-hero-container">
+        <h1>The Ultimate AI Toolkit</h1>
+        <p>Explore a professional collection of the world's most powerful AI engines.</p>
+        </div>
+
+    <div class="robot-ambient-container">
+        ...
+    </div>
+
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
         <div class="floating-bot-particle" style="top: 25%; right: 15%;">⚙️</div>
