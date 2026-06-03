@@ -2573,20 +2573,30 @@ function checkPortalStatus() {
 }
 checkPortalStatus();
     
-    <!-- Script to unlock scrolling when Launch Directory is clicked -->
+      <!-- Script to unlock scrolling and move down to the directory -->
         document.addEventListener('DOMContentLoaded', () => {
-            // Find your button automatically by searching for the "LAUNCH DIRECTORY" text
+            // Find your launch button automatically by text content
             const launchBtn = Array.from(document.querySelectorAll('button, a')).find(el => 
                 el.textContent.toUpperCase().includes('LAUNCH DIRECTORY')
             );
 
             if (launchBtn) {
-                launchBtn.addEventListener('click', () => {
-                    // Instantly removes the scrollbar lock
+                launchBtn.addEventListener('click', (e) => {
+                    // 1. Prevent any default blocking behavior
+                    e.preventDefault(); 
+                    
+                    // 2. Instantly unlock the scrollbar
                     document.body.classList.remove('hide-scrollbar');
+                    
+                    // 3. Force the page to scroll down to your tool section smoothly
+                    // (Change '#directory' to match the actual ID of your tool section down below)
+                    const targetSection = document.getElementById('directory') || document.querySelector('main, section');
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
                 });
             }
         });
-    </script> 
+    </script>
 </body>
 </html>
