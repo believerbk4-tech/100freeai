@@ -435,7 +435,7 @@
                 <span>✓ ZERO SIGN-UP</span>
             </div>
             
-            <button onclick="enterSite()" style="background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%); color: white; border: none; padding: 16px 40px; font-size: 1rem; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35); transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; text-transform: uppercase;">
+            <button onclick="document.body.classList.remove('hide-scrollbar'); enterSite();" style="background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%); color: white; border: none; padding: 16px 40px; font-size: 1rem; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35); transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; text-transform: uppercase;">
                 Launch Directory
             </button>
         </div>
@@ -2545,51 +2545,39 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
     document.body.classList.add('portal-active');
 }
 
-// --- PORTAL FRAMEWORK & SCROLLBAR CONTROLLER ---
-window.enterSite = function() {
-    const portal = document.getElementById('welcomePortal');
-    if (portal) {
-        portal.classList.add('disappearing');
-        sessionStorage.setItem('siteEntered', 'true');
-        
-        // 🚀 THE FIX: Instantly release the classes to restore the slide down arrow & scrollbar
-        document.documentElement.classList.remove('portal-active');
-        document.body.classList.remove('portal-active');
-        
-        setTimeout(() => {
-            portal.remove();
-        }, 700);
-    }
-};
-
-// Check navigation status on fresh loads
-function checkPortalStatus() {
-    if (sessionStorage.getItem('siteEntered') === 'true') {
-        const portal = document.getElementById('welcomePortal');
-        if (portal) portal.remove();
-        document.documentElement.classList.remove('portal-active');
-        document.body.classList.remove('portal-active');
-    }
-}
-checkPortalStatus();
-    
-           <!-- Script to cleanly unlock scrolling and follow the launch path -->
-        document.addEventListener('DOMContentLoaded', () => {
-            // Find your button automatically by searching for the "LAUNCH DIRECTORY" phrase text
-            const launchBtn = Array.from(document.querySelectorAll('button, a')).find(el => 
-                el.textContent.toUpperCase().includes('LAUNCH DIRECTORY')
-            );
-
-            if (launchBtn) {
-                launchBtn.addEventListener('click', function(e) {
-                    // 1. Unlocks the page matrix and scrollbar instantly
-                    document.body.classList.remove('hide-scrollbar');
-                    
-                    // 2. Safely lets the link run its natural scrolling behavior to drop you into the directory tags
-                    // No e.preventDefault() is used here so your button works 100% natively!
-                });
+        // --- PORTAL FRAMEWORK & SCROLLBAR CONTROLLER ---
+        window.enterSite = function() {
+            const portal = document.getElementById('welcomePortal');
+            if (portal) {
+                portal.classList.add('disappearing');
+                sessionStorage.setItem('siteEntered', 'true');
+                
+                // Release portal classes to restore native layout parameters
+                document.documentElement.classList.remove('portal-active');
+                document.body.classList.remove('portal-active');
+                
+                // 🚀 UNIFIED FIX: Instantly releases your hide-scrollbar lock 
+                document.body.classList.remove('hide-scrollbar');
+                
+                setTimeout(() => {
+                    portal.remove();
+                }, 700);
             }
-        });
+        };
+
+        // Check navigation status on fresh page loads
+        function checkPortalStatus() {
+            if (sessionStorage.getItem('siteEntered') === 'true') {
+                const portal = document.getElementById('welcomePortal');
+                if (portal) portal.remove();
+                document.documentElement.classList.remove('portal-active');
+                document.body.classList.remove('portal-active');
+                
+                // 🚀 UNIFIED FIX: Bypasses scroll restrictions if returning user
+                document.body.classList.remove('hide-scrollbar');
+            }
+        }
+        checkPortalStatus();
     </script>
 </body>
 </html>
