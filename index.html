@@ -2551,10 +2551,10 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
             if (portal) {
                 portal.classList.add('disappearing');
                 
-                // 🚀 FIXED: Save to persistent localStorage instead of short-lived sessionStorage
+                // Track state across both styles of application space
                 localStorage.setItem('siteEntered', 'true');
+                sessionStorage.setItem('siteEntered', 'true');
                 
-                // Release portal classes to restore native layout parameters
                 document.documentElement.classList.remove('portal-active');
                 document.body.classList.remove('portal-active');
                 document.body.classList.remove('hide-scrollbar');
@@ -2565,31 +2565,36 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
             }
         };
 
-        // Check navigation status on fresh page loads or hard reloads
+        // Bypasses cover frames instantly on hard reloads or cross-page redirects
         function checkPortalStatus() {
             const urlParams = new URLSearchParams(window.location.search);
-            const hasParamToken = urlParams.get('siteEntered') === 'true';
-            
-            // 🚀 FIXED: Read from persistent localStorage to track returning users
-            const hasLocalToken = localStorage.getItem('siteEntered') === 'true';
+            const hasParamToken = urlParams.get('siteEntered') === 'true' || window.location.hash === '#directory';
+            const hasLocalToken = localStorage.getItem('siteEntered') === 'true' || sessionStorage.getItem('siteEntered') === 'true';
 
             if (hasLocalToken || hasParamToken) {
-                // Ensure localStorage is updated
+                // Keep memory matrices synchronized
                 localStorage.setItem('siteEntered', 'true');
+                sessionStorage.setItem('siteEntered', 'true');
                 
                 const portal = document.getElementById('welcomePortal');
-                if (portal) portal.remove();
+                if (portal) {
+                    // Wipe out style restrictions instantly before rendering engine paint cycles
+                    portal.style.display = 'none';
+                    portal.remove();
+                }
                 
                 document.documentElement.classList.remove('portal-active');
                 document.body.classList.remove('portal-active');
                 document.body.classList.remove('hide-scrollbar');
                 
-                // Clean up the URL string quietly so user address bar looks clean
-                if (hasParamToken) {
-                    window.history.replaceState({}, document.title, window.location.pathname);
+                // Keep browser address clean 
+                if (urlParams.get('siteEntered') === 'true') {
+                    window.history.replaceState({}, document.title, window.location.pathname + (window.location.hash || ''));
                 }
             }
         }
+        
+        // Execute state clearing checker immediately
         checkPortalStatus();
     </script>
 </body>
