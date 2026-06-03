@@ -90,8 +90,8 @@
 <body>
 
     <div class="container-box">
-      <!-- Back to Home Button (Fixed to bypass the Welcome Portal) -->
-<a href="/?siteEntered=true" class="back-home" onclick="sessionStorage.setItem('siteEntered', 'true');">← Back to Home</a>
+      <!-- Back to Home Button (Fixed to synchronize with localStorage engine) -->
+<a href="/?siteEntered=true" class="back-home" onclick="localStorage.setItem('siteEntered', 'true');">← Back to Home</a>
 
         <!-- VIEW 1: THE INPUT FORM -->
         <div id="formView">
