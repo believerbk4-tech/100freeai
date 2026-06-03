@@ -6,7 +6,7 @@
     <title>Suggest an AI Tool</title>
     
     <!-- Fixed Inline SVG Emoji Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
 
     <style>
         body {
@@ -19,7 +19,7 @@
             min-height: 100vh;
             margin: 0;
         }
-        .tool-form {
+        .container-box {
             max-width: 500px;
             width: 100%;
             padding: 30px;
@@ -30,8 +30,17 @@
             flex-direction: column;
             gap: 15px;
             position: relative;
+            box-sizing: border-box;
         }
-        .tool-form h3 { margin-top: 0; color: #C8A24D; }
+        .container-box h3, .container-box h2 { margin-top: 0; color: #C8A24D; }
+        
+        /* Form Specific Styles */
+        .tool-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
         .tool-form input, .tool-form textarea {
             padding: 12px;
             background: #000;
@@ -42,7 +51,8 @@
             box-sizing: border-box;
         }
         .tool-form textarea { height: 120px; resize: vertical; }
-        .submit-btn {
+        
+        .submit-btn, .home-btn {
             background: #C8A24D;
             color: #000;
             padding: 12px;
@@ -51,8 +61,11 @@
             font-weight: bold;
             border-radius: 4px;
             margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
         }
-        .submit-btn:hover { background: #b08d3d; }
+        .submit-btn:hover, .home-btn:hover { background: #b08d3d; }
         
         /* Back to Home Link Styling */
         .back-home {
@@ -64,28 +77,51 @@
             align-items: center;
             gap: 5px;
             transition: color 0.2s ease;
+            margin-bottom: 5px;
         }
-        .back-home:hover {
-            color: #C8A24D;
-        }
+        .back-home:hover { color: #C8A24D; }
+
+        /* Hidden States */
+        .hidden { display: none !important; }
+        .success-view { text-align: center; }
+        .success-view p { color: #ccc; line-height: 1.6; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <form name="tool-requests" method="POST" action="/success" data-netlify="true" class="tool-form">
+    <div class="container-box">
         <!-- Back to Home Button -->
         <a href="/" class="back-home">← Back to Home</a>
 
-        <h3>Suggest an AI Tool</h3>
-        <p>Help us grow our library. Tell us which tool you want to see next.</p>
-        
-        <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
-        <input type="email" name="email" placeholder="Your Email (optional)">
-        <textarea name="message" placeholder="Why is this tool great?" required></textarea>
-        
-        <!-- Button is at the end -->
-        <button type="submit" class="submit-btn">Submit Suggestion</button>
-    </form>
+        <!-- VIEW 1: THE INPUT FORM -->
+        <div id="formView">
+            <h3>Suggest an AI Tool</h3>
+            <p style="color: #ccc; margin-bottom: 15px;">Help us grow our library. Tell us which tool you want to see next.</p>
+            
+            <form name="tool-requests" method="POST" action="/request-tool?status=success" data-netlify="true" class="tool-form">
+                <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
+                <input type="email" name="email" placeholder="Your Email (optional)">
+                <textarea name="message" placeholder="Why is this tool great?" required></textarea>
+                <button type="submit" class="submit-btn">Submit Suggestion</button>
+            </form>
+        </div>
+
+        <!-- VIEW 2: THE THANK YOU MESSAGE (Hidden by default) -->
+        <div id="successView" class="success-view hidden">
+            <h2>Suggestion Received! 🚀</h2>
+            <p>Thank you, Fahad! Your suggestion has been successfully submitted. We will review the AI tool and add it to our directory soon.</p>
+            <a href="/" class="home-btn">Go Back Home</a>
+        </div>
+    </div>
+
+    <!-- Script to toggle views instantly without changing files -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'success') {
+            document.getElementById('formView').classList.add('hidden');
+            document.getElementById('successView').classList.remove('hidden');
+        }
+    </script>
 
 </body>
 </html>
