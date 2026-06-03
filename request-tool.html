@@ -90,8 +90,8 @@
 <body>
 
     <div class="container-box">
-      <!-- Back to Home Button (Fixed to synchronize with localStorage engine) -->
-<a href="/?siteEntered=true" class="back-home" onclick="localStorage.setItem('siteEntered', 'true');">← Back to Home</a>
+        <!-- 1. FIXED BACK BUTTON: Passes all verification tokens and bypass targets directly -->
+        <a href="/?siteEntered=true#directory" class="back-home" onclick="localStorage.setItem('siteEntered', 'true'); sessionStorage.setItem('siteEntered', 'true');">← Back to Home</a>
 
         <!-- VIEW 1: THE INPUT FORM -->
         <div id="formView">
@@ -113,7 +113,9 @@
         <div id="successView" class="success-view hidden">
             <h2>Suggestion Received! 🚀</h2>
             <p>Thank you, Fahad! Your suggestion has been successfully submitted. We will review the AI tool and add it to our directory soon.</p>
-            <a href="/" class="home-btn">Go Back Home</a>
+            
+            <!-- 2. FIXED SUCCESS HOME BUTTON: Passes tokens to prevent portal reset upon submission completion -->
+            <a href="/?siteEntered=true#directory" class="home-btn" onclick="localStorage.setItem('siteEntered', 'true'); sessionStorage.setItem('siteEntered', 'true');">Go Back Home</a>
         </div>
     </div>
 
