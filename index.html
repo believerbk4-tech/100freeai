@@ -2573,28 +2573,20 @@ function checkPortalStatus() {
 }
 checkPortalStatus();
     
-         <!-- Script to unlock scrolling and move down to the directory -->
-    <script>
+           <!-- Script to cleanly unlock scrolling and follow the launch path -->
         document.addEventListener('DOMContentLoaded', () => {
-            // Find your launch button automatically by text content
+            // Find your button automatically by searching for the "LAUNCH DIRECTORY" phrase text
             const launchBtn = Array.from(document.querySelectorAll('button, a')).find(el => 
                 el.textContent.toUpperCase().includes('LAUNCH DIRECTORY')
             );
 
             if (launchBtn) {
-                launchBtn.addEventListener('click', (e) => {
-                    // 1. Prevent any default blocking behavior
-                    e.preventDefault(); 
-                    
-                    // 2. Instantly unlock the scrollbar
+                launchBtn.addEventListener('click', function(e) {
+                    // 1. Unlocks the page matrix and scrollbar instantly
                     document.body.classList.remove('hide-scrollbar');
                     
-                    // 3. Force the page to scroll down to your tool section smoothly
-                    // (Change '#directory' to match the actual ID of your tool section down below)
-                    const targetSection = document.getElementById('directory') || document.querySelector('main, section');
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    // 2. Safely lets the link run its natural scrolling behavior to drop you into the directory tags
+                    // No e.preventDefault() is used here so your button works 100% natively!
                 });
             }
         });
