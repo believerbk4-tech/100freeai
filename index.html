@@ -372,36 +372,6 @@
         0%, 100% { transform: translateY(0) translateX(0); }
         50% { transform: translateY(-30px) translateX(10px); }
     }
-
-   .tool-form {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-    background: #1a1a1a;
-    border: 1px solid #C8A24D;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.tool-form input, .tool-form textarea {
-    padding: 12px;
-    background: #000;
-    border: 1px solid #333;
-    color: #fff;
-    border-radius: 4px;
-}
-
-.submit-btn {
-    background: #C8A24D;
-    color: #000;
-    padding: 12px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 4px;
-}
 </style>
 </head>
 <body>
@@ -456,41 +426,6 @@
         </div>
     </div>
 </body>
-    
-<!-- request-tool.html -->
-<form name="tool-requests" method="POST" action="/success.html" data-netlify="true" class="tool-form">
-    <h3>Suggest an AI Tool</h3>
-    <p>Help us grow our library. Tell us which tool you want to see next.</p>
-    
-    <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
-    <input type="email" name="email" placeholder="Your Email (optional)">
-    <textarea name="message" placeholder="Why is this tool great?" required></textarea>
-    
-    <button type="submit" class="submit-btn">Submit Suggestion</button>
-</form>
-    
-<!-- Add this to your index.html where you want the link to appear -->
-<div class="cta-container" style="text-align: center; margin-top: 50px;">
-    <a href="/request-tool.html" class="visit-btn" style="padding: 15px 30px; font-size: 1.2rem; text-decoration: none; color: #C8A24D; border: 1px solid #C8A24D; border-radius: 5px;">
-        Suggest an AI Tool <span>✨</span>
-    </a>
-</div>
-
-<!-- Ensure these are hidden on your main page -->
-<style>
-    .tool-form, .success-container {
-        display: none;
-    }
-</style>
-    
-   <!-- success.html -->
-<div class="success-container" style="text-align: center; padding: 100px 20px; color: #fff;">
-    <h1 style="color: #C8A24D;">Thank You for Your Contribution</h1>
-    <p style="font-size: 1.2rem;">We have received your suggestion. Our team will review the tool to ensure it meets our quality standards.</p>
-    <p>Your passion for AI helps make our directory better for everyone.</p>
-    <br>
-    <a href="/" class="visit-btn" style="color: #C8A24D; text-decoration: none;">Return to Home</a>
-</div>
     
 <button id="feedback-btn" onclick="sendFeedback()">Feedback</button>
 <a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US</a>
