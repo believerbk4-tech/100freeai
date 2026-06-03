@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Suggest an AI Tool</title>
     
-    <!-- Link to your Website Icon (Favicon) -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <!-- Note: If your icon is a PNG instead, change it to type="image/png" and href="/images/your-icon.png" -->
+    <!-- Fixed Inline SVG Emoji Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
 
     <style>
         body {
@@ -73,7 +72,7 @@
 </head>
 <body>
 
-    <form name="tool-requests" method="POST" action="/success.html" data-netlify="true" class="tool-form">
+    <form name="tool-requests" method="POST" action="/success" data-netlify="true" class="tool-form">
         <!-- Back to Home Button -->
         <a href="/" class="back-home">← Back to Home</a>
 
