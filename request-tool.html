@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggest an AI Tool</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .tool-form {
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            background: #1a1a1a;
+            border: 1px solid #C8A24D;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .tool-form h3 { margin-top: 0; color: #C8A24D; }
+        .tool-form input, .tool-form textarea {
+            padding: 12px;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .tool-form textarea { height: 120px; resize: vertical; }
+        .submit-btn {
+            background: #C8A24D;
+            color: #000;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .submit-btn:hover { background: #b08d3d; }
+    </style>
+</head>
+<body>
 
+    <form name="tool-requests" method="POST" action="/success.html" data-netlify="true" class="tool-form">
+        <h3>Suggest an AI Tool</h3>
+        <p>Help us grow our library. Tell us which tool you want to see next.</p>
+        
+        <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
+        <input type="email" name="email" placeholder="Your Email (optional)">
+        <textarea name="message" placeholder="Why is this tool great?" required></textarea>
+        
+        <!-- Button is at the end -->
+        <button type="submit" class="submit-btn">Submit Suggestion</button>
+    </form>
+
+</body>
+</html>
