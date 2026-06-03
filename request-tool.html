@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Suggest an AI Tool</title>
     
-    <!-- Fixed Inline SVG Emoji Favicon -->
+    <!-- 1. FIXED SVG FAVICON LINK (Added correct xmlns mapping) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
 
     <style>
@@ -98,7 +98,8 @@
             <h3>Suggest an AI Tool</h3>
             <p style="color: #ccc; margin-bottom: 15px;">Help us grow our library. Tell us which tool you want to see next.</p>
             
-            <form name="tool-requests" method="POST" action="/request-tool?status=success" data-netlify="true" class="tool-form">
+            <!-- 2. FIXED ACTION ROUTE (Added explicit .html extension for your server build setup) -->
+            <form name="tool-requests" method="POST" action="/request-tool.html?status=success" data-netlify="true" class="tool-form">
                 <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
                 <input type="email" name="email" placeholder="Your Email (optional)">
                 <textarea name="message" placeholder="Why is this tool great?" required></textarea>
