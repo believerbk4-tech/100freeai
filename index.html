@@ -68,6 +68,21 @@
     </script>
 
     <style>
+        /* Locked view state on initial page load */
+        body.hide-scrollbar {
+            overflow: hidden !important;
+            height: 100vh;
+        }
+
+        /* Default foundational styles */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+            margin: 0;
+            transition: overflow 0.1s ease;
+        }
+        
         /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
         .suggestion-item {
             padding: 12px 20px;
@@ -374,7 +389,7 @@
     }
 </style>
 </head>
-<body>
+<body class="hide-scrollbar">
 
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
@@ -2557,6 +2572,21 @@ function checkPortalStatus() {
     }
 }
 checkPortalStatus();
-</script>
+    
+    <!-- Script to unlock scrolling when Launch Directory is clicked -->
+        document.addEventListener('DOMContentLoaded', () => {
+            // Find your button automatically by searching for the "LAUNCH DIRECTORY" text
+            const launchBtn = Array.from(document.querySelectorAll('button, a')).find(el => 
+                el.textContent.toUpperCase().includes('LAUNCH DIRECTORY')
+            );
+
+            if (launchBtn) {
+                launchBtn.addEventListener('click', () => {
+                    // Instantly removes the scrollbar lock
+                    document.body.classList.remove('hide-scrollbar');
+                });
+            }
+        });
+    </script> 
 </body>
 </html>
