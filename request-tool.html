@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Suggest an AI Tool</title>
     
-    <!-- 1. FIXED SVG FAVICON LINK (Added correct xmlns mapping) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <!-- Ultra-Compatible Encoded SVG Robot Favicon Mapping -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
 
     <style>
         body {
@@ -34,7 +34,6 @@
         }
         .container-box h3, .container-box h2 { margin-top: 0; color: #C8A24D; }
         
-        /* Form Specific Styles */
         .tool-form {
             display: flex;
             flex-direction: column;
@@ -64,10 +63,12 @@
             text-align: center;
             text-decoration: none;
             display: block;
+            width: 100%;
+            box-sizing: border-box;
         }
         .submit-btn:hover, .home-btn:hover { background: #b08d3d; }
+        .submit-btn:disabled { background: #666; cursor: not-allowed; }
         
-        /* Back to Home Link Styling */
         .back-home {
             color: #888;
             text-decoration: none;
@@ -81,7 +82,6 @@
         }
         .back-home:hover { color: #C8A24D; }
 
-        /* Hidden States */
         .hidden { display: none !important; }
         .success-view { text-align: center; }
         .success-view p { color: #ccc; line-height: 1.6; margin-bottom: 20px; }
@@ -90,7 +90,7 @@
 <body>
 
     <div class="container-box">
-        <!-- Back to Home Button -->
+        <!-- Back to Home Link -->
         <a href="/" class="back-home">← Back to Home</a>
 
         <!-- VIEW 1: THE INPUT FORM -->
@@ -98,16 +98,19 @@
             <h3>Suggest an AI Tool</h3>
             <p style="color: #ccc; margin-bottom: 15px;">Help us grow our library. Tell us which tool you want to see next.</p>
             
-            <!-- 2. FIXED ACTION ROUTE (Added explicit .html extension for your server build setup) -->
-            <form name="tool-requests" method="POST" action="/request-tool.html?status=success" data-netlify="true" class="tool-form">
+            <!-- Completely blanked action targets so native forms cannot hijack routing loops -->
+            <form id="ajaxForm" name="tool-requests" method="POST" data-netlify="true" class="tool-form">
+                <!-- MANDATORY FOR NETLIFY BACKGROUND SUBMISSIONS -->
+                <input type="hidden" name="form-name" value="tool-requests">
+
                 <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
                 <input type="email" name="email" placeholder="Your Email (optional)">
                 <textarea name="message" placeholder="Why is this tool great?" required></textarea>
-                <button type="submit" class="submit-btn">Submit Suggestion</button>
+                <button type="submit" id="submitBtn" class="submit-btn">Submit Suggestion</button>
             </form>
         </div>
 
-        <!-- VIEW 2: THE THANK YOU MESSAGE (Hidden by default) -->
+        <!-- VIEW 2: THE THANK YOU MESSAGE (Swaps instantly via script) -->
         <div id="successView" class="success-view hidden">
             <h2>Suggestion Received! 🚀</h2>
             <p>Thank you, Fahad! Your suggestion has been successfully submitted. We will review the AI tool and add it to our directory soon.</p>
@@ -115,13 +118,35 @@
         </div>
     </div>
 
-    <!-- Script to toggle views instantly without changing files -->
+    <!-- Background Javascript handling form processing without page reload -->
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('status') === 'success') {
-            document.getElementById('formView').classList.add('hidden');
-            document.getElementById('successView').classList.remove('hidden');
-        }
+        document.getElementById('ajaxForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop page reload completely!
+
+            const form = e.target;
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Sending...";
+
+            const formData = new FormData(form);
+
+            // Send data directly to Netlify's core endpoint matching your live index file
+            fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(() => {
+                // Success! Swap views instantly without reloading the browser
+                document.getElementById('formView').classList.add('hidden');
+                document.getElementById('successView').classList.remove('hidden');
+            })
+            .catch((error) => {
+                alert("Submission failed. Please check your internet connection.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Suggestion";
+            });
+        });
     </script>
 
 </body>
