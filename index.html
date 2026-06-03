@@ -2446,7 +2446,6 @@
     window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
-
     // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
     const firebaseConfig = {
         apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
@@ -2458,16 +2457,22 @@
         appId: "1:735292410645:web:4a79f607dad95b81ec771c"
     };
 
+    // 1. Initialize core Firebase Application instance
     const app = initializeApp(firebaseConfig);
 
+    // 2. Configure Localhost environment parameters for isolated development preview testing
     if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
         self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     }
 
+    // 3. Initialize and activate your reCAPTCHA Enterprise security token attestation provider
     const appCheck = initializeAppCheck(app, {
         provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
         isTokenAutoRefreshEnabled: true
     });
+
+    // 4. FIXED SYSTEM PASS-THROUGH: Bundles your App Check protection token instance directly into Database initializations
+    const database = getDatabase(app, appCheck);
 
     const db = getDatabase(app);
     const ratingRef = ref(db, 'site-stats');
