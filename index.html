@@ -2564,17 +2564,29 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
                 }, 700);
             }
         };
-
+    
         // Check navigation status on fresh page loads
         function checkPortalStatus() {
-            if (sessionStorage.getItem('siteEntered') === 'true') {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasParamToken = urlParams.get('siteEntered') === 'true';
+            const hasSessionToken = sessionStorage.getItem('siteEntered') === 'true';
+
+            // If EITHER the session token exists OR the URL parameter exists, skip the portal
+            if (hasSessionToken || hasParamToken) {
+                // Keep them synced by saving it to session memory
+                sessionStorage.setItem('siteEntered', 'true');
+                
                 const portal = document.getElementById('welcomePortal');
                 if (portal) portal.remove();
+                
                 document.documentElement.classList.remove('portal-active');
                 document.body.classList.remove('portal-active');
-                
-                // 🚀 UNIFIED FIX: Bypasses scroll restrictions if returning user
                 document.body.classList.remove('hide-scrollbar');
+                
+                // Clean up the URL string quietly so "?siteEntered=true" disappears from the user's address bar
+                if (hasParamToken) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
             }
         }
         checkPortalStatus();
