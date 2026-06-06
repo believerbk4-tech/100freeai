@@ -2563,20 +2563,19 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
             }
         };
 
-        // Bypasses cover frames instantly on hard reloads or cross-page redirects
+       // Bypasses cover frames only if the URL specifically tells us to
         function checkPortalStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const hasParamToken = urlParams.get('siteEntered') === 'true' || window.location.hash === '#directory';
-            const hasLocalToken = localStorage.getItem('siteEntered') === 'true' || sessionStorage.getItem('siteEntered') === 'true';
 
-            if (hasLocalToken || hasParamToken) {
-                // Keep memory matrices synchronized
+            // Only proceed if the URL has the specific "siteEntered=true" parameter
+            if (hasParamToken) {
+                // Keep memory synchronized for future page navigations
                 localStorage.setItem('siteEntered', 'true');
                 sessionStorage.setItem('siteEntered', 'true');
                 
                 const portal = document.getElementById('welcomePortal');
                 if (portal) {
-                    // Wipe out style restrictions instantly before rendering engine paint cycles
                     portal.style.display = 'none';
                     portal.remove();
                 }
@@ -2585,14 +2584,12 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
                 document.body.classList.remove('portal-active');
                 document.body.classList.remove('hide-scrollbar');
                 
-                // Keep browser address clean 
-                if (urlParams.get('siteEntered') === 'true') {
-                    window.history.replaceState({}, document.title, window.location.pathname + (window.location.hash || ''));
-                }
+                // Clean the browser address bar
+                window.history.replaceState({}, document.title, window.location.pathname + (window.location.hash || ''));
             }
         }
         
-        // Execute state clearing checker immediately
+        // Execute checker immediately
         checkPortalStatus();
     </script>
 </body>
