@@ -138,13 +138,18 @@
     height: 100vh !important;
     background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
     z-index: 9999999 !important;
-    display: flex !important; /* Keep flex for centering */
+    
+    /* MUST HAVE THESE TO KEEP IT CENTERED */
+    display: flex !important; 
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    transition: opacity 0.6s ease;
+    
+    overflow: hidden !important;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
+/* This is the only way to hide it while keeping the CSS structure intact */
 #welcomePortal.hidden {
     display: none !important;
 }
@@ -2325,28 +2330,27 @@
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const portal = document.getElementById('welcomePortal');
-    
-    // 1. Logic for "Internal Navigation" vs "Fresh Session"
-    // If the session is already active, we don't show the portal at all.
-    const isSessionActive = sessionStorage.getItem('siteEntered') === 'true';
-    
-    if (isSessionActive) {
-        portal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    } else {
-        // If it's a fresh session (or new tab), show it
-        portal.classList.add('is-visible');
-        document.body.style.overflow = 'hidden';
+
+    // Check if the user has visited before using localStorage
+    const hasVisited = localStorage.getItem('siteEntered') === 'true';
+
+    if (portal) {
+        if (hasVisited) {
+            // If they visited, hide it and unlock scroll
+            portal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        } else {
+            // If new, lock scroll
+            document.body.style.overflow = 'hidden';
+        }
     }
 
-    // 2. Launch Button Logic
     window.enterSite = function() {
         if (portal) {
             portal.classList.add('disappearing');
             document.body.style.overflow = 'auto';
             
-            // Mark as entered for both the current session and permanently
-            sessionStorage.setItem('siteEntered', 'true');
+            // Save to localStorage so it stays hidden even after closing browser
             localStorage.setItem('siteEntered', 'true');
             
             setTimeout(() => {
