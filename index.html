@@ -2563,14 +2563,16 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
             }
         };
 
-       // Bypasses cover frames only if the URL specifically tells us to
+       // Bypasses cover frames if the user has already visited (localStorage) or has the URL param
         function checkPortalStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const hasParamToken = urlParams.get('siteEntered') === 'true' || window.location.hash === '#directory';
+            
+            // This checks if the user has ALREADY clicked "Launch Directory" in a previous session
+            const hasLocalToken = localStorage.getItem('siteEntered') === 'true';
 
-            // Only proceed if the URL has the specific "siteEntered=true" parameter
-            if (hasParamToken) {
-                // Keep memory synchronized for future page navigations
+            if (hasLocalToken || hasParamToken) {
+                // Ensure the state is set for the current session
                 localStorage.setItem('siteEntered', 'true');
                 sessionStorage.setItem('siteEntered', 'true');
                 
@@ -2584,8 +2586,10 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
                 document.body.classList.remove('portal-active');
                 document.body.classList.remove('hide-scrollbar');
                 
-                // Clean the browser address bar
-                window.history.replaceState({}, document.title, window.location.pathname + (window.location.hash || ''));
+                // Clean the browser address bar if needed
+                if (urlParams.get('siteEntered') === 'true') {
+                    window.history.replaceState({}, document.title, window.location.pathname + (window.location.hash || ''));
+                }
             }
         }
         
