@@ -130,7 +130,7 @@
         width: 0 !important;
     }
 
-   #welcomePortal {
+  #welcomePortal {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -138,15 +138,18 @@
     height: 100vh !important;
     background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
     z-index: 9999999 !important;
-    /* REMOVE display: flex !important; */
+    
+    /* MUST HAVE THESE TO KEEP IT CENTERED */
+    display: flex !important; 
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
+    
     overflow: hidden !important;
     transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Use a class to control visibility */
+/* This is the only way to hide it while keeping the CSS structure intact */
 #welcomePortal.hidden {
     display: none !important;
 }
@@ -2326,35 +2329,32 @@
     import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // --- CONSOLIDATED PORTAL GUARD ---
-    // Runs immediately to prevent flash
     const portal = document.getElementById('welcomePortal');
+
+    // Check if the user has visited before using localStorage
     const hasVisited = localStorage.getItem('siteEntered') === 'true';
 
     if (portal) {
         if (hasVisited) {
-            portal.style.display = 'none';
-            portal.remove();
+            // If they visited, hide it and unlock scroll
+            portal.classList.add('hidden');
             document.body.style.overflow = 'auto';
-            document.documentElement.classList.add('portal-skipped');
         } else {
+            // If new, lock scroll
             document.body.style.overflow = 'hidden';
         }
     }
 
-    // --- ENTER SITE FUNCTION ---
     window.enterSite = function() {
-        const portal = document.getElementById('welcomePortal');
         if (portal) {
             portal.classList.add('disappearing');
             document.body.style.overflow = 'auto';
             
-            // Persist state so reload/return keeps it hidden
+            // Save to localStorage so it stays hidden even after closing browser
             localStorage.setItem('siteEntered', 'true');
-            sessionStorage.setItem('siteEntered', 'true');
             
             setTimeout(() => {
-                portal.remove();
+                portal.classList.add('hidden');
             }, 700);
         }
     };
