@@ -2322,39 +2322,32 @@
     import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // --- INSTANT ANTI-FLASH GUARD ---
-    (function() {
-        if (sessionStorage.getItem('siteEntered') === 'true') {
+    // --- CONSOLIDATED PORTAL GUARD ---
+    // Runs immediately to prevent flash
+    const portal = document.getElementById('welcomePortal');
+    const hasVisited = localStorage.getItem('siteEntered') === 'true';
+
+    if (portal) {
+        if (hasVisited) {
+            portal.style.display = 'none';
+            portal.remove();
+            document.body.style.overflow = 'auto';
             document.documentElement.classList.add('portal-skipped');
-        }
-    })();
-
-    // --- NAVIGATION & PORTAL FRAMEWORK ---
-    function checkNavigation() {
-        if (sessionStorage.getItem('siteEntered') === 'true') {
-            const portal = document.getElementById('welcomePortal');
-            if (portal) {
-                portal.style.display = 'none'; 
-                document.body.style.overflow = 'auto'; 
-            }
+        } else {
+            document.body.style.overflow = 'hidden';
         }
     }
-    checkNavigation();
 
-    if (document.getElementById('welcomePortal') && sessionStorage.getItem('siteEntered') !== 'true') {
-        document.body.style.overflow = 'hidden';
-    } else if (document.getElementById('welcomePortal')) {
-        document.getElementById('welcomePortal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
+    // --- ENTER SITE FUNCTION ---
     window.enterSite = function() {
         const portal = document.getElementById('welcomePortal');
         if (portal) {
             portal.classList.add('disappearing');
             document.body.style.overflow = 'auto';
+            
+            // Persist state so reload/return keeps it hidden
+            localStorage.setItem('siteEntered', 'true');
             sessionStorage.setItem('siteEntered', 'true');
-            document.documentElement.classList.add('portal-skipped');
             
             setTimeout(() => {
                 portal.remove();
