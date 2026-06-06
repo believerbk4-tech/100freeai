@@ -139,8 +139,9 @@
     background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
     z-index: 9999999 !important;
     
-    /* MUST HAVE THESE TO KEEP IT CENTERED */
-    display: flex !important; 
+    /* 1. Hide by default to prevent flash */
+    display: none !important; 
+    
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
@@ -149,11 +150,11 @@
     transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* This is the only way to hide it while keeping the CSS structure intact */
-#welcomePortal.hidden {
-    display: none !important;
+/* 2. When this class is added by JS, it overrides the 'none' and shows the portal */
+#welcomePortal.is-visible {
+    display: flex !important;
 }
-
+        
     /* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
     .robot-ambient-container {
         position: absolute !important;
@@ -2330,34 +2331,30 @@
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const portal = document.getElementById('welcomePortal');
+const hasVisited = localStorage.getItem('siteEntered') === 'true';
 
-    // Check if the user has visited before using localStorage
-    const hasVisited = localStorage.getItem('siteEntered') === 'true';
-
-    if (portal) {
-        if (hasVisited) {
-            // If they visited, hide it and unlock scroll
-            portal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        } else {
-            // If new, lock scroll
-            document.body.style.overflow = 'hidden';
-        }
+// THIS BLOCK IS THE GUARD
+if (portal) {
+    if (hasVisited) {
+        // This class now triggers 'display: none !important' in CSS
+        portal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    } else {
+        document.body.style.overflow = 'hidden';
     }
+}
 
-    window.enterSite = function() {
-        if (portal) {
-            portal.classList.add('disappearing');
-            document.body.style.overflow = 'auto';
-            
-            // Save to localStorage so it stays hidden even after closing browser
-            localStorage.setItem('siteEntered', 'true');
-            
-            setTimeout(() => {
-                portal.classList.add('hidden');
-            }, 700);
-        }
-    };
+window.enterSite = function() {
+    if (portal) {
+        portal.classList.add('disappearing');
+        document.body.style.overflow = 'auto';
+        localStorage.setItem('siteEntered', 'true');
+        
+        setTimeout(() => {
+            portal.classList.add('hidden');
+        }, 700);
+    }
+};
 
     // --- NAVIGATION FILTERING ENGINE (LAUNCH DIRECTORY) ---
     window.filterCat = function(cat, btn) {
