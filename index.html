@@ -32,7 +32,7 @@
                 styleOverride.innerHTML = `
                     html, body {
                         overflow: visible !important;
-                        overflow-y: scroll !important; 
+                        overflow-y: scroll !important;
                         overflow-x: hidden !important; 
                         width: 100% !important;        
                         max-width: 100% !important;    
@@ -46,6 +46,12 @@
                         pointer-events: none !important; 
                         content-visibility: hidden;
                     }
+                    /* UNBREAKABLE CORNER SHIELD ON SUBPAGE/RELOAD */
+                    ::-webkit-scrollbar-corner { background: #000000 !important; width: 0px !important; height: 0px !important; }
+                    ::-webkit-scrollbar { width: 10px !important; height: 0px !important; }
+                    ::-webkit-scrollbar-track { background: #000000 !important; }
+                    ::-webkit-scrollbar-thumb { background: #1e1b4b !important; border: 2px solid #000000 !important; border-radius: 50px !important; }
+                    ::-webkit-scrollbar-thumb:hover { background: #4f46e5 !important; }
                 `;
             } else {
                 // Add the layout-hiding class dynamically only for a fresh home visit
@@ -106,6 +112,12 @@
                                     position: relative !important;
                                 }
                                 #welcomePortal { display: none !important; }
+                                /* UNBREAKABLE CORNER SHIELD ON HOMEPAGE ENTER BUTTON */
+                                ::-webkit-scrollbar-corner { background: #000000 !important; width: 0px !important; height: 0px !important; }
+                                ::-webkit-scrollbar { width: 10px !important; height: 0px !important; }
+                                ::-webkit-scrollbar-track { background: #000000 !important; }
+                                ::-webkit-scrollbar-thumb { background: #1e1b4b !important; border: 2px solid #000000 !important; border-radius: 50px !important; }
+                                ::-webkit-scrollbar-thumb:hover { background: #4f46e5 !important; }
                             `;
                             const forceReflow = document.documentElement.offsetHeight;
                         });
@@ -130,9 +142,10 @@
            2. IMAGE SOURCE FALLBACK INTERCEPTOR (IMAGE BROKEN FIX)
            ======================================================= */
         (function() {
+            // Securely capture the browser's true native image src setter to prevent execution recursions
             const nativeImgSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
+
             const originalCreateElement = document.createElement;
-            
             document.createElement = function(tagName) {
                 const element = originalCreateElement.call(document, tagName);
                 
@@ -141,8 +154,9 @@
                         set: function(value) {
                             let targetSrc = value;
                             if (typeof value === 'string' && value.includes('fallback-icon.png')) {
-                                targetSrc = 'https://flaticon.com';
+                                targetSrc = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
                             }
+                            // Bypass custom loops by executing the native browser engine property setter directly
                             if (nativeImgSrcDescriptor && nativeImgSrcDescriptor.set) {
                                 nativeImgSrcDescriptor.set.call(this, targetSrc);
                             } else {
