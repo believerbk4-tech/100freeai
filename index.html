@@ -11,6 +11,15 @@
             const isSubpage = window.location.pathname !== '/' && window.location.pathname !== '/index.html';
             const bypassPortal = alreadyVisited || isSubpage;
 
+            // PRIORITY-ZERO GUARD: Instantly set root classes before browser can paint double tracks
+            if (bypassPortal) {
+                document.documentElement.classList.add('portal-already-entered');
+                document.documentElement.classList.remove('portal-active');
+            } else {
+                document.documentElement.classList.add('portal-active');
+                document.documentElement.classList.remove('portal-already-entered');
+            }
+
             // Kill any stale layout overrides from previous page caches
             const oldEngine = document.getElementById('layout-override-engine');
             if (oldEngine) oldEngine.remove();
@@ -20,9 +29,6 @@
             styleOverride.id = 'layout-override-engine';
             
             if (bypassPortal) {
-                document.documentElement.classList.add('portal-already-entered');
-                document.documentElement.classList.remove('portal-active');
-                
                 styleOverride.innerHTML = `
                     html, body {
                         overflow: visible !important;
@@ -40,15 +46,14 @@
                     }
                 `;
             } else {
-                document.documentElement.classList.add('portal-active');
-                
                 // Add the layout-hiding class dynamically only for a fresh home visit
                 document.addEventListener("DOMContentLoaded", () => {
                     document.body.classList.add('hide-scrollbar');
                 });
                 
                 styleOverride.innerHTML = `
-                    html.portal-active, body.portal-active {
+                    html.portal-active, 
+                    html.portal-active body {
                         overflow: hidden !important;
                         height: 100vh !important;
                         width: 100vw !important;
@@ -82,6 +87,7 @@
                         launchBtn.addEventListener('click', () => {
                             sessionStorage.setItem('siteEntered', 'true');
                             document.documentElement.classList.remove('portal-active');
+                            document.documentElement.classList.add('portal-already-entered');
                             document.body.classList.remove('portal-active');
                             document.body.classList.remove('hide-scrollbar');
                             
@@ -105,6 +111,7 @@
             window.addEventListener('pageshow', (event) => {
                 if (event.persisted && (sessionStorage.getItem('siteEntered') === 'true' || window.location.pathname !== '/')) {
                     document.documentElement.classList.remove('portal-active');
+                    document.documentElement.classList.add('portal-already-entered');
                     document.body.classList.remove('portal-active');
                     document.body.classList.remove('hide-scrollbar');
                     const currentOverride = document.getElementById('layout-override-engine');
