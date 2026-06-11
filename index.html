@@ -139,15 +139,14 @@
     height: 100vh !important;
     background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
     z-index: 9999999 !important;
-    display: flex !important; 
+    display: flex !important; /* Forces visibility */
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    transition: opacity 0.6s ease, transform 0.6s ease !important;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* This class only triggers AFTER the button click */
-#welcomePortal.is-hidden {
+#welcomePortal.hidden {
     display: none !important;
 }
         
@@ -2337,30 +2336,30 @@
 
     const portal = document.getElementById('welcomePortal');
 
-    // 1. On page load, check if they have visited before
-    window.addEventListener('DOMContentLoaded', () => {
-        if (localStorage.getItem('siteEntered') === 'true') {
-            // If they are a returning visitor, hide it immediately
-            portal.classList.add('is-hidden');
+    // 1. INITIAL LOAD CHECK
+    // Only hide if the user has ALREADY clicked the button in a previous session
+    if (localStorage.getItem('siteEntered') === 'true') {
+        if (portal) {
+            portal.classList.add('hidden');
             document.body.style.overflow = 'auto';
-        } else {
-            // If they are new, keep it visible and lock the scroll
-            document.body.style.overflow = 'hidden';
         }
-    });
+    } else {
+        // If it's a new user, force lock scroll
+        document.body.style.overflow = 'hidden';
+    }
 
-    // 2. This function ONLY runs when the button is clicked
+    // 2. BUTTON FUNCTION (Triggered ONLY by your Launch Directory button)
     window.enterSite = function() {
         if (portal) {
             portal.classList.add('disappearing');
             document.body.style.overflow = 'auto';
             
-            // Save that they have entered
+            // Save state so it stays hidden on return
             localStorage.setItem('siteEntered', 'true');
             
-            // Wait for animation to finish before removing from DOM
+            // Remove from DOM after transition
             setTimeout(() => {
-                portal.classList.add('is-hidden');
+                portal.classList.add('hidden');
             }, 700);
         }
     };
