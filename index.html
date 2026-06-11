@@ -182,7 +182,7 @@
                     const currentSrc = e.target.src || '';
                     const inlineOnError = e.target.getAttribute('onerror') || '';
                     
-                    if (currentSrc.includes('fallback-icon.png') || inlineOnError.includes('fallback-icon.png')) {
+                    if (currentSrc.includes('fallback-icon.webp') || inlineOnError.includes('fallback-icon.webp')) {
                         e.preventDefault(); 
                         e.target.src = 'https://flaticon.com';
                     }
@@ -193,7 +193,7 @@
 
     <!-- FIXED: Using robotic emoji directly as favicon -->
     <!-- Robotic Style Favicon -->
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/webp" href="images/favicon.webp">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
