@@ -452,57 +452,87 @@ html.portal-active {
 <body class="hide-scrollbar">
     <script>
 /* =======================================================
-   ANTI-FLASH SYSTEM (RUNS BEFORE DOM RENDER)
+   ANTI-FLASH & RELOAD TRACKER SYSTEM (RUNS IMMEDIATELY)
    ======================================================= */
-if (sessionStorage.getItem('siteEntered') === 'true') {
-    // 1. Instantly tag the root layout element to hide the portal early
-    document.documentElement.classList.add('portal-already-entered');
-    document.documentElement.classList.remove('portal-active'); // Ensure portal mode is off
+(function() {
+    // 1. Force state logic processing right now
+    const alreadyVisited = sessionStorage.getItem('siteEntered') === 'true';
+
+    // 2. Build and prioritize absolute styling overrides
+    const styleOverride = document.createElement('style');
+    styleOverride.id = 'layout-override-engine';
     
-    // 2. Inject a high-priority safety rule directly into the head
-    // FIX: Added rule here to explicitly force standard scrolling on the main page
-    const antiFlashStyle = document.createElement('style');
-    antiFlashStyle.id = 'anti-flash-layer';
-    antiFlashStyle.innerHTML = `
-        #welcomePortal { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
-        html, body {
-            overflow-y: scroll !important; /* Force standard vertical scrollbar back */
-            overflow-x: hidden !important; /* Prevent horizontal stretching */
-            height: auto !important;
-            width: 100% !important;
-        }
-    `;
-    document.head.appendChild(antiFlashStyle);
-    
-    // 3. Clean up classes once the body exists in the DOM
-    window.addEventListener('DOMContentLoaded', () => {
-        document.body.classList.remove('hide-scrollbar');
-        document.body.classList.remove('portal-active');
+    if (alreadyVisited) {
+        // RETURNING VISITOR OR RELOAD: Total restoration of normal scrolling
+        document.documentElement.classList.add('portal-already-entered');
+        document.documentElement.classList.remove('portal-active');
         
-        // Double check to ensure element layout footprint is deleted
-        const portalElement = document.getElementById('welcomePortal');
-        if (portalElement) {
-            portalElement.classList.add('instantly-hidden');
-            portalElement.style.display = 'none';
+        styleOverride.innerHTML = `
+            html, body {
+                overflow: visible !important;
+                overflow-y: scroll !important;
+                overflow-x: hidden !important;
+                height: auto !important;
+                position: relative !important;
+            }
+            #welcomePortal { 
+                display: none !important; 
+                opacity: 0 !important; 
+                visibility: hidden !important; 
+                pointer-events: none !important; 
+            }
+        `;
+    } else {
+        // FRESH VISIT: Completely lock viewport scrollbars
+        document.documentElement.classList.add('portal-active');
+        
+        styleOverride.innerHTML = `
+            html.portal-active, body.portal-active {
+                overflow: hidden !important;
+                height: 100vh !important;
+                width: 100vw !important;
+            }
+        `;
+    }
+    
+    document.head.appendChild(styleOverride);
+
+    // 3. Post-render clean up once layout nodes are interactive
+    window.addEventListener('DOMContentLoaded', () => {
+        if (alreadyVisited) {
+            // Scrub away classes that hide scrollbars on the main pages
+            document.body.classList.remove('hide-scrollbar', 'portal-active');
+            document.documentElement.classList.remove('portal-active');
+            
+            const portal = document.getElementById('welcomePortal');
+            if (portal) portal.remove(); // Safely drop the element frame entirely
+        } else {
+            // For fresh visits, attach listener to your launch directory button
+            // Update selector to match your target button class or ID
+            const launchBtn = document.querySelector('.launch-btn') || document.querySelector('button');
+            if (launchBtn) {
+                launchBtn.addEventListener('click', () => {
+                    // Update session key state instantly
+                    sessionStorage.setItem('siteEntered', 'true');
+                    
+                    // Kill portal wrapper configuration classes
+                    document.documentElement.classList.remove('portal-active');
+                    document.body.classList.remove('portal-active');
+                    
+                    // Replace active rules with default page rules
+                    styleOverride.innerHTML = `
+                        html, body {
+                            overflow-y: scroll !important;
+                            overflow-x: hidden !important;
+                            height: auto !important;
+                        }
+                        #welcomePortal { display: none !important; }
+                    `;
+                });
+            }
         }
     });
-} else {
-    // =======================================================
-    // FOR FRESH VISITS — KILL SCROLLBAR INSTANTLY HERE
-    // =======================================================
-    document.documentElement.classList.add('portal-active');
-    
-    const lockStyle = document.createElement('style');
-    lockStyle.id = 'portal-lock-layer';
-    lockStyle.innerHTML = `
-        html.portal-active, body.portal-active {
-            overflow: hidden !important;
-            height: 100vh !important;
-            width: 100vw !important;
-        }
-    `;
-    document.head.appendChild(lockStyle);
-}
+})();
     </script>
 
     <div class="robot-ambient-container">
