@@ -451,33 +451,49 @@ html.portal-active {
 </head>
 <body class="hide-scrollbar">
     <script>
-        /* =======================================================
-           ANTI-FLASH SYSTEM (RUNS BEFORE DOM RENDER)
-           ======================================================= */
-        if (sessionStorage.getItem('siteEntered') === 'true') {
-            // 1. Instantly tag the root layout element to hide the portal early
-            document.documentElement.classList.add('portal-already-entered');
-            
-            // 2. Inject a high-priority safety rule directly into the head
-            const antiFlashStyle = document.createElement('style');
-            antiFlashStyle.id = 'anti-flash-layer';
-            antiFlashStyle.innerHTML = '#welcomePortal { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }';
-            document.head.appendChild(antiFlashStyle);
-            
-            // 3. Immediately clean up the scrollbars before rendering the body text
-            document.documentElement.classList.remove('portal-active');
-            window.addEventListener('DOMContentLoaded', () => {
-                document.body.classList.remove('hide-scrollbar');
-                document.body.classList.remove('portal-active');
-                
-                // Double check to ensure element layout footprint is deleted
-                const portalElement = document.getElementById('welcomePortal');
-                if (portalElement) {
-                    portalElement.classList.add('instantly-hidden');
-                    portalElement.style.display = 'none';
-                }
-            });
+   /* =======================================================
+   ANTI-FLASH SYSTEM (RUNS BEFORE DOM RENDER)
+   ======================================================= */
+if (sessionStorage.getItem('siteEntered') === 'true') {
+    // 1. Instantly tag the root layout element to hide the portal early
+    document.documentElement.classList.add('portal-already-entered');
+    
+    // 2. Inject a high-priority safety rule directly into the head
+    const antiFlashStyle = document.createElement('style');
+    antiFlashStyle.id = 'anti-flash-layer';
+    antiFlashStyle.innerHTML = '#welcomePortal { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }';
+    document.head.appendChild(antiFlashStyle);
+    
+    // 3. Immediately clean up the scrollbars before rendering the body text
+    document.documentElement.classList.remove('portal-active');
+    window.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.remove('hide-scrollbar');
+        document.body.classList.remove('portal-active');
+        
+        // Double check to ensure element layout footprint is deleted
+        const portalElement = document.getElementById('welcomePortal');
+        if (portalElement) {
+            portalElement.classList.add('instantly-hidden');
+            portalElement.style.display = 'none';
         }
+    });
+} else {
+    // =======================================================
+    // FIX: FOR FRESH VISITS — KILL SCROLLBAR INSTANTLY HERE
+    // =======================================================
+    document.documentElement.classList.add('portal-active');
+    
+    const lockStyle = document.createElement('style');
+    lockStyle.id = 'portal-lock-layer';
+    lockStyle.innerHTML = `
+        html.portal-active, body.portal-active {
+            overflow: hidden !important;
+            height: 100vh !important;
+            width: 100vw !important;
+        }
+    `;
+    document.head.appendChild(lockStyle);
+}
     </script>
 
     <div class="robot-ambient-container">
