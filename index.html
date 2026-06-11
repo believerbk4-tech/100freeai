@@ -86,20 +86,19 @@
 }
 
 /* =======================================================
-   1. STRUCTURAL RESET (NO OVERRIDING BASE LAWS)
+   REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
    ======================================================= */
-html {
-    margin: 0;
-    padding: 0;
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Segoe UI', Roboto, sans-serif; 
+    background-color: var(--dark); 
+    color: var(--text); 
     width: 100%;
-    min-height: 100vh;
-    background-color: #000;
-    color: #fff;
-    font-family: 'Segoe UI', Roboto, sans-serif;
     
-    /* FIX: Removed !important so modifier states can override this */
-    overflow-y: scroll; 
-    overflow-x: hidden;
+    /* PRO FIX: Force the browser layout engine to explicitly render vertical scroll tracks */
+    overflow-y: scroll !important;
+    overflow-x: hidden !important; 
 }
 
 body {
@@ -112,7 +111,23 @@ body {
 }
 
 /* =======================================================
-   2. PORTAL LOCK MECHANISM (HIGHEST PRIORITY STATES)
+   REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
+   ======================================================= */
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Segoe UI', Roboto, sans-serif; 
+    background-color: var(--dark); 
+    color: var(--text); 
+    width: 100%;
+    
+    /* PRO FIX: Force the browser layout engine to explicitly render vertical scroll tracks */
+    overflow-y: scroll !important;
+    overflow-x: hidden !important; 
+}
+
+/* =======================================================
+   PORTAL LOCK MECHANISM (TEMPORARILY OVERRIDES THE BASE OVERFLOW)
    ======================================================= */
 /* Prevent scrolling completely while portal is active */
 html.portal-active, 
@@ -123,7 +138,8 @@ html.portal-active body {
 }
 
 /* Target-lock and erase the right-side scrollbar track layout on Chrome/Safari/Edge */
-html.portal-active::-webkit-scrollbar {
+html.portal-active::-webkit-scrollbar,
+html.portal-active body::-webkit-scrollbar {
     display: none !important;
     width: 0 !important;
     height: 0 !important;
@@ -181,7 +197,9 @@ html.portal-active {
         width: 0 !important;
     }
 
-/* Ensure the portal is visible by default */
+/* =======================================================
+   WELCOME PORTAL INTERACTION STYLES
+   ======================================================= */
 #welcomePortal {
     position: fixed !important;
     top: 0 !important;
@@ -190,15 +208,18 @@ html.portal-active {
     height: 100vh !important;
     background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
     z-index: 9999999 !important;
-    display: flex !important; /* Forces visibility */
+    display: flex !important; 
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
     transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
-
+/* Clear the layout footprint completely when dismissed */
 #welcomePortal.hidden {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
         
     /* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
@@ -460,6 +481,10 @@ html.portal-active {
     // 1. Force state logic processing right now
     const alreadyVisited = sessionStorage.getItem('siteEntered') === 'true';
 
+    // PRO ARCHITECTURE FIX: Kill any stale layout overrides from previous page caches
+    const oldEngine = document.getElementById('layout-override-engine');
+    if (oldEngine) oldEngine.remove();
+
     // 2. Build and prioritize absolute styling overrides
     const styleOverride = document.createElement('style');
     styleOverride.id = 'layout-override-engine';
@@ -485,7 +510,7 @@ html.portal-active {
             }
         `;
     } else {
-        // FRESH VISIT: Completely lock viewport scrollbars
+        // FRESH VISIT: Completely lock viewport scrollbars and hide tracks
         document.documentElement.classList.add('portal-active');
         
         styleOverride.innerHTML = `
@@ -494,9 +519,19 @@ html.portal-active {
                 height: 100vh !important;
                 width: 100vw !important;
             }
+            /* Explicitly erase scrollbar layout tracks on Webkit & Firefox while portal is active */
+            html.portal-active::-webkit-scrollbar, body.portal-active::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+            html.portal-active {
+                scrollbar-width: none !important;
+            }
         `;
     }
     
+    // Inject the clean style rules straight to the head element
     document.head.appendChild(styleOverride);
 
     // 3. Post-render clean up once layout nodes are interactive
@@ -509,11 +544,10 @@ html.portal-active {
             const portal = document.getElementById('welcomePortal');
             if (portal) portal.remove(); // Safely drop the element frame entirely
             
-            // PRO FIX: Force a hardware paint reflow to snap the scrollbar back into existence
+            // Force a hardware paint reflow to snap the scrollbar back into existence
             const forceReflow = document.documentElement.offsetHeight;
         } else {
             // For fresh visits, attach listener to your launch directory button
-            // Update selector to match your target button class or ID
             const launchBtn = document.querySelector('.launch-btn') || document.querySelector('button') || document.querySelector('#launchBtn');
             if (launchBtn) {
                 launchBtn.addEventListener('click', () => {
@@ -536,7 +570,7 @@ html.portal-active {
                         #welcomePortal { display: none !important; }
                     `;
                     
-                    // PRO FIX: Force reflow on click transition
+                    // Force reflow on click transition
                     const forceReflow = document.documentElement.offsetHeight;
                 });
             }
