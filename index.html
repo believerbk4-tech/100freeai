@@ -85,13 +85,9 @@
     pointer-events: none !important;
 }
 
-/* 1. Hides scrollbar ONLY on the welcome portal / initial load */
-body.hide-scrollbar {
-    overflow: hidden !important;
-    height: 100vh !important;
-}
-
-/* 2. Pro Viewport Control - Lock scrolling strictly to the root */
+/* =======================================================
+   1. STRUCTURAL RESET (NO OVERRIDING BASE LAWS)
+   ======================================================= */
 html {
     margin: 0;
     padding: 0;
@@ -100,24 +96,30 @@ html {
     background-color: #000;
     color: #fff;
     font-family: 'Segoe UI', Roboto, sans-serif;
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
+    
+    /* FIX: Removed !important so modifier states can override this */
+    overflow-y: scroll; 
+    overflow-x: hidden;
 }
 
-/* 3. Pro Body Reset - Let it flow naturally without capturing scroll events */
 body {
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    overflow: visible !important; 
+    overflow: visible; 
     position: relative;
 }
 
-/* Prevent scrolling completely and VANISH scrollbars while portal is active */
-html.portal-active, body.portal-active {
+/* =======================================================
+   2. PORTAL LOCK MECHANISM (HIGHEST PRIORITY STATES)
+   ======================================================= */
+/* Prevent scrolling completely while portal is active */
+html.portal-active, 
+html.portal-active body {
     overflow: hidden !important;
     height: 100vh !important;
+    width: 100vw !important;
 }
 
 /* Target-lock and erase the right-side scrollbar track layout on Chrome/Safari/Edge */
@@ -506,10 +508,13 @@ html.portal-active {
             
             const portal = document.getElementById('welcomePortal');
             if (portal) portal.remove(); // Safely drop the element frame entirely
+            
+            // PRO FIX: Force a hardware paint reflow to snap the scrollbar back into existence
+            const forceReflow = document.documentElement.offsetHeight;
         } else {
             // For fresh visits, attach listener to your launch directory button
             // Update selector to match your target button class or ID
-            const launchBtn = document.querySelector('.launch-btn') || document.querySelector('button');
+            const launchBtn = document.querySelector('.launch-btn') || document.querySelector('button') || document.querySelector('#launchBtn');
             if (launchBtn) {
                 launchBtn.addEventListener('click', () => {
                     // Update session key state instantly
@@ -522,12 +527,17 @@ html.portal-active {
                     // Replace active rules with default page rules
                     styleOverride.innerHTML = `
                         html, body {
+                            overflow: visible !important;
                             overflow-y: scroll !important;
                             overflow-x: hidden !important;
                             height: auto !important;
+                            position: relative !important;
                         }
                         #welcomePortal { display: none !important; }
                     `;
+                    
+                    // PRO FIX: Force reflow on click transition
+                    const forceReflow = document.documentElement.offsetHeight;
                 });
             }
         }
