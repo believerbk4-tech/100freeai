@@ -188,7 +188,7 @@
     }
     </script>
 
-    <style>
+   <style>
     /* =======================================================
        ANTI-FLASH SYSTEM: FORCES IMMEDIATE PORTAL STRUCTURAL DEATH
        ======================================================= */
@@ -207,9 +207,9 @@
     }
 
     /* =======================================================
-       REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
+       REVISED BASE LAYOUT (ONLY RUNS WHEN PORTAL IS OFF TO PREVENT BLINK)
        ======================================================= */
-    html, body {
+    html:not(.portal-active), body:not(.portal-active) {
         margin: 0;
         padding: 0;
         font-family: 'Segoe UI', Roboto, sans-serif;
@@ -326,178 +326,179 @@
     }
 
     /* Randomize floating paths for different robot particles */
-    .bot-1 { font-size: 5rem !important; top: 15%; left: 10%; animation-duration: 14s !important; animation-delay: 0s !important; }
-    .bot-2 { font-size: 3.5rem !important; top: 25%; right: 12%; animation-duration: 11s !important; animation-delay: -3s !important; }
-    .bot-3 { font-size: 4.5rem !important; bottom: 18%; left: 15%; animation-duration: 16s !important; animation-delay: -5s !important; }
-    .bot-4 { font-size: 3rem !important; bottom: 22%; right: 18%; animation-duration: 13s !important; animation-delay: -2s !important; }
-    .bot-5 { font-size: 2.5rem !important; top: 50%; left: 45%; animation-duration: 9s !important; animation-delay: -7s !important; }
+.bot-1 { font-size: 5rem !important; top: 15%; left: 10%; animation-duration: 14s !important; animation-delay: 0s !important; }
+.bot-2 { font-size: 3.5rem !important; top: 25%; right: 12%; animation-duration: 11s !important; animation-delay: -3s !important; }
+.bot-3 { font-size: 4.5rem !important; bottom: 18%; left: 15%; animation-duration: 16s !important; animation-delay: -5s !important; }
+.bot-4 { font-size: 3rem !important; bottom: 22%; right: 18%; animation-duration: 13s !important; animation-delay: -2s !important; }
+.bot-5 { font-size: 2.5rem !important; top: 50%; left: 45%; animation-duration: 9s !important; animation-delay: -7s !important; }
 
-    @keyframes floatAir {
-        0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-        50% { transform: translateY(-25px) translateX(15px) rotate(5deg); }
-        100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-    }
+@keyframes floatAir {
+    0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    50% { transform: translateY(-25px) translateX(15px) rotate(5deg); }
+    100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+}
 
-    /* Center Content Wrapper */
-    .portal-content-box {
-        position: relative !important;
-        z-index: 2 !important;
-        text-align: center !important;
-        padding: 20px !important;
-        max-width: 600px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
+/* Center Content Wrapper */
+.portal-content-box {
+    position: relative !important;
+    z-index: 2 !important;
+    text-align: center !important;
+    padding: 20px !important;
+    max-width: 600px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
 
-    /* Update your existing disappearing rule to include display: none */
-    #welcomePortal.disappearing {
-        opacity: 0 !important;
-        transform: scale(1.05) !important;
-        pointer-events: none !important;
-        display: none !important; 
-    }
-        
-        /* --- FIXED FLOATING ELEMENTS --- */
-        #feedback-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            background: #007bff; color: white; padding: 10px 22px;
-            border-radius: 50px; border: none; font-weight: 700; font-size: 13px;
-            cursor: pointer; z-index: 9999; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); text-transform: uppercase; transition: 0.3s;
-        }
-        #feedback-btn:hover { background: #0056b3; transform: scale(1.05); }
-        #feedback-btn::before { content: '💬'; }
-        
-        .contact-pill {
-            position: fixed; top: 20px; right: 20px;
-            background: #007bff; color: white; padding: 10px 22px;
-            border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 13px;
-            z-index: 1000; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); transition: all 0.3s ease;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .contact-pill:hover { background: #0056b3; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); color: white; }
+/* Update your existing disappearing rule to include display: none */
+#welcomePortal.disappearing {
+    opacity: 0 !important;
+    transform: scale(1.05) !important;
+    pointer-events: none !important;
+    display: none !important; 
+}
+    
+/* --- FIXED FLOATING ELEMENTS --- */
+#feedback-btn {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #007bff; color: white; padding: 10px 22px;
+    border-radius: 50px; border: none; font-weight: 700; font-size: 13px;
+    cursor: pointer; z-index: 9999; display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); text-transform: uppercase; transition: 0.3s;
+}
+#feedback-btn:hover { background: #0056b3; transform: scale(1.05); }
+#feedback-btn::before { content: '💬'; }
 
-        /* --- PREMIUM SYSTEM TOOL GRID --- */
-        .tool-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 1.5rem; padding: 1.5rem; max-width: 1400px; margin: 0 auto; 
-        }
+.contact-pill {
+    position: fixed; top: 20px; right: 20px;
+    background: #007bff; color: white; padding: 10px 22px;
+    border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 13px;
+    z-index: 1000; display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); transition: all 0.3s ease;
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+.contact-pill:hover { background: #0056b3; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); color: white; }
 
-        .tool-card { 
-            background: #ffffff; border: 1px solid var(--border); padding: 1.5rem; 
-            border-radius: 12px; display: flex; flex-direction: column; 
-            justify-content: space-between; transition: transform 0.2s ease, box-shadow 0.2s ease;
-            position: relative; overflow: hidden;
-        }
-        .tool-card:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+/* --- PREMIUM SYSTEM TOOL GRID --- */
+.tool-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 1.5rem; padding: 1.5rem; max-width: 1400px; margin: 0 auto; 
+}
 
-        /* --- CARD INNER COMPONENTS --- */
-        .tool-logo-container {
-            width: 48px; height: 48px; background: #f8fafc; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;
-            border: 1px solid #edf2f7;
-        }
-        .tool-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 6px; }
+.tool-card { 
+    background: #ffffff; border: 1px solid var(--border); padding: 1.5rem; 
+    border-radius: 12px; display: flex; flex-direction: column; 
+    justify-content: space-between; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative; overflow: hidden;
+}
+.tool-card:hover { 
+    transform: translateY(-4px); 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
 
-        .tool-info { flex-grow: 1; display: flex; flex-direction: column; }
-        .tool-card h3 { font-size: 1.25rem; font-weight: 600; color: #1e293b; margin: 0 0 0.5rem 0; text-align: left; }
-        .tool-card p { font-size: 0.925rem; line-height: 1.5; color: #475569; margin: 0 0 1rem 0; text-align: left; }
-        .tool-card strong { color: #0f172a; }
+/* --- CARD INNER COMPONENTS --- */
+.tool-logo-container {
+    width: 48px; height: 48px; background: #f8fafc; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;
+    border: 1px solid #edf2f7;
+}
+.tool-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 6px; }
 
-        /* --- RATINGS SYSTEM --- */
-        .tool-rating { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; margin-top: auto; }
-        .tool-rating .stars { letter-spacing: 2px; font-size: 0.9rem; filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.1)); }
-        .tool-rating .rating-count { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+.tool-info { flex-grow: 1; display: flex; flex-direction: column; }
+.tool-card h3 { font-size: 1.25rem; font-weight: 600; color: #1e293b; margin: 0 0 0.5rem 0; text-align: left; }
+.tool-card p { font-size: 0.925rem; line-height: 1.5; color: #475569; margin: 0 0 1rem 0; text-align: left; }
+.tool-card strong { color: #0f172a; }
 
-        /* --- ACTION TRIGGERS --- */
-        .tool-action { margin-top: auto; }
-        .visit-btn {
-            display: flex; align-items: center; justify-content: center; gap: 0.35rem; width: 100%;
-            background: var(--primary); color: #ffffff; text-decoration: none; padding: 0.75rem 1rem;
-            border-radius: 8px; font-size: 0.95rem; font-weight: 500; transition: background 0.2s ease, transform 0.1s ease;
-        }
-        .visit-btn:hover { background: var(--primary-hover); }
-        .visit-btn:active { transform: scale(0.98); }
-        .visit-btn span { font-size: 0.85rem; transition: transform 0.2s ease; }
-        .visit-btn:hover span { transform: translate(2px, -2px); }
+/* --- RATINGS SYSTEM --- */
+.tool-rating { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; margin-top: auto; }
+.tool-rating .stars { letter-spacing: 2px; font-size: 0.9rem; filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.1)); }
+.tool-rating .rating-count { font-size: 0.85rem; color: #64748b; font-weight: 500; }
 
-        /* --- DIRECTORY FILTER UTILITIES --- */
-        .filter-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 40px 0; }
-        .filter-btn {
-            background: #111; border: 1px solid #333; color: #888;
-            padding: 12px 24px; border-radius: 50px; cursor: pointer; font-weight: 700; transition: 0.3s;
-        }
-        .filter-btn.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+/* --- ACTION TRIGGERS --- */
+.tool-action { margin-top: auto; }
+.visit-btn {
+    display: flex; align-items: center; justify-content: center; gap: 0.35rem; width: 100%;
+    background: var(--primary); color: #ffffff; text-decoration: none; padding: 0.75rem 1rem;
+    border-radius: 8px; font-size: 0.95rem; font-weight: 500; transition: background 0.2s ease, transform 0.1s ease;
+}
+.visit-btn:hover { background: var(--primary-hover); }
+.visit-btn:active { transform: scale(0.98); }
+.visit-btn span { font-size: 0.85rem; transition: transform 0.2s ease; }
+.visit-btn:hover span { transform: translate(2px, -2px); }
 
-        /* --- FLOATING VOTING OVERLAY --- */
-        .rate-container { 
-            position: fixed; bottom: 25px; left: 25px; 
-            background: rgba(17, 17, 17, 0.8); padding: 15px; border-radius: 16px; 
-            border: 1px solid #222; z-index: 998; text-align: center; backdrop-filter: blur(10px);
-        }
-        .star { color: #444; font-size: 22px; cursor: pointer; transition: 0.2s; }
+/* --- DIRECTORY FILTER UTILITIES --- */
+.filter-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 40px 0; }
+.filter-btn {
+    background: #111; border: 1px solid #333; color: #888;
+    padding: 12px 24px; border-radius: 50px; cursor: pointer; font-weight: 700; transition: 0.3s;
+}
+.filter-btn.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
 
-        @media (max-width: 640px) {
-            .tool-grid { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
-            .tool-card { padding: 1.25rem; }
-        }
-        
-    /* --- FLOATING ROBOT BACKDROP AMBIENCE --- */
-    .robot-ambient-container {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        pointer-events: none !important;
-        z-index: 0 !important;
-    }
+/* --- FLOATING VOTING OVERLAY --- */
+.rate-container { 
+    position: fixed; bottom: 25px; left: 25px; 
+    background: rgba(17, 17, 17, 0.8); padding: 15px; border-radius: 16px; 
+    border: 1px solid #222; z-index: 998; text-align: center; backdrop-filter: blur(10px);
+}
+.star { color: #444; font-size: 22px; cursor: pointer; transition: 0.2s; }
 
-    /* CONTAINER FOR PORTRAIT IMAGES */
-    .user-images-container {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        z-index: 1 !important; 
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 0 50px !important; 
-        pointer-events: none !important; 
-    }
+@media (max-width: 640px) {
+    .tool-grid { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
+    .tool-card { padding: 1.25rem; }
+}
 
-    .user-portrait {
-        width: 300px !important;
-        height: auto !important;
-        border-radius: 20px !important;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
-    }
+/* --- FLOATING ROBOT BACKDROP AMBIENCE --- */
+.robot-ambient-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
 
-    /* --- MAIN HEADER STYLES --- */
-    header {
-        position: relative;
-        z-index: 1;
-        padding: 140px 20px 0;
-        text-align: center;
-        max-width: 900px;
-        margin: 0 auto;
-        background-color: #000000;
-        min-height: 500px;
-    }
+/* CONTAINER FOR PORTRAIT IMAGES */
+.user-images-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important; 
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 50px !important; 
+    pointer-events: none !important; 
+}
+
+.user-portrait {
+    width: 300px !important;
+    height: auto !important;
+    border-radius: 20px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
+}
+
+/* --- MAIN HEADER STYLES --- */
+header {
+    position: relative;
+    z-index: 1;
+    padding: 140px 20px 0;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #000000;
+    min-height: 500px;
+}
 
     /* Ensure content box stays on top */
-    .portal-content-box {
-        position: relative !important;
-        z-index: 2 !important; 
-    }
-        @media (max-width: 768px) {
+.portal-content-box {
+    position: relative !important;
+    z-index: 2 !important; 
+}
+
+@media (max-width: 768px) {
     .user-images-container {
         flex-direction: column !important; /* Stack images vertically */
         justify-content: center !important;
@@ -508,53 +509,58 @@
         width: 200px !important; /* Shrink images on mobile */
     }
 }
-        
-    /* 1. Apply the black background to the BODY, not the header/content */
-    body {
-        background-color: #000000 !important;
-        margin: 0;
-        padding: 0;
-        color: white; /* Ensure text is visible */
-    }
+    
+/* 1. Apply the black background to the BODY, not the header/content */
+body {
+    background-color: #000000 !important;
+    margin: 0;
+    padding: 0;
+    color: white; /* Ensure text is visible */
+}
 
-    /* 2. Container for the background robots */
-    .robot-ambient-container {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        pointer-events: none !important;
-        z-index: 0 !important; /* Robots are at the bottom layer */
-        overflow: hidden;
-    }
+/* 2. Container for the background robots */
+.robot-ambient-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    z-index: 0 !important; /* Robots are at the bottom layer */
+    overflow: hidden;
+}
 
-    /* 3. Content sits on top of robots */
-    #directory-content, header {
-        position: relative;
-        z-index: 1; /* Content is above robots */
-        background: transparent !important;
-    }
+/* 3. Content sits on top of robots */
+#directory-content, header {
+    position: relative;
+    z-index: 1; /* Content is above robots */
+    background: transparent !important;
+}
 
-    .floating-bot-particle {
-        position: absolute;
-        font-size: 40px;
-        animation: floatParticle 10s infinite ease-in-out;
-        opacity: 0.5;
-    }
+.floating-bot-particle {
+    position: absolute;
+    font-size: 40px;
+    animation: floatParticle 10s infinite ease-in-out;
+    opacity: 0.5;
+}
 
-    @keyframes floatParticle {
-        0%, 100% { transform: translateY(0) translateX(0); }
-        50% { transform: translateY(-30px) translateX(10px); }
-    }  
-        html, body {
+@keyframes floatParticle {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-30px) translateX(10px); }
+}  
+
+/* =======================================================
+   REVISED BASE LAYOUT (ONLY RUNS WHEN PORTAL IS OFF TO PREVENT BLINK)
+   ======================================================= */
+html:not(.portal-active), 
+body:not(.portal-active) {
     /* Forces vertical scrollbar visibility even if content is short */
     overflow-y: scroll !important; 
     /* Ensures full viewport calculation */
-    height: 100%;
-    min-height: 100vh;
+    height: auto !important;
+    min-height: 100vh !important;
 }
-    </style>
+</style>
 </head>
 
     <div class="robot-ambient-container">
@@ -2509,36 +2515,39 @@
     import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        const portal = document.getElementById('welcomePortal');
-
-   // === BUTTON CLICK FUNCTION ===
-window.enterSite = function() {
-    // 1. Target lock the portal element safely
     const portal = document.getElementById('welcomePortal');
-    
-    if (portal) {
-        // 2. Add your smooth CSS fade animation class
-        portal.classList.add('disappearing');
+
+    // === BUTTON CLICK FUNCTION ===
+    window.enterSite = function() {
+        // 1. Target lock the portal element safely
+        const portal = document.getElementById('welcomePortal');
         
-        // 3. Flag the session so Step 2 can block the flash on the next reload
-        sessionStorage.setItem('siteEntered', 'true');
-        
-        // 4. Clean up all layout tracking classes immediately
-        document.body.classList.remove('hide-scrollbar');
-        document.documentElement.classList.remove('portal-active');
-        document.body.classList.remove('portal-active');
-        
-        // Remove old inline style overrides completely
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-        
-        // 5. Completely drop the element footprint from layout calculations after animation
-        setTimeout(() => {
-            portal.style.display = 'none';
-            portal.classList.add('instantly-hidden');
-        }, 600); // Perfectly matches your 0.6s fading transition time
-    }
-};
+        if (portal) {
+            // 2. Add your smooth CSS fade animation class
+            portal.classList.add('disappearing');
+            
+            // 3. Flag the session so Step 2 can block the flash on the next reload
+            sessionStorage.setItem('siteEntered', 'true');
+            
+            // 4. Clean up all layout tracking classes immediately
+            document.body.classList.remove('hide-scrollbar');
+            document.documentElement.classList.remove('portal-active');
+            document.body.classList.remove('portal-active');
+            
+            // PRO FIX: Instantly notify layout engine to preserve single scrolltrack
+            document.documentElement.classList.add('portal-already-entered');
+            
+            // Remove old inline style overrides completely
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            
+            // 5. Completely drop the element footprint from layout calculations after animation
+            setTimeout(() => {
+                portal.style.display = 'none';
+                portal.classList.add('instantly-hidden');
+            }, 600); // Perfectly matches your 0.6s fading transition time
+        }
+    };
 
     // --- NAVIGATION FILTERING ENGINE (LAUNCH DIRECTORY) ---
     window.filterCat = function(cat, btn) {
@@ -2570,20 +2579,22 @@ window.enterSite = function() {
         }
     };
 
+    // --- SEARCH BAR UTILITIES ---
     window.filterSearch = function() {
         const input = document.getElementById('searchBar').value.toLowerCase();
         const spotlight = document.getElementById('leonardoSpotlight');
         const suggestionsBox = document.getElementById('searchSuggestions');
         
-        suggestionsBox.innerHTML = '';
+        if (suggestionsBox) suggestionsBox.innerHTML = '';
 
         if (spotlight) {
             if (input.length > 0) {
                 spotlight.style.display = 'none';
             } else {
                 const activeBtn = document.querySelector('.filter-btn.active');
-                const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : 'all';
-                if (currentCat === 'all' || currentCat === 'design') {
+                const currentCat = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/) : null;
+                const targetCat = currentCat ? currentCat[1] : 'all';
+                if (targetCat === 'all' || targetCat === 'design') {
                     spotlight.style.display = 'block';
                 }
             }
@@ -2592,7 +2603,7 @@ window.enterSite = function() {
         const cards = document.querySelectorAll('.tool-card');
         let matches = [];
 
-               cards.forEach(card => {
+        cards.forEach(card => {
             const titleElement = card.querySelector('h3');
             const descElement = card.querySelector('.tool-info p');
             
@@ -2608,38 +2619,43 @@ window.enterSite = function() {
                 card.style.display = "none";
             }
         });
-
-        if (matches.length > 0 && input.length > 0) {
-            suggestionsBox.style.display = 'block';
-            matches.slice(0, 6).forEach(toolName => {
-                const item = document.createElement('div');
-                item.className = 'suggestion-item';
-                
-                // Bold matching text case-insensitively
-                const index = toolName.toLowerCase().indexOf(input);
-                if (index >= 0) {
-                    item.innerHTML = `🤖 ${toolName.substring(0, index)}<strong>${toolName.substring(index, index + input.length)}</strong>${toolName.substring(index + input.length)}`;
-                } else {
-                    item.innerHTML = `🤖 ${toolName}`;
-                }
-                
-                item.onclick = function() {
-                    document.getElementById('searchBar').value = toolName;
-                    suggestionsBox.style.display = 'none';
-                    window.filterSearch();
-                };
-                suggestionsBox.appendChild(item);
-            });
-        } else {
-            suggestionsBox.style.display = 'none';
-        }
     };
 
+            // Ensure critical search references exist in local scope to prevent runtime crashes
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    if (typeof matches === 'undefined') window.matches = [];
+
+    if (window.matches.length > 0 && typeof input !== 'undefined' && input.length > 0) {
+        if (suggestionsBox) suggestionsBox.style.display = 'block';
+        window.matches.slice(0, 6).forEach(toolName => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            
+            // Bold matching text case-insensitively
+            const index = toolName.toLowerCase().indexOf(input.toLowerCase());
+            if (index >= 0) {
+                item.innerHTML = `🤖 ${toolName.substring(0, index)}<strong>${toolName.substring(index, index + input.length)}</strong>${toolName.substring(index + input.length)}`;
+            } else {
+                item.innerHTML = `🤖 ${toolName}`;
+            }
+            
+            item.onclick = function() {
+                const searchInput = document.getElementById('searchBar');
+                if (searchInput) searchInput.value = toolName;
+                if (suggestionsBox) suggestionsBox.style.display = 'none';
+                if (typeof window.filterSearch === 'function') window.filterSearch();
+            };
+            if (suggestionsBox) suggestionsBox.appendChild(item);
+        });
+    } else {
+        if (suggestionsBox) suggestionsBox.style.display = 'none';
+    }
+
     document.addEventListener('click', function(e) {
-        const suggestionsBox = document.getElementById('searchSuggestions');
+        const currentBox = document.getElementById('searchSuggestions');
         const searchInput = document.getElementById('searchBar');
-        if (suggestionsBox && e.target !== searchInput && e.target !== suggestionsBox) {
-            suggestionsBox.style.display = 'none';
+        if (currentBox && e.target !== searchInput && e.target !== currentBox) {
+            currentBox.style.display = 'none';
         }
     });
         
@@ -2674,7 +2690,7 @@ window.enterSite = function() {
         isTokenAutoRefreshEnabled: true
     });
 
-    // 4. CORRECT INITIALIZATION: Just use the app instance
+    // 4. CORRECT INITIALIZATION: Use the app instance
     const db = getDatabase(app); 
     const ratingRef = ref(db, 'site-stats');
 
@@ -2686,11 +2702,11 @@ window.enterSite = function() {
     // SCROLL RESTORATION CHECK: Unlock overflow configurations instantly if voter cache clears them
     if (localStorage.getItem('hasVoted') && ratingCard) {
         ratingCard.style.display = 'none'; 
-        // Force-recovery track just in case style engines freeze layout states
-        if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
-            document.documentElement.classList.remove('portal-active');
-            document.body.classList.remove('portal-active');
-        }
+        
+        // PRO FIX: Force active display recovery class tracking blocks instantly
+        document.documentElement.classList.remove('portal-active');
+        document.body.classList.remove('portal-active');
+        document.documentElement.classList.add('portal-already-entered');
     }
 
     onValue(ratingRef, (snapshot) => {
@@ -2702,7 +2718,7 @@ window.enterSite = function() {
         }
     });
 
-    starElements.forEach(star => {
+        starElements.forEach(star => {
         star.addEventListener('click', async () => {
             const val = parseInt(star.getAttribute('data-value'));
             try {
@@ -2735,6 +2751,7 @@ window.enterSite = function() {
                             // Unconditional post-vote layout scroll recovery
                             document.documentElement.classList.remove('portal-active');
                             document.body.classList.remove('portal-active');
+                            document.documentElement.classList.add('portal-already-entered');
                         }, 500); 
                     }
                 }, 3000);
@@ -2759,6 +2776,7 @@ window.addEventListener("DOMContentLoaded", () => {
         // FRESH HOMEPAGE VISIT ONLY: Activate portal state immediately on page load
         document.documentElement.classList.add('portal-active');
         document.body.classList.add('portal-active');
+        document.documentElement.classList.remove('portal-already-entered');
 
         style.innerHTML = `
             /* Hide all scrollbars completely while the landing portal is active */
@@ -2805,13 +2823,13 @@ window.addEventListener("DOMContentLoaded", () => {
         document.documentElement.classList.add('portal-already-entered');
         
         style.innerHTML = `
-            html {
+            html, html.portal-already-entered {
                 overflow-y: scroll !important;
                 overflow-x: hidden !important;
                 width: 100% !important;
                 height: auto !important;
             }
-            body {
+            body, body.portal-already-entered {
                 overflow-y: visible !important;
                 overflow-x: hidden !important;
                 width: 100% !important;
@@ -2832,7 +2850,7 @@ window.addEventListener("DOMContentLoaded", () => {
     
     document.head.appendChild(style);
 
-    // 4. Attach trigger to your "Launch Directory" button
+        // 4. Attach trigger to your "Launch Directory" button
     const launchBtn = document.querySelector('#launchBtn') || document.querySelector('.launch-btn') || document.querySelector('button');
     if (launchBtn) {
         launchBtn.addEventListener('click', () => {
@@ -2851,17 +2869,18 @@ window.addEventListener("DOMContentLoaded", () => {
             
             // Dynamically replace with clean, global scroll tracks
             style.innerHTML = `
-                html {
+                html, html.portal-already-entered {
                     overflow-y: scroll !important;
                     overflow-x: hidden !important;
                     width: 100% !important;
                     height: auto !important;
                 }
-                body {
+                body, body.portal-already-entered {
                     overflow-y: visible !important;
                     overflow-x: hidden !important;
                     width: 100% !important;
                     height: auto !important;
+                    position: relative !important;
                 }
                 #welcomePortal { display: none !important; }
             `;
@@ -2869,7 +2888,10 @@ window.addEventListener("DOMContentLoaded", () => {
             const portal = document.getElementById('welcomePortal');
             if (portal) {
                 portal.classList.add('disappearing');
-                setTimeout(() => { portal.style.display = 'none'; }, 600);
+                setTimeout(() => { 
+                    portal.style.display = 'none'; 
+                    portal.remove(); // Safely delete the node from the layout engine entirely
+                }, 600);
             }
         });
     }
