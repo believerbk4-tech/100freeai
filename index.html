@@ -66,31 +66,28 @@
       "url": "https://100freeai.netlify.app"
     }
     </script>
+          /* 1. Hides scrollbar ONLY on the welcome portal / initial load */
+body.hide-scrollbar {
+    overflow: hidden !important;
+    height: 100vh;
+}
 
-            /* 1. Hides scrollbar ONLY on the welcome portal / initial load */
-        body.hide-scrollbar {
-            overflow: hidden !important;
-            height: 100vh;
-        }
+/* 2. Forces vertical scrollbar to show on the main page and next pages */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: sans-serif;
+    margin: 0;
+    transition: overflow 0.1s ease;
+    overflow-y: scroll !important;
+    min-height: 100vh;
+}
 
-        /* 2. Forces vertical scrollbar to show on the main page and next pages */
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: sans-serif;
-            margin: 0;
-            transition: overflow 0.1s ease;
-            
-            /* Guarantees the scrollbar stays visible once the portal is gone */
-            overflow-y: scroll !important;
-            min-height: 100vh;
-        }
-        
-        /* 3. Ensures the html element also keeps the scrollbar space ready */
-        html {
-            overflow-y: scroll !important;
-            height: 100%;
-        }
+/* 3. Ensures the html element also keeps the scrollbar space ready */
+html {
+    overflow-y: scroll !important;
+    height: 100%;
+}
         
         /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
         .suggestion-item {
