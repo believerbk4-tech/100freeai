@@ -67,20 +67,29 @@
     }
     </script>
 
-    <style>
-        /* Locked view state on initial page load */
+            /* 1. Hides scrollbar ONLY on the welcome portal / initial load */
         body.hide-scrollbar {
             overflow: hidden !important;
             height: 100vh;
         }
 
-        /* Default foundational styles */
+        /* 2. Forces vertical scrollbar to show on the main page and next pages */
         body {
             background-color: #000;
             color: #fff;
             font-family: sans-serif;
             margin: 0;
             transition: overflow 0.1s ease;
+            
+            /* Guarantees the scrollbar stays visible once the portal is gone */
+            overflow-y: scroll !important;
+            min-height: 100vh;
+        }
+        
+        /* 3. Ensures the html element also keeps the scrollbar space ready */
+        html {
+            overflow-y: scroll !important;
+            height: 100%;
         }
         
         /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
@@ -390,6 +399,13 @@
         0%, 100% { transform: translateY(0) translateX(0); }
         50% { transform: translateY(-30px) translateX(10px); }
     }  
+        html, body {
+    /* Forces vertical scrollbar visibility even if content is short */
+    overflow-y: scroll !important; 
+    /* Ensures full viewport calculation */
+    height: 100%;
+    min-height: 100vh;
+}
     </style>
 </head>
 <body class="hide-scrollbar">
@@ -2561,11 +2577,7 @@ if (localStorage.getItem('hasVoted') && ratingCard) {
                     };
                 });
 
-                if (ratingContent) ratingContent.style.display = 'none';
-                if (thankYouMsg) thankYouMsg.style.display = 'block';
-                localStorage.setItem('hasVoted', 'true');
-
-                setTimeout(() => {
+                                setTimeout(() => {
                     if (ratingCard) {
                         ratingCard.style.transition = 'opacity 0.5s ease';
                         ratingCard.style.opacity = '0';
@@ -2576,6 +2588,15 @@ if (localStorage.getItem('hasVoted') && ratingCard) {
                 console.error("Rating transaction dropped:", error);
             }
         });
+
+        // PASTED FIX STARTS HERE
+        window.addEventListener("pageshow", (event) => {
+            // Forces scrollbar visibility and overrides any CSS restrictions
+            document.documentElement.style.setProperty("overflow-y", "scroll", "important");
+            document.body.style.setProperty("overflow-y", "scroll", "important");
+        });
+        // PASTED FIX ENDS HERE
+
     });
 </script>
 </body>
