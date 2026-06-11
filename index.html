@@ -451,21 +451,30 @@ html.portal-active {
 </head>
 <body class="hide-scrollbar">
     <script>
-   /* =======================================================
+/* =======================================================
    ANTI-FLASH SYSTEM (RUNS BEFORE DOM RENDER)
    ======================================================= */
 if (sessionStorage.getItem('siteEntered') === 'true') {
     // 1. Instantly tag the root layout element to hide the portal early
     document.documentElement.classList.add('portal-already-entered');
+    document.documentElement.classList.remove('portal-active'); // Ensure portal mode is off
     
     // 2. Inject a high-priority safety rule directly into the head
+    // FIX: Added rule here to explicitly force standard scrolling on the main page
     const antiFlashStyle = document.createElement('style');
     antiFlashStyle.id = 'anti-flash-layer';
-    antiFlashStyle.innerHTML = '#welcomePortal { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }';
+    antiFlashStyle.innerHTML = `
+        #welcomePortal { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+        html, body {
+            overflow-y: scroll !important; /* Force standard vertical scrollbar back */
+            overflow-x: hidden !important; /* Prevent horizontal stretching */
+            height: auto !important;
+            width: 100% !important;
+        }
+    `;
     document.head.appendChild(antiFlashStyle);
     
-    // 3. Immediately clean up the scrollbars before rendering the body text
-    document.documentElement.classList.remove('portal-active');
+    // 3. Clean up classes once the body exists in the DOM
     window.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('hide-scrollbar');
         document.body.classList.remove('portal-active');
@@ -479,7 +488,7 @@ if (sessionStorage.getItem('siteEntered') === 'true') {
     });
 } else {
     // =======================================================
-    // FIX: FOR FRESH VISITS — KILL SCROLLBAR INSTANTLY HERE
+    // FOR FRESH VISITS — KILL SCROLLBAR INSTANTLY HERE
     // =======================================================
     document.documentElement.classList.add('portal-active');
     
