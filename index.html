@@ -422,20 +422,27 @@ body {
 <body class="hide-scrollbar">
     <script>
         (function() {
-               // 1. INITIAL LOAD CHECK
+             // 1. INITIAL LOAD CHECK - Explicitly fetch the portal element first
+    const portal = document.getElementById('welcomePortal');
+
     if (sessionStorage.getItem('siteEntered') === 'true') {
         if (portal) {
             portal.classList.add('hidden');
+            // If you use the CSS class from earlier, add it here too:
+            portal.classList.add('disappearing'); 
+            portal.style.display = 'none'; 
             
-            // Completely restore scrolling for returning sessions
-            document.body.style.overflow = 'auto';
-            document.documentElement.style.overflow = 'auto';
+            // Completely restore clean, single-scrollbar scrolling for returning sessions
             document.body.classList.remove('hide-scrollbar');
             document.documentElement.classList.remove('portal-active');
             document.body.classList.remove('portal-active');
+            
+            // Clean up inline styles so your base CSS takes over perfectly
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
     } else {
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('hide-scrollbar');
         document.documentElement.classList.add('portal-active');
         document.body.classList.add('portal-active');
     }
@@ -2540,7 +2547,7 @@ body {
         appId: "1:735292410645:web:4a79f607dad95b81ec771c"
     };
 
-    // 1. Initialize core Firebase Application instance
+   // 1. Initialize core Firebase Application instance
 const app = initializeApp(firebaseConfig);
 
 // 2. Configure Localhost environment
@@ -2567,48 +2574,71 @@ if (localStorage.getItem('hasVoted') && ratingCard) {
     ratingCard.style.display = 'none'; 
 }
 
-    onValue(ratingRef, (snapshot) => {
-        const data = snapshot.val();
-        const statsHeader = document.querySelector('#live-rating');
-        if (data && data.count > 0 && statsHeader) {
-            const average = (data.sum / data.count).toFixed(1);
-            statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
+onValue(ratingRef, (snapshot) => {
+    const data = snapshot.val();
+    const statsHeader = document.querySelector('#live-rating');
+    if (data && data.count > 0 && statsHeader) {
+        const average = (data.sum / data.count).toFixed(1);
+        statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
+    }
+});
+
+starElements.forEach(star => {
+    star.addEventListener('click', async () => {
+        const val = parseInt(star.getAttribute('data-value'));
+        try {
+            await runTransaction(ratingRef, (currentData) => {
+                if (!currentData) return { count: 1, sum: val };
+                return {
+                    count: (currentData.count || 0) + 1,
+                    sum: (currentData.sum || 0) + val
+                };
+            });
+
+            setTimeout(() => {
+                if (ratingCard) {
+                    ratingCard.style.transition = 'opacity 0.5s ease';
+                    ratingCard.style.opacity = '0';
+                    setTimeout(() => { ratingCard.style.display = 'none'; }, 500); 
+                }
+            }, 3000);
+       } catch (error) {
+            console.error("Rating transaction dropped:", error);
         }
     });
+});
 
-    starElements.forEach(star => {
-        star.addEventListener('click', async () => {
-            const val = parseInt(star.getAttribute('data-value'));
-            try {
-                await runTransaction(ratingRef, (currentData) => {
-                    if (!currentData) return { count: 1, sum: val };
-                    return {
-                        count: (currentData.count || 0) + 1,
-                        sum: (currentData.sum || 0) + val
-                    };
-                });
+// === PRO DEVELOPER DOUBLE SCROLLBAR OVERRIDE SYSTEM ===
+window.addEventListener("DOMContentLoaded", () => {
+    // 1. Force absolute rules to root elements via CSS Injection
+    const style = document.createElement('style');
+    style.innerHTML = `
+        html {
+            overflow-y: scroll !important;
+            overflow-x: hidden !important;
+            height: auto !important;
+        }
+        body {
+            overflow-y: visible !important;
+            overflow-x: hidden !important;
+            height: auto !important;
+        }
+        /* Lock down container heights that fight for scroll control */
+        #welcomePortal, .welcomePortal-bg {
+            max-height: 100vh !important;
+        }
+    `;
+    document.head.appendChild(style);
 
-                                setTimeout(() => {
-                    if (ratingCard) {
-                        ratingCard.style.transition = 'opacity 0.5s ease';
-                        ratingCard.style.opacity = '0';
-                        setTimeout(() => { ratingCard.style.display = 'none'; }, 500); 
-                    }
-                }, 3000);
-           } catch (error) {
-                console.error("Rating transaction dropped:", error);
-            }
-        });
-
-        // PASTED FIX STARTS HERE
-        window.addEventListener("pageshow", (event) => {
-            // Forces scrollbar visibility and overrides any CSS restrictions
-            document.documentElement.style.setProperty("overflow-y", "scroll", "important");
-            document.body.style.setProperty("overflow-y", "scroll", "important");
-        });
-        // PASTED FIX ENDS HERE
-
+    // 2. Scan and destroy any rogue inner wrapper container scroll-tracks
+    document.querySelectorAll('div').forEach(el => {
+        const computed = window.getComputedStyle(el);
+        if (computed.overflowY === 'scroll' || computed.overflowY === 'auto') {
+            el.style.setProperty("overflow-y", "visible", "important");
+            el.style.setProperty("height", "auto", "important");
+        }
     });
+});
 </script>
 </body>
 </html>
