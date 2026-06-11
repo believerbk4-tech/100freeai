@@ -67,36 +67,39 @@
       "url": "https://100freeai.netlify.app"
     }
     </script>
-          /* 1. Hides scrollbar ONLY on the welcome portal / initial load */
+         /* 1. Hides scrollbar ONLY on the welcome portal / initial load */
 body.hide-scrollbar {
     overflow: hidden !important;
-    height: 100vh;
+    height: 100vh !important;
 }
 
-/* 2. Unified foundational styles for the whole website */
+/* 2. Pro Viewport Control - Lock scrolling strictly to the root */
 html {
     margin: 0;
     padding: 0;
     width: 100%;
+    min-height: 100vh;
     background-color: #000;
     color: #fff;
     font-family: 'Segoe UI', Roboto, sans-serif;
     
-    /* Forces exactly ONE vertical scrollbar on the root page level */
+    /* Force exactly one vertical scrollbar system-wide */
     overflow-y: scroll !important;
-    overflow-x: hidden;
-    min-height: 100vh;
+    overflow-x: hidden !important;
 }
 
+/* 3. Pro Body Reset - Let it flow naturally without capturing scroll events */
 body {
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    transition: overflow 0.1s ease;
     
-    /* Prevents the body itself from generating a redundant second scrollbar */
-    overflow: visible; 
+    /* Strips out the second scrollbar engine completely */
+    overflow: visible !important; 
+    
+    /* Optional safety: keeps animations/glow elements from leaking out horizontally */
+    position: relative;
 }
         
         /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
