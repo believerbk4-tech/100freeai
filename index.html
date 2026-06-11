@@ -2641,22 +2641,25 @@ window.addEventListener("DOMContentLoaded", () => {
     // 1. Force strict structural canvas rules via CSS Injection
     const style = document.createElement('style');
     style.innerHTML = `
-        /* When portal is active, force vw measurements to snap clean to the viewport edge */
+        /* When portal is active, strictly hide the browser root scrollbars */
         html.portal-active {
             overflow: hidden !important;
-            width: 100vw !important;
-            max-width: 100vw !important;
-            height: 100vh !important;
+            scrollbar-width: none !important; /* Total removal for Firefox */
+            -ms-overflow-style: none !important;  /* Total removal for IE/Edge */
         }
         
-        body.portal-active {
-            overflow: hidden !important;
-            width: 100vw !important;
-            max-width: 100vw !important;
-            height: 100vh !important;
+        /* Wipe out the scrollbar container for Chrome, Safari, and newer Edge versions */
+        html.portal-active::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
         }
 
-        /* Clean document flow configuration for standard state */
+        body.portal-active {
+            overflow: hidden !important;
+        }
+
+        /* Clean document flow configuration once user enters the main page */
         html:not(.portal-active) {
             overflow-y: scroll !important;
             overflow-x: hidden !important;
@@ -2669,15 +2672,6 @@ window.addEventListener("DOMContentLoaded", () => {
             overflow-x: hidden !important;
             width: 100% !important;
             height: auto !important;
-        }
-
-        /* UNIVERSAL ACCORDION ATOM: Vanishes EVERY single scrollbar on the screen when portal is active */
-        html.portal-active *,
-        html.portal-active *::-webkit-scrollbar {
-            scrollbar-width: none !important;
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
         }
         
         #welcomePortal {
@@ -2700,10 +2694,6 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-</script>
-</body>
-</html>
-
 </script>
 </body>
 </html>
