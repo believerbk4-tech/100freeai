@@ -2,6 +2,120 @@
 <html lang="en">
 <head>
     <script>
+        /* =======================================================
+           1. ANTI-FLASH & RELOAD TRACKER SYSTEM (UNIVERSAL EDITION)
+           ======================================================= */
+        (function() {
+            // Detect if they clicked "Enter" OR if they are currently on a subpage path
+            const alreadyVisited = sessionStorage.getItem('siteEntered') === 'true';
+            const isSubpage = window.location.pathname !== '/' && window.location.pathname !== '/index.html';
+            const bypassPortal = alreadyVisited || isSubpage;
+
+            // Kill any stale layout overrides from previous page caches
+            const oldEngine = document.getElementById('layout-override-engine');
+            if (oldEngine) oldEngine.remove();
+
+            // Build and prioritize absolute styling overrides
+            const styleOverride = document.createElement('style');
+            styleOverride.id = 'layout-override-engine';
+            
+            if (bypassPortal) {
+                document.documentElement.classList.add('portal-already-entered');
+                document.documentElement.classList.remove('portal-active');
+                
+                styleOverride.innerHTML = `
+                    html, body {
+                        overflow: visible !important;
+                        overflow-y: scroll !important;
+                        overflow-x: hidden !important;
+                        height: auto !important;
+                        position: relative !important;
+                    }
+                    #welcomePortal { 
+                        display: none !important; 
+                        opacity: 0 !important; 
+                        visibility: hidden !important; 
+                        pointer-events: none !important; 
+                        content-visibility: hidden;
+                    }
+                `;
+            } else {
+                document.documentElement.classList.add('portal-active');
+                
+                // Add the layout-hiding class dynamically only for a fresh home visit
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add('hide-scrollbar');
+                });
+                
+                styleOverride.innerHTML = `
+                    html.portal-active, body.portal-active {
+                        overflow: hidden !important;
+                        height: 100vh !important;
+                        width: 100vw !important;
+                    }
+                    html.portal-active::-webkit-scrollbar, body.portal-active::-webkit-scrollbar {
+                        display: none !important;
+                        width: 0 !important;
+                        height: 0 !important;
+                    }
+                    html.portal-active {
+                        scrollbar-width: none !important;
+                    }
+                `;
+            }
+            
+            document.head.appendChild(styleOverride);
+
+            // Post-render cleanup once layout nodes are interactive
+            window.addEventListener('DOMContentLoaded', () => {
+                if (bypassPortal) {
+                    document.body.classList.remove('hide-scrollbar', 'portal-active');
+                    document.documentElement.classList.remove('portal-active');
+                    
+                    const portal = document.getElementById('welcomePortal');
+                    if (portal) portal.remove(); 
+                    
+                    const forceReflow = document.documentElement.offsetHeight;
+                } else {
+                    const launchBtn = document.querySelector('.launch-btn') || document.querySelector('button') || document.querySelector('#launchBtn');
+                    if (launchBtn) {
+                        launchBtn.addEventListener('click', () => {
+                            sessionStorage.setItem('siteEntered', 'true');
+                            document.documentElement.classList.remove('portal-active');
+                            document.body.classList.remove('portal-active');
+                            document.body.classList.remove('hide-scrollbar');
+                            
+                            styleOverride.innerHTML = `
+                                html, body {
+                                    overflow: visible !important;
+                                    overflow-y: scroll !important;
+                                    overflow-x: hidden !important;
+                                    height: auto !important;
+                                    position: relative !important;
+                                }
+                                #welcomePortal { display: none !important; }
+                            `;
+                            const forceReflow = document.documentElement.offsetHeight;
+                        });
+                    }
+                }
+            });
+
+            // BFCACHE SECURITY LOOKUP (Fixes browser Back/Forward navigation bugs)
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted && (sessionStorage.getItem('siteEntered') === 'true' || window.location.pathname !== '/')) {
+                    document.documentElement.classList.remove('portal-active');
+                    document.body.classList.remove('portal-active');
+                    document.body.classList.remove('hide-scrollbar');
+                    const currentOverride = document.getElementById('layout-override-engine');
+                    if (currentOverride) currentOverride.remove();
+                }
+            });
+        })();
+
+        /* =======================================================
+           2. IMAGE SOURCE FALLBACK INTERCEPTOR (IMAGE BROKEN FIX)
+           ======================================================= */
         (function() {
             // Securely capture the browser's true native image src setter to prevent execution recursions
             const nativeImgSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
@@ -57,48 +171,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
 
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "100+ Free AI Tools Directory",
-  "description": "A curated list of free AI tools for design, marketing, and writing.",
-  "url": "https://100freeai.netlify.app"
-}
-</script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "100+ Free AI Tools Directory",
+      "description": "A curated list of free AI tools for design, marketing, and writing.",
+      "url": "https://100freeai.netlify.app"
+    }
+    </script>
 
-<style>
+    <style>
+    /* =======================================================
+       ANTI-FLASH SYSTEM: FORCES IMMEDIATE PORTAL STRUCTURAL DEATH
+       ======================================================= */
+    #welcomePortal.instantly-hidden {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .portal-already-entered #welcomePortal {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
 /* =======================================================
-   ANTI-FLASH SYSTEM: FORCES IMMEDIATE PORTAL STRUCTURAL DEATH
-   ======================================================= */
-#welcomePortal.instantly-hidden {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-.portal-already-entered #welcomePortal {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-/* =======================================================
-   REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
-   ======================================================= */
-html, body { 
-    margin: 0; 
-    padding: 0; 
-    font-family: 'Segoe UI', Roboto, sans-serif; 
-    background-color: var(--dark); 
-    color: var(--text); 
+REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
+======================================================= */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--dark);
+    color: var(--text);
     width: 100%;
-    
     /* PRO FIX: Force the browser layout engine to explicitly render vertical scroll tracks */
     overflow-y: scroll !important;
-    overflow-x: hidden !important; 
+    overflow-x: hidden !important;
 }
 
 body {
@@ -106,24 +219,8 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    overflow: visible; 
+    overflow: visible;
     position: relative;
-}
-
-/* =======================================================
-   REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
-   ======================================================= */
-html, body { 
-    margin: 0; 
-    padding: 0; 
-    font-family: 'Segoe UI', Roboto, sans-serif; 
-    background-color: var(--dark); 
-    color: var(--text); 
-    width: 100%;
-    
-    /* PRO FIX: Force the browser layout engine to explicitly render vertical scroll tracks */
-    overflow-y: scroll !important;
-    overflow-x: hidden !important; 
 }
 
 /* =======================================================
@@ -472,112 +569,6 @@ html.portal-active {
 }
     </style>
 </head>
-<body class="hide-scrollbar">
-    <script>
-/* =======================================================
-   ANTI-FLASH & RELOAD TRACKER SYSTEM (RUNS IMMEDIATELY)
-   ======================================================= */
-(function() {
-    // 1. Force state logic processing right now
-    const alreadyVisited = sessionStorage.getItem('siteEntered') === 'true';
-
-    // PRO ARCHITECTURE FIX: Kill any stale layout overrides from previous page caches
-    const oldEngine = document.getElementById('layout-override-engine');
-    if (oldEngine) oldEngine.remove();
-
-    // 2. Build and prioritize absolute styling overrides
-    const styleOverride = document.createElement('style');
-    styleOverride.id = 'layout-override-engine';
-    
-    if (alreadyVisited) {
-        // RETURNING VISITOR OR RELOAD: Total restoration of normal scrolling
-        document.documentElement.classList.add('portal-already-entered');
-        document.documentElement.classList.remove('portal-active');
-        
-        styleOverride.innerHTML = `
-            html, body {
-                overflow: visible !important;
-                overflow-y: scroll !important;
-                overflow-x: hidden !important;
-                height: auto !important;
-                position: relative !important;
-            }
-            #welcomePortal { 
-                display: none !important; 
-                opacity: 0 !important; 
-                visibility: hidden !important; 
-                pointer-events: none !important; 
-            }
-        `;
-    } else {
-        // FRESH VISIT: Completely lock viewport scrollbars and hide tracks
-        document.documentElement.classList.add('portal-active');
-        
-        styleOverride.innerHTML = `
-            html.portal-active, body.portal-active {
-                overflow: hidden !important;
-                height: 100vh !important;
-                width: 100vw !important;
-            }
-            /* Explicitly erase scrollbar layout tracks on Webkit & Firefox while portal is active */
-            html.portal-active::-webkit-scrollbar, body.portal-active::-webkit-scrollbar {
-                display: none !important;
-                width: 0 !important;
-                height: 0 !important;
-            }
-            html.portal-active {
-                scrollbar-width: none !important;
-            }
-        `;
-    }
-    
-    // Inject the clean style rules straight to the head element
-    document.head.appendChild(styleOverride);
-
-    // 3. Post-render clean up once layout nodes are interactive
-    window.addEventListener('DOMContentLoaded', () => {
-        if (alreadyVisited) {
-            // Scrub away classes that hide scrollbars on the main pages
-            document.body.classList.remove('hide-scrollbar', 'portal-active');
-            document.documentElement.classList.remove('portal-active');
-            
-            const portal = document.getElementById('welcomePortal');
-            if (portal) portal.remove(); // Safely drop the element frame entirely
-            
-            // Force a hardware paint reflow to snap the scrollbar back into existence
-            const forceReflow = document.documentElement.offsetHeight;
-        } else {
-            // For fresh visits, attach listener to your launch directory button
-            const launchBtn = document.querySelector('.launch-btn') || document.querySelector('button') || document.querySelector('#launchBtn');
-            if (launchBtn) {
-                launchBtn.addEventListener('click', () => {
-                    // Update session key state instantly
-                    sessionStorage.setItem('siteEntered', 'true');
-                    
-                    // Kill portal wrapper configuration classes
-                    document.documentElement.classList.remove('portal-active');
-                    document.body.classList.remove('portal-active');
-                    
-                    // Replace active rules with default page rules
-                    styleOverride.innerHTML = `
-                        html, body {
-                            overflow: visible !important;
-                            overflow-y: scroll !important;
-                            overflow-x: hidden !important;
-                            height: auto !important;
-                            position: relative !important;
-                        }
-                        #welcomePortal { display: none !important; }
-                    `;
-                    
-                    // Force reflow on click transition
-                    const forceReflow = document.documentElement.offsetHeight;
-                });
-            }
-        }
-    });
-})();
-    </script>
 
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
