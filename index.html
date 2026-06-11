@@ -2638,11 +2638,15 @@ starElements.forEach(star => {
 
 // === PRO DEVELOPER DOUBLE SCROLLBAR OVERRIDE SYSTEM ===
 window.addEventListener("DOMContentLoaded", () => {
-    // 1. Force absolute rules to root elements via CSS Injection
+    // 1. Activate portal state immediately on page load
+    document.documentElement.classList.add('portal-active');
+    document.body.classList.add('portal-active');
+
+    // 2. Force absolute rules to root elements via CSS Injection
     const style = document.createElement('style');
     style.innerHTML = `
-        /* When portal is active, force layout width to strictly ignore system gutter boundaries */
-        html.portal-active {
+        /* Hide all scrollbars completely while the landing portal is active */
+        html.portal-active, body.portal-active {
             overflow: hidden !important;
             width: 100vw !important;
             max-width: 100vw !important;
@@ -2651,16 +2655,7 @@ window.addEventListener("DOMContentLoaded", () => {
             padding: 0 !important;
         }
         
-        body.portal-active {
-            overflow: hidden !important;
-            width: 100vw !important;
-            max-width: 100vw !important;
-            height: 100vh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* Target lock the active landing container to completely fill the monitor monitor grid */
+        /* Ensure the main portal container respects the lock */
         html.portal-active #welcomePortal {
             position: fixed !important;
             top: 0 !important;
@@ -2668,13 +2663,10 @@ window.addEventListener("DOMContentLoaded", () => {
             width: 100vw !important;
             max-width: 100vw !important;
             height: 100vh !important;
-            max-height: 100vh !important;
             overflow: hidden !important;
-            margin: 0 !important;
-            padding: 0 !important;
         }
 
-        /* Clean document flow configuration once user enters the main page */
+        /* Standard document flow configuration once user unlocks the directory */
         html:not(.portal-active) {
             overflow-y: scroll !important;
             overflow-x: hidden !important;
@@ -2691,14 +2683,32 @@ window.addEventListener("DOMContentLoaded", () => {
     `;
     document.head.appendChild(style);
 
-    // 2. Scan and destroy any rogue inner wrapper container scroll-tracks
-    if (!document.documentElement.classList.contains('portal-active')) {
-        document.querySelectorAll('div').forEach(el => {
-            const computed = window.getComputedStyle(el);
-            if (computed.overflowY === 'scroll' || computed.overflowY === 'auto') {
-                el.style.setProperty("overflow-y", "visible", "important");
-                el.style.setProperty("height", "auto", "important");
-            }
+    // 3. Scan and kill rogue inner scrollbars while portal is active
+    document.querySelectorAll('div').forEach(el => {
+        const computed = window.getComputedStyle(el);
+        if (computed.overflowY === 'scroll' || computed.overflowY === 'auto') {
+            el.setAttribute('data-orig-overflow', computed.overflowY);
+            el.style.setProperty("overflow-y", "hidden", "important");
+        }
+    });
+
+    // 4. Attach trigger to your "Launch Directory" button
+    // Ensure your button markup has id="launchBtn" or change the selector below
+    const launchBtn = document.querySelector('#launchBtn') || document.querySelector('button');
+    if (launchBtn) {
+        launchBtn.addEventListener('click', () => {
+            // Remove the layout locks to show standard page scrolling
+            document.documentElement.classList.remove('portal-active');
+            document.body.classList.remove('portal-active');
+            
+            // Restore native scrolling to inner divs if any existed
+            document.querySelectorAll('div[data-orig-overflow]').forEach(el => {
+                el.style.setProperty("overflow-y", el.getAttribute('data-orig-overflow'), "important");
+            });
+            
+            // Optional: Hide or smoothly fade out the welcome portal container here
+            const portal = document.getElementById('welcomePortal');
+            if (portal) portal.style.display = 'none';
         });
     }
 });
