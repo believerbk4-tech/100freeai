@@ -2639,31 +2639,49 @@ window.addEventListener("DOMContentLoaded", () => {
     // 1. Force absolute rules to root elements via CSS Injection
     const style = document.createElement('style');
     style.innerHTML = `
-        html {
+        /* Main document scrolling only activates if the portal is NOT active */
+        html:not(.portal-active) {
             overflow-y: scroll !important;
             overflow-x: hidden !important;
             height: auto !important;
         }
+        
+        /* When portal is active, strictly kill the overflow track layout entirely */
+        html.portal-active {
+            overflow: hidden !important;
+            height: 100vh !important;
+        }
+
         body {
             overflow-y: visible !important;
             overflow-x: hidden !important;
             height: auto !important;
         }
+        
+        body.portal-active {
+            overflow: hidden !important;
+            height: 100vh !important;
+        }
+
         /* Lock down container heights that fight for scroll control */
         #welcomePortal, .welcomePortal-bg {
             max-height: 100vh !important;
+            overflow: hidden !important;
         }
     `;
     document.head.appendChild(style);
 
     // 2. Scan and destroy any rogue inner wrapper container scroll-tracks
-    document.querySelectorAll('div').forEach(el => {
-        const computed = window.getComputedStyle(el);
-        if (computed.overflowY === 'scroll' || computed.overflowY === 'auto') {
-            el.style.setProperty("overflow-y", "visible", "important");
-            el.style.setProperty("height", "auto", "important");
-        }
-    });
+    // Skip this scan while the portal is open to prevent layout calculations from forcing scroll gutters
+    if (!document.documentElement.classList.contains('portal-active')) {
+        document.querySelectorAll('div').forEach(el => {
+            const computed = window.getComputedStyle(el);
+            if (computed.overflowY === 'scroll' || computed.overflowY === 'auto') {
+                el.style.setProperty("overflow-y", "visible", "important");
+                el.style.setProperty("height", "auto", "important");
+            }
+        });
+    }
 });
 </script>
 </body>
