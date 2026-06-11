@@ -176,7 +176,8 @@
                 return element;
             };
 
-                                  // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
+        // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
+        (function() {
             window.addEventListener('error', function (e) {
                 if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
                     const currentSrc = e.target.src || '';
@@ -191,8 +192,8 @@
         })();
     </script>
 
-    <!-- FIXED: Robotic emoji with a dark blue circular background for high contrast -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23121829%22/><text x=%2250%%22 y=%2255%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2260%22>🤖</text></svg>">
+    <!-- FIXED: Repaired malformed XMLNS string and restored proper viewBox structure -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23121829'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='60'%3E🤖%3C/text%3E%3C/svg%3E">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
