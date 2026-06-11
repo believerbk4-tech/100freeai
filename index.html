@@ -151,22 +151,22 @@
                 return element;
             };
 
-            // 👑 THE 404 KILLER: Captures the error directly from inline HTML layouts and overrides it immediately
+            // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
             window.addEventListener('error', function (e) {
                 if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
                     const currentSrc = e.target.src || '';
                     const inlineOnError = e.target.getAttribute('onerror') || '';
                     
                     if (currentSrc.includes('fallback-icon.png') || inlineOnError.includes('fallback-icon.png')) {
-                        e.preventDefault(); // Prevents global event handler bubble-ups
+                        e.preventDefault(); 
                         e.target.src = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
                     }
                 }
-            }, true); // 'true' triggers the capture phase to run before inline elements execute
+            }, true); 
         })();
     </script>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
@@ -199,125 +199,105 @@
         pointer-events: none !important;
     }
 
-/* =======================================================
-REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
-======================================================= */
-html, body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--dark);
-    color: var(--text);
-    width: 100%;
-    /* PRO FIX: Force the browser layout engine to explicitly render vertical scroll tracks */
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100vh;
-    overflow: visible;
-    position: relative;
-}
-
-/* =======================================================
-   PORTAL LOCK MECHANISM (TEMPORARILY OVERRIDES THE BASE OVERFLOW)
-   ======================================================= */
-/* Prevent scrolling completely while portal is active */
-html.portal-active, 
-html.portal-active body {
-    overflow: hidden !important;
-    height: 100vh !important;
-    width: 100vw !important;
-}
-
-/* Target-lock and erase the right-side scrollbar track layout on Chrome/Safari/Edge */
-html.portal-active::-webkit-scrollbar,
-html.portal-active body::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
-/* Target-lock and erase the right-side scrollbar track layout on Firefox */
-html.portal-active {
-    scrollbar-width: none !important;
-}
-        
-/* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
-.suggestion-item {
-    padding: 12px 20px;
-    color: #bbb;
-    cursor: pointer;
-    font-size: 14px;
-    text-align: left;
-    transition: all 0.2s ease;
-    border-bottom: 1px solid #111;
-}
-.suggestion-item:last-child { border-bottom: none; }
-.suggestion-item:hover {
-    background: #1e1b4b;
-    color: #00ff88;
-}
-
-:root { 
-    --primary: #4f46e5; 
-    --primary-hover: #4338ca;
-    --dark: #000000; 
-    --text: #ffffff; 
-    --card-bg: #ffffff;
-    --border: #e2e8f0;
-}
-
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
- 
-        html, body { 
-            margin: 0; padding: 0; 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            background-color: var(--dark); color: var(--text); 
-            overflow-x: hidden; width: 100%;
-        }
-    
-    /* Prevent scrolling completely while portal is active */
-    html.portal-active, body.portal-active {
-    overflow: hidden !important;
-    height: 100vh !important;
-}
-
-    /* Hide the default browser scrollbar while on the portal */
-    html.portal-active::-webkit-scrollbar, 
-    body.portal-active::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
+    /* =======================================================
+       REVISED BASE LAYOUT (FORCES SCROLLBAR BACK WHEN PORTAL IS OFF)
+       ======================================================= */
+    html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        background-color: var(--dark);
+        color: var(--text);
+        width: 100%;
+        /* PRO FIX: Force the browser layout engine to explicitly render vertical scroll tracks */
+        overflow-y: scroll !important;
+        overflow-x: hidden !important;
     }
 
-/* =======================================================
-   WELCOME PORTAL INTERACTION STYLES
-   ======================================================= */
-#welcomePortal {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
-    z-index: 9999999 !important;
-    display: flex !important; 
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-/* Clear the layout footprint completely when dismissed */
-#welcomePortal.hidden {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100vh;
+        overflow: visible;
+        position: relative;
+    }
+
+    /* =======================================================
+       PORTAL LOCK MECHANISM (TEMPORARILY OVERRIDES THE BASE OVERFLOW)
+       ======================================================= */
+    /* Prevent scrolling completely while portal is active */
+    html.portal-active, 
+    html.portal-active body {
+        overflow: hidden !important;
+        height: 100vh !important;
+        width: 100vw !important;
+    }
+
+    /* Target-lock and erase the right-side scrollbar track layout on Chrome/Safari/Edge */
+    html.portal-active::-webkit-scrollbar,
+    html.portal-active body::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    /* Target-lock and erase the right-side scrollbar track layout on Firefox */
+    html.portal-active {
+        scrollbar-width: none !important;
+    }
+        
+    /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
+    .suggestion-item {
+        padding: 12px 20px;
+        color: #bbb;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: left;
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #111;
+    }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover {
+        background: #1e1b4b;
+        color: #00ff88;
+    }
+
+    :root { 
+        --primary: #4f46e5; 
+        --primary-hover: #4338ca;
+        --dark: #000000; 
+        --text: #ffffff; 
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
+    /* =======================================================
+       WELCOME PORTAL INTERACTION STYLES
+       ======================================================= */
+    #welcomePortal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
+        z-index: 9999999 !important;
+        display: flex !important; 
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    /* Clear the layout footprint completely when dismissed */
+    #welcomePortal.hidden {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
         
     /* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
     .robot-ambient-container {
@@ -332,7 +312,7 @@ html.portal-active {
 
     .floating-bot-particle {
         position: absolute !important;
-        color: rgba(99, 102, 241, 0.12) !important; /* Soft glowing neon blue/purple */
+        color: rgba(99, 102, 241, 0.12) !important; 
         font-family: system-ui !important;
         user-select: none !important;
         animation: floatAir 12s infinite ease-in-out !important;
@@ -362,13 +342,13 @@ html.portal-active {
         box-sizing: border-box !important;
     }
 
-/* Update your existing disappearing rule to include display: none */
-#welcomePortal.disappearing {
-    opacity: 0 !important;
-    transform: scale(1.05) !important;
-    pointer-events: none !important;
-    display: none !important; 
-}
+    /* Update your existing disappearing rule to include display: none */
+    #welcomePortal.disappearing {
+        opacity: 0 !important;
+        transform: scale(1.05) !important;
+        pointer-events: none !important;
+        display: none !important; 
+    }
         
         /* --- FIXED FLOATING ELEMENTS --- */
         #feedback-btn {
@@ -2605,7 +2585,7 @@ window.enterSite = function() {
         const cards = document.querySelectorAll('.tool-card');
         let matches = [];
 
-        cards.forEach(card => {
+               cards.forEach(card => {
             const titleElement = card.querySelector('h3');
             const descElement = card.querySelector('.tool-info p');
             
@@ -2627,7 +2607,14 @@ window.enterSite = function() {
             matches.slice(0, 6).forEach(toolName => {
                 const item = document.createElement('div');
                 item.className = 'suggestion-item';
-                item.innerHTML = `🤖 <strong>${toolName.substring(0, input.length)}</strong>${toolName.substring(input.length)}`;
+                
+                // Bold matching text case-insensitively
+                const index = toolName.toLowerCase().indexOf(input);
+                if (index >= 0) {
+                    item.innerHTML = `🤖 ${toolName.substring(0, index)}<strong>${toolName.substring(index, index + input.length)}</strong>${toolName.substring(index + input.length)}`;
+                } else {
+                    item.innerHTML = `🤖 ${toolName}`;
+                }
                 
                 item.onclick = function() {
                     document.getElementById('searchBar').value = toolName;
@@ -2652,7 +2639,10 @@ window.enterSite = function() {
     window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
-    // --- FIREBASE REALTIME DATABASE CONFIGURATION ---
+
+    /* =======================================================
+       FIREBASE REALTIME DATABASE CONFIGURATION & BUG FIXES
+       ======================================================= */
     const firebaseConfig = {
         apiKey: "AIzaSyDuoAoqxDOmjAG6ke1ksmwyrnxZydmOfAU",
         authDomain: "freeai-ratings.firebaseapp.com",
@@ -2663,142 +2653,217 @@ window.enterSite = function() {
         appId: "1:735292410645:web:4a79f607dad95b81ec771c"
     };
 
-  // 1. Initialize core Firebase Application instance
-const app = initializeApp(firebaseConfig);
+    // 1. Initialize core Firebase Application instance
+    const app = initializeApp(firebaseConfig);
 
-// 2. CONFIGURE DEBUGGING BEFORE APP CHECK INITIALIZATION
-// This injects a standardized local mock token so ReCAPTCHA skips validation on your local machine
-if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-    self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-}
-
-// 3. Initialize App Check
-const appCheck = initializeAppCheck(app, {
-    // If you run on Localhost, it falls back to the Debug Provider automatically
-    provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
-    isTokenAutoRefreshEnabled: true
-});
-
-// 4. CORRECT INITIALIZATION: Just use the app instance
-const db = getDatabase(app); 
-const ratingRef = ref(db, 'site-stats');
-
-const ratingCard = document.getElementById('rating-card');
-const ratingContent = document.getElementById('rating-content');
-const thankYouMsg = document.getElementById('thank-you-msg');
-const starElements = document.querySelectorAll('.star');
-
-if (localStorage.getItem('hasVoted') && ratingCard) {
-    ratingCard.style.display = 'none'; 
-}
-
-onValue(ratingRef, (snapshot) => {
-    const data = snapshot.val();
-    const statsHeader = document.querySelector('#live-rating');
-    if (data && data.count > 0 && statsHeader) {
-        const average = (data.sum / data.count).toFixed(1);
-        statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
+    // 2. CONFIGURE DEBUGGING BEFORE APP CHECK INITIALIZATION
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     }
-});
 
-starElements.forEach(star => {
-    star.addEventListener('click', async () => {
-        const val = parseInt(star.getAttribute('data-value'));
-        try {
-            await runTransaction(ratingRef, (currentData) => {
-                if (!currentData) return { count: 1, sum: val };
-                return {
-                    count: (currentData.count || 0) + 1,
-                    sum: (currentData.sum || 0) + val
-                };
-            });
+    // 3. Initialize App Check
+    const appCheck = initializeAppCheck(app, {
+        provider: new ReCaptchaEnterpriseProvider('6LdmR94sAAAAAPmCeryd2MSA_W9-pZvNnOBrIlyQ'),
+        isTokenAutoRefreshEnabled: true
+    });
 
-            setTimeout(() => {
-                if (ratingCard) {
-                    ratingCard.style.transition = 'opacity 0.5s ease';
-                    ratingCard.style.opacity = '0';
-                    setTimeout(() => { ratingCard.style.display = 'none'; }, 500); 
-                }
-            }, 3000);
-       } catch (error) {
-            console.error("Rating transaction dropped:", error);
+    // 4. CORRECT INITIALIZATION: Just use the app instance
+    const db = getDatabase(app); 
+    const ratingRef = ref(db, 'site-stats');
+
+    const ratingCard = document.getElementById('rating-card');
+    const ratingContent = document.getElementById('rating-content');
+    const thankYouMsg = document.getElementById('thank-you-msg');
+    const starElements = document.querySelectorAll('.star');
+
+    // SCROLL RESTORATION CHECK: Unlock overflow configurations instantly if voter cache clears them
+    if (localStorage.getItem('hasVoted') && ratingCard) {
+        ratingCard.style.display = 'none'; 
+        // Force-recovery track just in case style engines freeze layout states
+        if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+            document.documentElement.classList.remove('portal-active');
+            document.body.classList.remove('portal-active');
+        }
+    }
+
+    onValue(ratingRef, (snapshot) => {
+        const data = snapshot.val();
+        const statsHeader = document.querySelector('#live-rating');
+        if (data && data.count > 0 && statsHeader) {
+            const average = (data.sum / data.count).toFixed(1);
+            statsHeader.innerText = `RATING: ${average} / 5 ⭐`;
         }
     });
-});
+
+    starElements.forEach(star => {
+        star.addEventListener('click', async () => {
+            const val = parseInt(star.getAttribute('data-value'));
+            try {
+                // Enterprise-safe multi-stage data write operation
+                await runTransaction(ratingRef, (currentData) => {
+                    // Firebase passes null while initializing cache layers. 
+                    // To prevent data corruption, handle fallback objects smoothly
+                    const base = currentData || { count: 0, sum: 0 };
+                    return {
+                        count: (base.count || 0) + 1,
+                        sum: (base.sum || 0) + val
+                    };
+                });
+
+                // Save status marker to client browser storage
+                localStorage.setItem('hasVoted', 'true');
+
+                // Perform clear transition loops
+                if (ratingContent && thankYouMsg) {
+                    ratingContent.style.display = 'none';
+                    thankYouMsg.style.display = 'block';
+                }
+
+                setTimeout(() => {
+                    if (ratingCard) {
+                        ratingCard.style.transition = 'opacity 0.5s ease';
+                        ratingCard.style.opacity = '0';
+                        setTimeout(() => { 
+                            ratingCard.style.display = 'none'; 
+                            // Unconditional post-vote layout scroll recovery
+                            document.documentElement.classList.remove('portal-active');
+                            document.body.classList.remove('portal-active');
+                        }, 500); 
+                    }
+                }, 3000);
+           } catch (error) {
+                console.error("Rating transaction dropped:", error);
+            }
+        });
+    });
 
 // === PRO DEVELOPER DOUBLE SCROLLBAR OVERRIDE SYSTEM ===
 window.addEventListener("DOMContentLoaded", () => {
-    // 1. Activate portal state immediately on page load
-    document.documentElement.classList.add('portal-active');
-    document.body.classList.add('portal-active');
+    // 1. Detect if the user clicked "Enter" OR if they are currently on a subpage path
+    const alreadyVisited = sessionStorage.getItem('siteEntered') === 'true';
+    const isSubpage = window.location.pathname !== '/' && window.location.pathname !== '/index.html';
+    const bypassPortal = alreadyVisited || isSubpage;
 
     // 2. Force absolute rules to root elements via CSS Injection
     const style = document.createElement('style');
-    style.innerHTML = `
-        /* Hide all scrollbars completely while the landing portal is active */
-        html.portal-active, body.portal-active {
-            overflow: hidden !important;
-            width: 100vw !important;
-            max-width: 100vw !important;
-            height: 100vh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
+    style.id = 'layout-scroll-controller';
+    
+    if (!bypassPortal) {
+        // FRESH HOMEPAGE VISIT ONLY: Activate portal state immediately on page load
+        document.documentElement.classList.add('portal-active');
+        document.body.classList.add('portal-active');
+
+        style.innerHTML = `
+            /* Hide all scrollbars completely while the landing portal is active */
+            html.portal-active, body.portal-active {
+                overflow: hidden !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 100vh !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Ensure the main portal container respects the lock */
+            html.portal-active #welcomePortal {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 100vh !important;
+                overflow: hidden !important;
+            }
+            html.portal-active::-webkit-scrollbar, body.portal-active::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+            }
+            html.portal-active {
+                scrollbar-width: none !important;
+            }
+        `;
         
-        /* Ensure the main portal container respects the lock */
-        html.portal-active #welcomePortal {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            max-width: 100vw !important;
-            height: 100vh !important;
-            overflow: hidden !important;
-        }
-
-        /* Standard document flow configuration once user unlocks the directory */
-        html:not(.portal-active) {
-            overflow-y: scroll !important;
-            overflow-x: hidden !important;
-            width: 100% !important;
-            height: auto !important;
-        }
-
-        body:not(.portal-active) {
-            overflow-y: visible !important;
-            overflow-x: hidden !important;
-            width: 100% !important;
-            height: auto !important;
-        }
-    `;
+        // 3. Scan and kill rogue inner scrollbars ONLY when portal is active
+        document.querySelectorAll('div').forEach(el => {
+            const computed = window.getComputedStyle(el);
+            if (computed.overflowY === 'scroll' || computed.overflowY === 'auto') {
+                el.setAttribute('data-orig-overflow', computed.overflowY);
+                el.style.setProperty("overflow-y", "hidden", "important");
+            }
+        });
+    } else {
+        // RETURNING VISITOR, SUBPAGE, OR RELOAD: Unconditional Scroll Track Recovery
+        document.documentElement.classList.remove('portal-active');
+        document.body.classList.remove('portal-active');
+        document.documentElement.classList.add('portal-already-entered');
+        
+        style.innerHTML = `
+            html {
+                overflow-y: scroll !important;
+                overflow-x: hidden !important;
+                width: 100% !important;
+                height: auto !important;
+            }
+            body {
+                overflow-y: visible !important;
+                overflow-x: hidden !important;
+                width: 100% !important;
+                height: auto !important;
+                position: relative !important;
+            }
+            #welcomePortal { 
+                display: none !important; 
+                opacity: 0 !important; 
+                visibility: hidden !important; 
+                pointer-events: none !important; 
+            }
+        `;
+        
+        const portal = document.getElementById('welcomePortal');
+        if (portal) portal.remove(); // Safely remove element to clean memory allocations
+    }
+    
     document.head.appendChild(style);
 
-    // 3. Scan and kill rogue inner scrollbars while portal is active
-    document.querySelectorAll('div').forEach(el => {
-        const computed = window.getComputedStyle(el);
-        if (computed.overflowY === 'scroll' || computed.overflowY === 'auto') {
-            el.setAttribute('data-orig-overflow', computed.overflowY);
-            el.style.setProperty("overflow-y", "hidden", "important");
-        }
-    });
-
     // 4. Attach trigger to your "Launch Directory" button
-    // Ensure your button markup has id="launchBtn" or change the selector below
-    const launchBtn = document.querySelector('#launchBtn') || document.querySelector('button');
+    const launchBtn = document.querySelector('#launchBtn') || document.querySelector('.launch-btn') || document.querySelector('button');
     if (launchBtn) {
         launchBtn.addEventListener('click', () => {
+            // Update state logic parameters
+            sessionStorage.setItem('siteEntered', 'true');
+            
             // Remove the layout locks to show standard page scrolling
             document.documentElement.classList.remove('portal-active');
             document.body.classList.remove('portal-active');
+            document.documentElement.classList.add('portal-already-entered');
             
             // Restore native scrolling to inner divs if any existed
             document.querySelectorAll('div[data-orig-overflow]').forEach(el => {
                 el.style.setProperty("overflow-y", el.getAttribute('data-orig-overflow'), "important");
             });
             
-            // Optional: Hide or smoothly fade out the welcome portal container here
+            // Dynamically replace with clean, global scroll tracks
+            style.innerHTML = `
+                html {
+                    overflow-y: scroll !important;
+                    overflow-x: hidden !important;
+                    width: 100% !important;
+                    height: auto !important;
+                }
+                body {
+                    overflow-y: visible !important;
+                    overflow-x: hidden !important;
+                    width: 100% !important;
+                    height: auto !important;
+                }
+                #welcomePortal { display: none !important; }
+            `;
+            
             const portal = document.getElementById('welcomePortal');
-            if (portal) portal.style.display = 'none';
+            if (portal) {
+                portal.classList.add('disappearing');
+                setTimeout(() => { portal.style.display = 'none'; }, 600);
+            }
         });
     }
 });
