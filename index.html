@@ -475,94 +475,103 @@ html.portal-active {
 <body class="hide-scrollbar">
     <script>
 /* =======================================================
-   BFCACHE-IMMUNE RUNTIME SCROLL CONTEXT ENGINE
+   ANTI-FLASH & RELOAD TRACKER SYSTEM (RUNS IMMEDIATELY)
    ======================================================= */
 (function() {
-    // 1. Kill any existing style engines to prevent rendering loop pollution
+    // 1. Force state logic processing right now
+    const alreadyVisited = sessionStorage.getItem('siteEntered') === 'true';
+
+    // PRO ARCHITECTURE FIX: Kill any stale layout overrides from previous page caches
     const oldEngine = document.getElementById('layout-override-engine');
     if (oldEngine) oldEngine.remove();
 
-    // 2. Structural Styles Generation
+    // 2. Build and prioritize absolute styling overrides
     const styleOverride = document.createElement('style');
     styleOverride.id = 'layout-override-engine';
+    
+    if (alreadyVisited) {
+        // RETURNING VISITOR OR RELOAD: Total restoration of normal scrolling
+        document.documentElement.classList.add('portal-already-entered');
+        document.documentElement.classList.remove('portal-active');
+        
+        styleOverride.innerHTML = `
+            html, body {
+                overflow: visible !important;
+                overflow-y: scroll !important;
+                overflow-x: hidden !important;
+                height: auto !important;
+                position: relative !important;
+            }
+            #welcomePortal { 
+                display: none !important; 
+                opacity: 0 !important; 
+                visibility: hidden !important; 
+                pointer-events: none !important; 
+            }
+        `;
+    } else {
+        // FRESH VISIT: Completely lock viewport scrollbars and hide tracks
+        document.documentElement.classList.add('portal-active');
+        
+        styleOverride.innerHTML = `
+            html.portal-active, body.portal-active {
+                overflow: hidden !important;
+                height: 100vh !important;
+                width: 100vw !important;
+            }
+            /* Explicitly erase scrollbar layout tracks on Webkit & Firefox while portal is active */
+            html.portal-active::-webkit-scrollbar, body.portal-active::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+            html.portal-active {
+                scrollbar-width: none !important;
+            }
+        `;
+    }
+    
+    // Inject the clean style rules straight to the head element
     document.head.appendChild(styleOverride);
 
-    // 3. MASTER COORDINATION FUNCTION
-    // This evaluates and forcefully updates layout parameters regardless of cache states
-    function syncPageLayoutContext() {
-        const alreadyVisited = sessionStorage.getItem('siteEntered') === 'true';
-        const portal = document.getElementById('welcomePortal');
-
+    // 3. Post-render clean up once layout nodes are interactive
+    window.addEventListener('DOMContentLoaded', () => {
         if (alreadyVisited) {
-            // RETURNING OR RECOVERY BACK NAVIGATION: Force native page flow
-            document.documentElement.classList.add('portal-already-entered');
-            document.documentElement.classList.remove('portal-active');
+            // Scrub away classes that hide scrollbars on the main pages
             document.body.classList.remove('hide-scrollbar', 'portal-active');
-
-            styleOverride.innerHTML = `
-                html, body {
-                    overflow: visible !important;
-                    overflow-y: scroll !important;
-                    overflow-x: hidden !important;
-                    height: auto !important;
-                    position: relative !important;
-                }
-                #welcomePortal { 
-                    display: none !important; 
-                    opacity: 0 !important; 
-                    visibility: hidden !important; 
-                    pointer-events: none !important; 
-                }
-            `;
+            document.documentElement.classList.remove('portal-active');
             
-            // Clean the memory entirely so hidden elements cannot capture focus events
-            if (portal) portal.remove();
+            const portal = document.getElementById('welcomePortal');
+            if (portal) portal.remove(); // Safely drop the element frame entirely
             
+            // Force a hardware paint reflow to snap the scrollbar back into existence
+            const forceReflow = document.documentElement.offsetHeight;
         } else {
-            // BRAND NEW VISITOR: Absolute, seamless scroll lock
-            document.documentElement.classList.add('portal-active');
-            document.body.classList.add('portal-active');
-            
-            styleOverride.innerHTML = `
-                html.portal-active, body.portal-active {
-                    overflow: hidden !important;
-                    height: 100vh !important;
-                    width: 100vw !important;
-                }
-                html.portal-active::-webkit-scrollbar, body.portal-active::-webkit-scrollbar {
-                    display: none !important;
-                    width: 0 !important;
-                    height: 0 !important;
-                }
-                html.portal-active {
-                    scrollbar-width: none !important;
-                }
-            `;
-        }
-
-        // Force a physical browser engine painting reflow to snap layout changes instantly
-        const forcePaintReflow = document.documentElement.offsetHeight;
-    }
-
-    // =======================================================
-    // FIX: BFCache Back/Forward and Page Reload Handler
-    // =======================================================
-    window.addEventListener('pageshow', (event) => {
-        // Run immediately whether it is a fresh HTTP request or a frozen browser back snapshot
-        syncPageLayoutContext();
-
-        // 4. Attach event listeners safely once UI is active
-        const portal = document.getElementById('welcomePortal');
-        if (portal) {
+            // For fresh visits, attach listener to your launch directory button
             const launchBtn = document.querySelector('.launch-btn') || document.querySelector('button') || document.querySelector('#launchBtn');
             if (launchBtn) {
-                // Remove existing clone listeners before rebinding
-                const cleanBtn = launchBtn.cloneNode(true);
-                launchBtn.parentNode.replaceChild(cleanBtn, launchBtn);
-
-                cleanBtn.addEventListener('click', () => {
+                launchBtn.addEventListener('click', () => {
+                    // Update session key state instantly
                     sessionStorage.setItem('siteEntered', 'true');
-                    syncPageLayoutContext();
+                    
+                    // Kill portal wrapper configuration classes
+                    document.documentElement.classList.remove('portal-active');
+                    document.body.classList.remove('portal-active');
+                    
+                    // Replace active rules with default page rules
+                    styleOverride.innerHTML = `
+                        html, body {
+                            overflow: visible !important;
+                            overflow-y: scroll !important;
+                            overflow-x: hidden !important;
+                            height: auto !important;
+                            position: relative !important;
+                        }
+                        #welcomePortal { display: none !important; }
+                    `;
+                    
+                    // Force reflow on click transition
+                    const forceReflow = document.documentElement.offsetHeight;
                 });
             }
         }
