@@ -57,17 +57,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
 
-    <style>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "100+ Free AI Tools Directory",
-      "description": "A curated list of free AI tools for design, marketing, and writing.",
-      "url": "https://100freeai.netlify.app"
-    }
-    </script>
-         /* 1. Hides scrollbar ONLY on the welcome portal / initial load */
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "100+ Free AI Tools Directory",
+  "description": "A curated list of free AI tools for design, marketing, and writing.",
+  "url": "https://100freeai.netlify.app"
+}
+</script>
+
+<style>
+/* =======================================================
+   ANTI-FLASH SYSTEM: FORCES IMMEDIATE PORTAL STRUCTURAL DEATH
+   ======================================================= */
+#welcomePortal.instantly-hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+.portal-already-entered #welcomePortal {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* 1. Hides scrollbar ONLY on the welcome portal / initial load */
 body.hide-scrollbar {
     overflow: hidden !important;
     height: 100vh !important;
@@ -82,8 +100,6 @@ html {
     background-color: #000;
     color: #fff;
     font-family: 'Segoe UI', Roboto, sans-serif;
-    
-    /* Force exactly one vertical scrollbar system-wide */
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 }
@@ -94,41 +110,43 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    
-    /* Strips out the second scrollbar engine completely */
     overflow: visible !important; 
-    
-    /* Optional safety: keeps animations/glow elements from leaking out horizontally */
     position: relative;
 }
+
+/* Prevent scrolling completely while portal is active */
+html.portal-active, body.portal-active {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
         
-        /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
-        .suggestion-item {
-            padding: 12px 20px;
-            color: #bbb;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: left;
-            transition: all 0.2s ease;
-            border-bottom: 1px solid #111;
-        }
-        .suggestion-item:last-child { border-bottom: none; }
-        .suggestion-item:hover {
-            background: #1e1b4b;
-            color: #00ff88;
-        }
-        
-        :root { 
-            --primary: #4f46e5; /* Premium Indigo Primary */
-            --primary-hover: #4338ca;
-            --dark: #000000; 
-            --text: #ffffff; 
-            --card-bg: #ffffff;
-            --border: #e2e8f0;
-        }
-        
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
+/* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
+.suggestion-item {
+    padding: 12px 20px;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #111;
+}
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover {
+    background: #1e1b4b;
+    color: #00ff88;
+}
+
+:root { 
+    --primary: #4f46e5; 
+    --primary-hover: #4338ca;
+    --dark: #000000; 
+    --text: #ffffff; 
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+ 
         html, body { 
             margin: 0; padding: 0; 
             font-family: 'Segoe UI', Roboto, sans-serif; 
@@ -421,32 +439,33 @@ body {
 </head>
 <body class="hide-scrollbar">
     <script>
-        (function() {
-             // 1. INITIAL LOAD CHECK - Explicitly fetch the portal element first
-    const portal = document.getElementById('welcomePortal');
-
-    if (sessionStorage.getItem('siteEntered') === 'true') {
-        if (portal) {
-            portal.classList.add('hidden');
-            // If you use the CSS class from earlier, add it here too:
-            portal.classList.add('disappearing'); 
-            portal.style.display = 'none'; 
+        /* =======================================================
+           ANTI-FLASH SYSTEM (RUNS BEFORE DOM RENDER)
+           ======================================================= */
+        if (sessionStorage.getItem('siteEntered') === 'true') {
+            // 1. Instantly tag the root layout element to hide the portal early
+            document.documentElement.classList.add('portal-already-entered');
             
-            // Completely restore clean, single-scrollbar scrolling for returning sessions
-            document.body.classList.remove('hide-scrollbar');
+            // 2. Inject a high-priority safety rule directly into the head
+            const antiFlashStyle = document.createElement('style');
+            antiFlashStyle.id = 'anti-flash-layer';
+            antiFlashStyle.innerHTML = '#welcomePortal { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }';
+            document.head.appendChild(antiFlashStyle);
+            
+            // 3. Immediately clean up the scrollbars before rendering the body text
             document.documentElement.classList.remove('portal-active');
-            document.body.classList.remove('portal-active');
-            
-            // Clean up inline styles so your base CSS takes over perfectly
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            window.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.remove('hide-scrollbar');
+                document.body.classList.remove('portal-active');
+                
+                // Double check to ensure element layout footprint is deleted
+                const portalElement = document.getElementById('welcomePortal');
+                if (portalElement) {
+                    portalElement.classList.add('instantly-hidden');
+                    portalElement.style.display = 'none';
+                }
+            });
         }
-    } else {
-        document.body.classList.add('hide-scrollbar');
-        document.documentElement.classList.add('portal-active');
-        document.body.classList.add('portal-active');
-    }
-        })();
     </script>
 
     <div class="robot-ambient-container">
@@ -458,7 +477,7 @@ body {
     </div>
 
     <div id="directory-content">
-        </div>
+    </div>
 
     <div id="welcomePortal">
         <div class="robot-ambient-container">
@@ -493,11 +512,11 @@ body {
                 <span>✓ ZERO SIGN-UP</span>
             </div>
             
-           <button onclick="enterSite()" style="background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%); color: white; border: none; padding: 16px 40px; font-size: 1rem; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35); transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; text-transform: uppercase;">
-    Launch Directory
-</button>
-</div>
-</div>
+            <button onclick="enterSite()" style="background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%); color: white; border: none; padding: 16px 40px; font-size: 1rem; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35); transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 0.5px; text-transform: uppercase;">
+                Launch Directory
+            </button>
+        </div>
+    </div>
 </body>
     
 <button id="feedback-btn" onclick="sendFeedback()">Feedback</button>
@@ -2403,39 +2422,34 @@ body {
 
         const portal = document.getElementById('welcomePortal');
 
-    // 1. INITIAL LOAD CHECK
-    if (sessionStorage.getItem('siteEntered') === 'true') {
-        if (portal) {
-            portal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            document.documentElement.classList.remove('portal-active');
-            document.body.classList.remove('portal-active');
-        }
-    } else {
-        document.body.style.overflow = 'hidden';
-        document.documentElement.classList.add('portal-active');
-        document.body.classList.add('portal-active');
+   // === BUTTON CLICK FUNCTION ===
+window.enterSite = function() {
+    // 1. Target lock the portal element safely
+    const portal = document.getElementById('welcomePortal');
+    
+    if (portal) {
+        // 2. Add your smooth CSS fade animation class
+        portal.classList.add('disappearing');
+        
+        // 3. Flag the session so Step 2 can block the flash on the next reload
+        sessionStorage.setItem('siteEntered', 'true');
+        
+        // 4. Clean up all layout tracking classes immediately
+        document.body.classList.remove('hide-scrollbar');
+        document.documentElement.classList.remove('portal-active');
+        document.body.classList.remove('portal-active');
+        
+        // Remove old inline style overrides completely
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        
+        // 5. Completely drop the element footprint from layout calculations after animation
+        setTimeout(() => {
+            portal.style.display = 'none';
+            portal.classList.add('instantly-hidden');
+        }, 600); // Perfectly matches your 0.6s fading transition time
     }
-
-      // 2. BUTTON FUNCTION
-    window.enterSite = function() {
-        if (portal) {
-            portal.classList.add('disappearing');
-            
-            // Bring the scrollbars back immediately
-            document.body.style.overflow = 'auto';
-            document.documentElement.style.overflow = 'auto';
-            document.body.classList.remove('hide-scrollbar');
-            document.documentElement.classList.remove('portal-active');
-            document.body.classList.remove('portal-active');
-            
-            sessionStorage.setItem('siteEntered', 'true');
-            
-            setTimeout(() => {
-                portal.classList.add('hidden');
-            }, 700);
-        }
-    };
+};
 
     // --- NAVIGATION FILTERING ENGINE (LAUNCH DIRECTORY) ---
     window.filterCat = function(cat, btn) {
