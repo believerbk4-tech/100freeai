@@ -114,10 +114,22 @@ body {
     position: relative;
 }
 
-/* Prevent scrolling completely while portal is active */
+/* Prevent scrolling completely and VANISH scrollbars while portal is active */
 html.portal-active, body.portal-active {
     overflow: hidden !important;
     height: 100vh !important;
+}
+
+/* Target-lock and erase the right-side scrollbar track layout on Chrome/Safari/Edge */
+html.portal-active::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Target-lock and erase the right-side scrollbar track layout on Firefox */
+html.portal-active {
+    scrollbar-width: none !important;
 }
         
 /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
