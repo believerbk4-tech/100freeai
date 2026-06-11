@@ -176,7 +176,7 @@
                 return element;
             };
 
-                       // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
+                                  // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
             window.addEventListener('error', function (e) {
                 if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
                     const currentSrc = e.target.src || '';
@@ -191,8 +191,8 @@
         })();
     </script>
 
-    <!-- FIXED: Restored official explicit SVG XML namespace parameters to render emoji graphics natively -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <!-- FIXED: Pointing directly to your true image asset folder path file -->
+    <link rel="icon" type="image/webp" href="images/welcome-bg.webp">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
@@ -203,7 +203,7 @@
       "@type": "ItemList",
       "name": "100+ Free AI Tools Directory",
       "description": "A curated list of free AI tools for design, marketing, and writing.",
-      "url": "https://100freeai.netlify.app"
+      "url": "https://netlify.app"
     }
     </script>
 
