@@ -75,7 +75,7 @@
             
             document.head.appendChild(styleOverride);
 
-            // Post-render cleanup once layout nodes are interactive
+                       // Post-render cleanup once layout nodes are interactive
             window.addEventListener('DOMContentLoaded', () => {
                 if (bypassPortal) {
                     document.body.classList.remove('hide-scrollbar', 'portal-active');
@@ -100,6 +100,8 @@
                                     overflow: visible !important;
                                     overflow-y: scroll !important;
                                     overflow-x: hidden !important;
+                                    width: 100% !important; /* FIXED: Prevents horizontal shifts on entering site */
+                                    max-width: 100% !important;
                                     height: auto !important;
                                     position: relative !important;
                                 }
@@ -177,7 +179,7 @@
         })();
     </script>
 
-   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
@@ -192,7 +194,7 @@
     }
     </script>
 
-   <style>
+    <style>
     /* =======================================================
        ANTI-FLASH SYSTEM: FORCES IMMEDIATE PORTAL STRUCTURAL DEATH
        ======================================================= */
@@ -220,6 +222,7 @@
         background-color: var(--dark);
         color: var(--text);
         width: 100%;
+        max-width: 100%;
         /* PRO FIX: Force the browser layout engine to explicitly render vertical scroll tracks */
         overflow-y: scroll !important;
         overflow-x: hidden !important;
@@ -229,65 +232,80 @@
         margin: 0;
         padding: 0;
         width: 100%;
+        max-width: 100%;
         min-height: 100vh;
         overflow: visible;
         position: relative;
     }
 
-    /* =======================================================
-       PORTAL LOCK MECHANISM (TEMPORARILY OVERRIDES THE BASE OVERFLOW)
-       ======================================================= */
-    /* Prevent scrolling completely while portal is active */
-    html.portal-active, 
-    html.portal-active body {
-        overflow: hidden !important;
-        height: 100vh !important;
-        width: 100vw !important;
-    }
+  /* =======================================================
+   PORTAL LOCK MECHANISM (TEMPORARILY OVERRIDES THE BASE OVERFLOW)
+   ======================================================= */
+/* Prevent scrolling completely while portal is active */
+html.portal-active, 
+html.portal-active body {
+    overflow: hidden !important;
+    overflow-x: hidden !important; /* FIXED: Strict alignment lockdown */
+    height: 100vh !important;
+    width: 100% !important;        /* FIXED: Changed from 100vw to eliminate track splitting */
+    max-width: 100% !important;
+}
 
-    /* Target-lock and erase the right-side scrollbar track layout on Chrome/Safari/Edge */
-    html.portal-active::-webkit-scrollbar,
-    html.portal-active body::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-    }
+/* Target-lock and erase the right-side scrollbar track layout on Chrome/Safari/Edge */
+html.portal-active::-webkit-scrollbar,
+html.portal-active body::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
 
-    /* Target-lock and erase the right-side scrollbar track layout on Firefox */
-    html.portal-active {
-        scrollbar-width: none !important;
-    }
-        
-    /* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
-    .suggestion-item {
-        padding: 12px 20px;
-        color: #bbb;
-        cursor: pointer;
-        font-size: 14px;
-        text-align: left;
-        transition: all 0.2s ease;
-        border-bottom: 1px solid #111;
-    }
-    .suggestion-item:last-child { border-bottom: none; }
-    .suggestion-item:hover {
-        background: #1e1b4b;
-        color: #00ff88;
-    }
+/* Target-lock and erase the right-side scrollbar track layout on Firefox */
+html.portal-active {
+    scrollbar-width: none !important;
+}
+    
+/* --- SEARCH AUTO-SUGGEST DROPDOWN STYLES --- */
+.suggestion-item {
+    padding: 12px 20px;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #111;
+}
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover {
+    background: #1e1b4b;
+    color: #00ff88;
+}
 
-    :root { 
-        --primary: #4f46e5; 
-        --primary-hover: #4338ca;
-        --dark: #000000; 
-        --text: #ffffff; 
-        --card-bg: #ffffff;
-        --border: #e2e8f0;
-    }
+:root { 
+    --primary: #4f46e5; 
+    --primary-hover: #4338ca;
+    --dark: #000000; 
+    --text: #ffffff; 
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+}
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+* { 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; 
+    outline: none; 
+}
 
 /* PRO ENGINE FIX: Forces the layout wrapper to reserve clean channel space for your scrollbar track */
 html {
-    scrollbar-gutter: stable;
+    scrollbar-gutter: stable !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 /* =======================================================
@@ -315,26 +333,26 @@ html {
     pointer-events: none !important;
 }
       
-    /* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
-    .robot-ambient-container {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        pointer-events: none !important;
-        z-index: 1 !important;
-    }
+/* 🤖 FLOATING ROBOT BACKDROP AMBIENCE */
+.robot-ambient-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
 
-    .floating-bot-particle {
-        position: absolute !important;
-        color: rgba(99, 102, 241, 0.12) !important; 
-        font-family: system-ui !important;
-        user-select: none !important;
-        animation: floatAir 12s infinite ease-in-out !important;
-    }
+.floating-bot-particle {
+    position: absolute !important;
+    color: rgba(99, 102, 241, 0.12) !important; 
+    font-family: system-ui !important;
+    user-select: none !important;
+    animation: floatAir 12s infinite ease-in-out !important;
+}
 
-    /* Randomize floating paths for different robot particles */
+   /* Randomize floating paths for different robot particles */
 .bot-1 { font-size: 5rem !important; top: 15%; left: 10%; animation-duration: 14s !important; animation-delay: 0s !important; }
 .bot-2 { font-size: 3.5rem !important; top: 25%; right: 12%; animation-duration: 11s !important; animation-delay: -3s !important; }
 .bot-3 { font-size: 4.5rem !important; bottom: 18%; left: 15%; animation-duration: 16s !important; animation-delay: -5s !important; }
@@ -501,7 +519,7 @@ header {
     min-height: 500px;
 }
 
-    /* Ensure content box stays on top */
+/* Ensure content box stays on top */
 .portal-content-box {
     position: relative !important;
     z-index: 2 !important; 
@@ -571,7 +589,7 @@ body:not(.portal-active) {
 }
 </style>
 </head>
-
+<body>
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
         <div class="floating-bot-particle" style="top: 25%; right: 15%;">⚙️</div>
@@ -580,8 +598,7 @@ body:not(.portal-active) {
         <div class="floating-bot-particle" style="top: 40%; left: 50%;">✨</div>
     </div>
 
-    <div id="directory-content">
-    </div>
+    <div id="directory-content"></div>
 
     <div id="welcomePortal">
         <div class="robot-ambient-container">
@@ -621,62 +638,63 @@ body:not(.portal-active) {
             </button>
         </div>
     </div>
-</body>
     
-<button id="feedback-btn" onclick="sendFeedback()">Feedback</button>
-<a href="https://wa.me/923175006728" class="contact-pill">📞 CONTACT US</a>
+    <button id="feedback-btn" onclick="sendFeedback()">Feedback</button>
+    <a href="https://wa.me/923175006728" class="contact-pill" target="_blank" rel="noopener noreferrer">📞 CONTACT US</a>
 
-<div class="rate-container" id="rating-card">
-    <div id="rating-content">
-        <span style="font-size: 11px; font-weight: 800; color: var(--primary); display: block; margin-bottom: 4px;">RATE OUR DIRECTORY</span>
-        <span id="live-rating" style="font-size: 10px; color: #888; display: block; margin-bottom: 6px;">RATING: 0 / 5 ⭐</span>
-        <div id="starGroup">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
+    <div class="rate-container" id="rating-card">
+        <div id="rating-content">
+            <span style="font-size: 11px; font-weight: 800; color: var(--primary); display: block; margin-bottom: 4px;">RATE OUR DIRECTORY</span>
+            <span id="live-rating" style="font-size: 10px; color: #888; display: block; margin-bottom: 6px;">RATING: 0 / 5 ⭐</span>
+            <div id="starGroup">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+        </div>
+        
+        <div id="thank-you-msg" style="display:none; font-size: 12px; font-weight: 800; color: #ff69b4; padding: 10px;">
+            Thanks for your Vote! 💖
         </div>
     </div>
-    
-    <div id="thank-you-msg" style="display:none; font-size: 12px; font-weight: 800; color: #ff69b4; padding: 10px;">
-        Thanks for your Vote! 💖
-    </div>
-</div>
-    
-<header style="padding: 140px 20px 0; text-align: center; max-width: 900px; margin: 0 auto; position: relative;">
-    
-    <span style="color: #818cf8; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">
-        Curated Creation Matrix
-    </span>
+        
+    <header style="padding: 140px 20px 0; text-align: center; max-width: 900px; margin: 0 auto; position: relative;">
+        <span style="color: #818cf8; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">
+            Curated Creation Matrix
+        </span>
 
-    <h1 style="font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 900; color: #ffffff; margin: 0 0 20px 0; letter-spacing: -1px; line-height: 1.1;">
-        The Ultimate <span style="background: linear-gradient(to right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Toolkit</span>
-    </h1>
+        <h1 style="font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 900; color: #ffffff; margin: 0 0 20px 0; letter-spacing: -1px; line-height: 1.1;">
+            The Ultimate <span style="background: linear-gradient(to right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Toolkit</span>
+        </h1>
 
-    <p style="max-width: 640px; margin: 0 auto 35px auto; color: #94a3b8; line-height: 1.6; font-size: clamp(0.95rem, 2.5vw, 1.1rem); font-weight: 400;">
-        Explore a professional collection of the world's most powerful AI engines. Custom targeted for 
-        <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">designers</span>, 
-        <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">writers</span>, and 
-        <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">content creators</span> to optimize digital workflows in one central scope.
-    </p>
+        <p style="max-width: 640px; margin: 0 auto 35px auto; color: #94a3b8; line-height: 1.6; font-size: clamp(0.95rem, 2.5vw, 1.1rem); font-weight: 400;">
+            Explore a professional collection of the world's most powerful AI engines. Custom targeted for 
+            <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">designers</span>, 
+            <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">writers</span>, and 
+            <span style="color: #ffffff; font-weight: 600; border-bottom: 1px dashed #4f46e5;">content creators</span> to optimize digital workflows in one central scope.
+        </p>
 
-    <div style="position: relative; width: 90%; max-width: 500px; margin: 0 auto; z-index: 1000;">
-    <input type="text" id="searchBar" onkeyup="filterSearch()" autocomplete="off" placeholder="Search 100+ tools..." 
-           style="width: 100%; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; font-size: 1rem;">
-    
-    <div id="searchSuggestions" style="position: absolute; top: 110%; left: 5%; width: 90%; background: #0a0a0a; border: 1px solid #222; border-radius: 12px; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); padding: 5px 0;"></div>
-</div>
-    
-    <div class="filter-container">
-        <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
-        <button class="filter-btn" onclick="filterCat('writing', this)">Writing (33)</button>
-        <button class="filter-btn" onclick="filterCat('design', this)">Design (34)</button>
-        <button class="filter-btn" onclick="filterCat('video', this)">Video (33)</button>
-    </div>
-</header>
+        <div style="position: relative; width: 90%; max-width: 500px; margin: 0 auto; z-index: 1000;">
+            <input type="text" id="searchBar" onkeyup="filterSearch()" autocomplete="off" placeholder="Search 100+ tools..." 
+                   style="width: 100%; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; font-size: 1rem;">
+            
+            <div id="searchSuggestions" style="position: absolute; top: 110%; left: 5%; width: 90%; background: #0a0a0a; border: 1px solid #222; border-radius: 12px; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); padding: 5px 0;"></div>
+        </div>
+        
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
+            <button class="filter-btn" onclick="filterCat('writing', this)">Writing (33)</button>
+            <button class="filter-btn" onclick="filterCat('design', this)">Design (34)</button>
+            <button class="filter-btn" onclick="filterCat('video', this)">Video (33)</button>
+        </div>
+    </header>
 
-    <section id="leonardoSpotlight" class="spotlight-container" style="max-width: 1400px; margin: 0 auto; padding: 0 1rem; margin-top: 1.5rem;">
+   <!-- =======================================================
+   FOUNDER'S CHOICE: LEONARDO AI PREMIUM SPOTLIGHT CONTAINER
+   ======================================================= */ -->
+<section id="leonardoSpotlight" class="spotlight-container" style="max-width: 1400px; margin: 0 auto; padding: 0 1rem; margin-top: 1.5rem;">
     <div style="background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 2px solid #4f46e5; border-radius: 16px; padding: 1.5rem; display: flex; gap: 1.5rem; align-items: center; justify-content: space-between; flex-wrap: wrap; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15); position: relative;">
         
         <div style="background: #4f46e5; color: #fff; padding: 4px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; display: inline-block; margin-bottom: 0.5rem;">
@@ -723,7 +741,7 @@ body:not(.portal-active) {
                 </p>
 
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
-                    <span style="letter-spacing: 1px; font-size: 0.8rem;">⭐⭐⭐⭐微</span>
+                    <span style="letter-spacing: 1px; font-size: 0.8rem;">⭐⭐⭐⭐⭐</span>
                     <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">(4.8/5)</span>
                 </div>
 
@@ -2628,38 +2646,36 @@ body:not(.portal-active) {
                 card.style.display = "none";
             }
         });
+
+        // FIXED: Re-nested safely inside the filterSearch scope loop container
+        if (matches.length > 0 && input.length > 0) {
+            if (suggestionsBox) suggestionsBox.style.display = 'block';
+            matches.slice(0, 6).forEach(toolName => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                
+                // Bold matching text case-insensitively
+                const index = toolName.toLowerCase().indexOf(input);
+                if (index >= 0) {
+                    item.innerHTML = `🤖 ${toolName.substring(0, index)}<strong>${toolName.substring(index, index + input.length)}</strong>${toolName.substring(index + input.length)}`;
+                } else {
+                    item.innerHTML = `🤖 ${toolName}`;
+                }
+                
+                item.onclick = function() {
+                    const searchInput = document.getElementById('searchBar');
+                    if (searchInput) searchInput.value = toolName;
+                    if (suggestionsBox) suggestionsBox.style.display = 'none';
+                    if (typeof window.filterSearch === 'function') window.filterSearch();
+                };
+                if (suggestionsBox) suggestionsBox.appendChild(item);
+            });
+        } else {
+            if (suggestionsBox) suggestionsBox.style.display = 'none';
+        }
     };
 
-            // Ensure critical search references exist in local scope to prevent runtime crashes
-    const suggestionsBox = document.getElementById('searchSuggestions');
-    if (typeof matches === 'undefined') window.matches = [];
-
-    if (window.matches.length > 0 && typeof input !== 'undefined' && input.length > 0) {
-        if (suggestionsBox) suggestionsBox.style.display = 'block';
-        window.matches.slice(0, 6).forEach(toolName => {
-            const item = document.createElement('div');
-            item.className = 'suggestion-item';
-            
-            // Bold matching text case-insensitively
-            const index = toolName.toLowerCase().indexOf(input.toLowerCase());
-            if (index >= 0) {
-                item.innerHTML = `🤖 ${toolName.substring(0, index)}<strong>${toolName.substring(index, index + input.length)}</strong>${toolName.substring(index + input.length)}`;
-            } else {
-                item.innerHTML = `🤖 ${toolName}`;
-            }
-            
-            item.onclick = function() {
-                const searchInput = document.getElementById('searchBar');
-                if (searchInput) searchInput.value = toolName;
-                if (suggestionsBox) suggestionsBox.style.display = 'none';
-                if (typeof window.filterSearch === 'function') window.filterSearch();
-            };
-            if (suggestionsBox) suggestionsBox.appendChild(item);
-        });
-    } else {
-        if (suggestionsBox) suggestionsBox.style.display = 'none';
-    }
-
+    // Global listener to dismiss suggestion cards on outer canvas clicks
     document.addEventListener('click', function(e) {
         const currentBox = document.getElementById('searchSuggestions');
         const searchInput = document.getElementById('searchBar');
@@ -2668,7 +2684,7 @@ body:not(.portal-active) {
         }
     });
         
-    window.sendFeedback = () => {
+      window.sendFeedback = () => {
         window.location.href = "mailto:believerbk4@Gmail.com?subject=Feedback for 100+ Free AI Tools";
     };
 
@@ -2727,7 +2743,7 @@ body:not(.portal-active) {
         }
     });
 
-        starElements.forEach(star => {
+    starElements.forEach(star => {
         star.addEventListener('click', async () => {
             const val = parseInt(star.getAttribute('data-value'));
             try {
