@@ -33,7 +33,9 @@
                     html, body {
                         overflow: visible !important;
                         overflow-y: scroll !important;
-                        overflow-x: hidden !important;
+                        overflow-x: hidden !important; /* FIXED: Absolute lockdown against horizontal shifting */
+                        width: 100% !important;        /* FIXED: Swapped from 100vw to allow native inline widths */
+                        max-width: 100% !important;    
                         height: auto !important;
                         position: relative !important;
                     }
@@ -55,8 +57,10 @@
                     html.portal-active, 
                     html.portal-active body {
                         overflow: hidden !important;
+                        overflow-x: hidden !important; /* FIXED: Complete horizontal lock */
                         height: 100vh !important;
-                        width: 100vw !important;
+                        width: 100% !important;        /* FIXED: Swapped from 100vw to kill double layout track splitting */
+                        max-width: 100% !important;
                     }
                     html.portal-active::-webkit-scrollbar, body.portal-active::-webkit-scrollbar {
                         display: none !important;
