@@ -119,9 +119,9 @@
     
     /* Prevent scrolling completely while portal is active */
     html.portal-active, body.portal-active {
-        overflow: hidden !important;
-        height: 100vh !important;
-    }
+    overflow: hidden !important;
+    height: 100vh !important;
+}
 
     /* Hide the default browser scrollbar while on the portal */
     html.portal-active::-webkit-scrollbar, 
@@ -138,18 +138,15 @@
     height: 100vh !important;
     background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
     z-index: 9999999 !important;
-    
-    /* Ensure it is flex by default to be centered */
     display: flex !important; 
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    
     overflow: hidden !important;
     transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Use this class only when the user has already entered */
+/* Logic for hiding the portal */
 #welcomePortal.hidden {
     display: none !important;
 }
@@ -197,12 +194,12 @@
         box-sizing: border-box !important;
     }
 
-    /* Smooth exit fade out */
-    #welcomePortal.disappearing {
-        opacity: 0 !important;
-        transform: scale(1.05) !important;
-        pointer-events: none !important;
-    }
+    /* Exit animation */
+#welcomePortal.disappearing {
+    opacity: 0 !important;
+    transform: scale(1.05) !important;
+    pointer-events: none !important;
+}
         
         /* --- FIXED FLOATING ELEMENTS --- */
         #feedback-btn {
@@ -396,7 +393,17 @@
     }
 </style>
 </head>
-<body class="hide-scrollbar">
+<body  
+    <script>
+    (function() {
+        if (localStorage.getItem('siteEntered') !== 'true') {
+            document.documentElement.classList.add('portal-active');
+            document.body.classList.add('portal-active');
+        }
+    })();
+</script> 
+    
+    class="hide-scrollbar">
 
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
@@ -2541,23 +2548,23 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
 
         // --- PORTAL FRAMEWORK & SCROLLBAR CONTROLLER ---
         window.enterSite = function() {
-            const portal = document.getElementById('welcomePortal');
-            if (portal) {
-                portal.classList.add('disappearing');
-                
-                // Track state across both styles of application space
-                localStorage.setItem('siteEntered', 'true');
-                sessionStorage.setItem('siteEntered', 'true');
-                
-                document.documentElement.classList.remove('portal-active');
-                document.body.classList.remove('portal-active');
-                document.body.classList.remove('hide-scrollbar');
-                
-                setTimeout(() => {
-                    portal.remove();
-                }, 700);
-            }
-        };
+        const portal = document.getElementById('welcomePortal');
+        if (portal) {
+            portal.classList.add('disappearing');
+            
+            // Remove the lock class to allow scrolling
+            document.body.classList.remove('portal-active');
+            document.documentElement.classList.remove('portal-active');
+            
+            // Save preference
+            localStorage.setItem('siteEntered', 'true');
+            
+            // Hide permanently after animation
+            setTimeout(() => {
+                portal.classList.add('hidden');
+            }, 600); 
+        }
+    };
 
        // Bypasses cover frames if the user has already visited (localStorage) or has the URL param
         function checkPortalStatus() {
