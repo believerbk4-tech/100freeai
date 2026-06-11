@@ -182,7 +182,7 @@
                 return element;
             };
 
-        // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
+                // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
             window.addEventListener('error', function (e) {
                 if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
                     const currentSrc = e.target.src || '';
@@ -197,8 +197,8 @@
         })();
     </script>
 
-    <!-- HIGH-PRIORITY INSTANT FAVICON LOAD ASSETS -->
-    <link rel="preload" as="image" type="image/webp" href="/images/favicon.webp" fetchpriority="high">
+    <!-- FIXED: Preloads as "fetch" with cross-origin to satisfy Chrome's strict preloader and clear the console warning -->
+    <link rel="preload" as="fetch" href="/images/favicon.webp" fetchpriority="high" crossorigin="anonymous">
     <link rel="icon" type="image/webp" href="/images/favicon.webp">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
