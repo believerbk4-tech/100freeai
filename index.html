@@ -2538,7 +2538,7 @@ if (localStorage.getItem('hasVoted') && ratingCard) {
             }
         });
     });
-    // --- INITIAL STATE SETUP ---
+   // --- INITIAL STATE SETUP ---
 // Apply classes to hide scrollbar immediately when the page reads the script
 if (sessionStorage.getItem('siteEntered') !== 'true') {
     document.documentElement.classList.add('portal-active');
@@ -2555,8 +2555,8 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
             document.body.classList.remove('portal-active');
             document.documentElement.classList.remove('portal-active');
             
-            // Save preference
-            localStorage.setItem('siteEntered', 'true');
+            // Save preference (Changed from localStorage to sessionStorage)
+            sessionStorage.setItem('siteEntered', 'true');
             
             // Hide permanently after animation
             setTimeout(() => {
@@ -2565,17 +2565,16 @@ if (sessionStorage.getItem('siteEntered') !== 'true') {
         }
     };
 
-       // Bypasses cover frames if the user has already visited (localStorage) or has the URL param
+       // Bypasses cover frames if the user has already visited (sessionStorage) or has the URL param
         function checkPortalStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const hasParamToken = urlParams.get('siteEntered') === 'true' || window.location.hash === '#directory';
             
-            // This checks if the user has ALREADY clicked "Launch Directory" in a previous session
-            const hasLocalToken = localStorage.getItem('siteEntered') === 'true';
+            // Fixed: This now checks if the user has clicked "Launch Directory" during the CURRENT session
+            const hasSessionToken = sessionStorage.getItem('siteEntered') === 'true';
 
-            if (hasLocalToken || hasParamToken) {
+            if (hasSessionToken || hasParamToken) {
                 // Ensure the state is set for the current session
-                localStorage.setItem('siteEntered', 'true');
                 sessionStorage.setItem('siteEntered', 'true');
                 
                 const portal = document.getElementById('welcomePortal');
