@@ -389,19 +389,18 @@
     @keyframes floatParticle {
         0%, 100% { transform: translateY(0) translateX(0); }
         50% { transform: translateY(-30px) translateX(10px); }
-    }
-</style>
+    }  
+    </style>
 </head>
-<body  
-    
-    (function() {
-        if (localStorage.getItem('siteEntered') !== 'true') {
-            document.documentElement.classList.add('portal-active');
-            document.body.classList.add('portal-active');
-        }
-    })();
-    
-    class="hide-scrollbar">
+<body class="hide-scrollbar">
+    <script>
+        (function() {
+            if (sessionStorage.getItem('siteEntered') !== 'true') {
+                document.documentElement.classList.add('portal-active');
+                document.body.classList.add('portal-active');
+            }
+        })();
+    </script>
 
     <div class="robot-ambient-container">
         <div class="floating-bot-particle" style="top: 10%; left: 10%;">🤖</div>
@@ -2334,30 +2333,32 @@
     import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    const portal = document.getElementById('welcomePortal');
+        const portal = document.getElementById('welcomePortal');
 
     // 1. INITIAL LOAD CHECK
-    // Only hide if the user has ALREADY clicked the button in a previous session
-    if (localStorage.getItem('siteEntered') === 'true') {
+    if (sessionStorage.getItem('siteEntered') === 'true') {
         if (portal) {
             portal.classList.add('hidden');
             document.body.style.overflow = 'auto';
+            document.documentElement.classList.remove('portal-active');
+            document.body.classList.remove('portal-active');
         }
     } else {
-        // If it's a new user, force lock scroll
         document.body.style.overflow = 'hidden';
+        document.documentElement.classList.add('portal-active');
+        document.body.classList.add('portal-active');
     }
 
-    // 2. BUTTON FUNCTION (Triggered ONLY by your Launch Directory button)
+    // 2. BUTTON FUNCTION
     window.enterSite = function() {
         if (portal) {
             portal.classList.add('disappearing');
             document.body.style.overflow = 'auto';
+            document.documentElement.classList.remove('portal-active');
+            document.body.classList.remove('portal-active');
             
-            // Save state so it stays hidden on return
-            localStorage.setItem('siteEntered', 'true');
+            sessionStorage.setItem('siteEntered', 'true');
             
-            // Remove from DOM after transition
             setTimeout(() => {
                 portal.classList.add('hidden');
             }, 700);
@@ -2538,64 +2539,6 @@ if (localStorage.getItem('hasVoted') && ratingCard) {
             }
         });
     });
-   // --- INITIAL STATE SETUP ---
-// Apply classes to hide scrollbar immediately when the page reads the script
-if (sessionStorage.getItem('siteEntered') !== 'true') {
-    document.documentElement.classList.add('portal-active');
-    document.body.classList.add('portal-active');
-}
-
-        // --- PORTAL FRAMEWORK & SCROLLBAR CONTROLLER ---
-        window.enterSite = function() {
-        const portal = document.getElementById('welcomePortal');
-        if (portal) {
-            portal.classList.add('disappearing');
-            
-            // Remove the lock class to allow scrolling
-            document.body.classList.remove('portal-active');
-            document.documentElement.classList.remove('portal-active');
-            
-            // Save preference (Changed from localStorage to sessionStorage)
-            sessionStorage.setItem('siteEntered', 'true');
-            
-            // Hide permanently after animation
-            setTimeout(() => {
-                portal.classList.add('hidden');
-            }, 600); 
-        }
-    };
-
-       // Bypasses cover frames if the user has already visited (sessionStorage) or has the URL param
-        function checkPortalStatus() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const hasParamToken = urlParams.get('siteEntered') === 'true' || window.location.hash === '#directory';
-            
-            // Fixed: This now checks if the user has clicked "Launch Directory" during the CURRENT session
-            const hasSessionToken = sessionStorage.getItem('siteEntered') === 'true';
-
-            if (hasSessionToken || hasParamToken) {
-                // Ensure the state is set for the current session
-                sessionStorage.setItem('siteEntered', 'true');
-                
-                const portal = document.getElementById('welcomePortal');
-                if (portal) {
-                    portal.style.display = 'none';
-                    portal.remove();
-                }
-                
-                document.documentElement.classList.remove('portal-active');
-                document.body.classList.remove('portal-active');
-                document.body.classList.remove('hide-scrollbar');
-                
-                // Clean the browser address bar if needed
-                if (urlParams.get('siteEntered') === 'true') {
-                    window.history.replaceState({}, document.title, window.location.pathname + (window.location.hash || ''));
-                }
-            }
-        }
-        
-        // Execute checker immediately
-        checkPortalStatus();
-    </script>
+</script>
 </body>
 </html>
