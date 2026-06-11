@@ -32,7 +32,7 @@
                 styleOverride.innerHTML = `
                     html, body {
                         overflow: visible !important;
-                        overflow-y: scroll !important;
+                        overflow-y: scroll !important; 
                         overflow-x: hidden !important; 
                         width: 100% !important;        
                         max-width: 100% !important;    
@@ -46,12 +46,6 @@
                         pointer-events: none !important; 
                         content-visibility: hidden;
                     }
-                    /* UNBREAKABLE CORNER SHIELD ON SUBPAGE/RELOAD */
-                    ::-webkit-scrollbar-corner { background: #000000 !important; width: 0px !important; height: 0px !important; }
-                    ::-webkit-scrollbar { width: 10px !important; height: 0px !important; }
-                    ::-webkit-scrollbar-track { background: #000000 !important; }
-                    ::-webkit-scrollbar-thumb { background: #1e1b4b !important; border: 2px solid #000000 !important; border-radius: 50px !important; }
-                    ::-webkit-scrollbar-thumb:hover { background: #4f46e5 !important; }
                 `;
             } else {
                 // Add the layout-hiding class dynamically only for a fresh home visit
@@ -112,12 +106,6 @@
                                     position: relative !important;
                                 }
                                 #welcomePortal { display: none !important; }
-                                /* UNBREAKABLE CORNER SHIELD ON HOMEPAGE ENTER BUTTON */
-                                ::-webkit-scrollbar-corner { background: #000000 !important; width: 0px !important; height: 0px !important; }
-                                ::-webkit-scrollbar { width: 10px !important; height: 0px !important; }
-                                ::-webkit-scrollbar-track { background: #000000 !important; }
-                                ::-webkit-scrollbar-thumb { background: #1e1b4b !important; border: 2px solid #000000 !important; border-radius: 50px !important; }
-                                ::-webkit-scrollbar-thumb:hover { background: #4f46e5 !important; }
                             `;
                             const forceReflow = document.documentElement.offsetHeight;
                         });
@@ -142,10 +130,9 @@
            2. IMAGE SOURCE FALLBACK INTERCEPTOR (IMAGE BROKEN FIX)
            ======================================================= */
         (function() {
-            // Securely capture the browser's true native image src setter to prevent execution recursions
             const nativeImgSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
-
             const originalCreateElement = document.createElement;
+            
             document.createElement = function(tagName) {
                 const element = originalCreateElement.call(document, tagName);
                 
@@ -154,9 +141,8 @@
                         set: function(value) {
                             let targetSrc = value;
                             if (typeof value === 'string' && value.includes('fallback-icon.png')) {
-                                targetSrc = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
+                                targetSrc = 'https://flaticon.com';
                             }
-                            // Bypass custom loops by executing the native browser engine property setter directly
                             if (nativeImgSrcDescriptor && nativeImgSrcDescriptor.set) {
                                 nativeImgSrcDescriptor.set.call(this, targetSrc);
                             } else {
@@ -176,7 +162,6 @@
                 return element;
             };
 
-            // THE 404 KILLER: Captures errors directly from layout renders and corrects them instantly
             window.addEventListener('error', function (e) {
                 if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
                     const currentSrc = e.target.src || '';
@@ -184,14 +169,14 @@
                     
                     if (currentSrc.includes('fallback-icon.png') || inlineOnError.includes('fallback-icon.png')) {
                         e.preventDefault(); 
-                        e.target.src = 'https://cdn-icons-png.flaticon.com/128/5278/5278402.png';
+                        e.target.src = 'https://flaticon.com';
                     }
                 }
             }, true); 
         })();
     </script>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100FreeAI | Best 100+ Free AI Tools Directory for Creators</title>
@@ -202,7 +187,7 @@
       "@type": "ItemList",
       "name": "100+ Free AI Tools Directory",
       "description": "A curated list of free AI tools for design, marketing, and writing.",
-      "url": "https://100freeai.netlify.app"
+      "url": "https://netlify.app"
     }
     </script>
 
