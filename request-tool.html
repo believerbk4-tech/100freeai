@@ -4,179 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- INSTANT RENDERING FAVICON ENGINES -->
     <link rel="icon" type="image/webp" href="/images/favicon.webp" fetchpriority="high">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
     
-    <!-- PRIMARY SEO META TAGS -->
     <title>Suggest an AI Tool - 100FreeAI</title>
-    <meta name="title" content="Suggest an AI Tool - 100FreeAI">
     <meta name="description" content="Help us grow! Suggest a completely free AI tool to be featured in the 100FreeAI directory folder.">
     <meta name="robots" content="index, follow">
 
-    <!-- OPEN GRAPH / FACEBOOK / LINKEDIN -->
+    <link rel="canonical" href="https://100freeai.netlify.app/request-tool">
+
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://netlify.app">
+    <meta property="og:url" content="https://100freeai.netlify.app/request-tool">
     <meta property="og:title" content="Suggest an AI Tool - 100FreeAI">
     <meta property="og:description" content="Help us grow! Suggest a completely free AI tool to be featured in the 100FreeAI directory folder.">
-    <meta property="og:image" content="https://netlify.app">
 
-    <!-- TWITTER CARD PREVIEW -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://netlify.app">
+    <meta property="twitter:url" content="https://100freeai.netlify.app/request-tool">
     <meta property="twitter:title" content="Suggest an AI Tool - 100FreeAI">
     <meta property="twitter:description" content="Help us grow! Suggest a completely free AI tool to be featured in the 100FreeAI directory folder.">
-    <meta property="twitter:image" content="https://netlify.app">
-
-    <!-- CANONICAL LINK -->
-    <link rel="canonical" href="https://netlify.app">
-
-    <!-- BRAND FAVICON ENGINE -->
-    <link rel="icon" type="image/webp" href="/images/favicon.webp" fetchpriority="high">
 
     <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .container-box {
-            max-width: 500px;
-            width: 100%;
-            padding: 30px;
-            background: #1a1a1a;
-            border: 1px solid #C8A24D;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            box-sizing: border-box;
-        }
+        body { background-color: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container-box { max-width: 500px; width: 100%; padding: 30px; background: #1a1a1a; border: 1px solid #C8A24D; border-radius: 8px; display: flex; flex-direction: column; gap: 15px; position: relative; box-sizing: border-box; }
         .container-box h3, .container-box h2 { margin-top: 0; color: #C8A24D; }
-        
-        .tool-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-        }
-        .tool-form input, .tool-form textarea {
-            padding: 12px;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            border-radius: 4px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+        .tool-form { display: flex; flex-direction: column; gap: 15px; width: 100%; }
+        .tool-form input, .tool-form textarea { padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; width: 100%; box-sizing: border-box; }
         .tool-form textarea { height: 120px; resize: vertical; }
-        
-        .submit-btn, .home-btn {
-            background: #C8A24D;
-            color: #000;
-            padding: 12px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 4px;
-            margin-top: 10px;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-        }
+        .submit-btn, .home-btn { background: #C8A24D; color: #000; padding: 12px; border: none; cursor: pointer; font-weight: bold; border-radius: 4px; margin-top: 10px; text-align: center; text-decoration: none; display: block; width: 100%; box-sizing: border-box; }
         .submit-btn:hover, .home-btn:hover { background: #b08d3d; }
-        .submit-btn:disabled { background: #666; cursor: not-allowed; }
-        
-        .back-home {
-            color: #888;
-            text-decoration: none;
-            font-size: 0.9rem;
-            align-self: flex-start;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: color 0.2s ease;
-            margin-bottom: 5px;
-        }
+        .back-home { color: #888; text-decoration: none; font-size: 0.9rem; align-self: flex-start; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s ease; margin-bottom: 5px; }
         .back-home:hover { color: #C8A24D; }
-
         .hidden { display: none !important; }
         .success-view { text-align: center; }
         .success-view p { color: #ccc; line-height: 1.6; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-
     <div class="container-box">
-        <!-- 1. FIXED BACK BUTTON: Passes all verification tokens and bypass targets directly -->
-        <a href="/?siteEntered=true#directory" class="back-home" onclick="localStorage.setItem('siteEntered', 'true'); sessionStorage.setItem('siteEntered', 'true');">← Back to Home</a>
-
-        <!-- VIEW 1: THE INPUT FORM -->
+        <a href="/" class="back-home">← Back to Home</a>
         <div id="formView">
             <h3>Suggest an AI Tool</h3>
             <p style="color: #ccc; margin-bottom: 15px;">Help us grow our library. Tell us which tool you want to see next.</p>
-            
-            <form id="ajaxForm" name="tool-requests" method="POST" data-netlify="true" class="tool-form" autocomplete="on">
-                <!-- MANDATORY FOR NETLIFY BACKGROUND SUBMISSIONS -->
+            <form id="ajaxForm" name="tool-requests" method="POST" data-netlify="true" class="tool-form">
                 <input type="hidden" name="form-name" value="tool-requests">
-
-                <!-- ADDED AUTOCOMPLETE RULES TO SILENCE BROWSER CONSOLE WARNINGS -->
-                <input type="text" name="tool-name" placeholder="Name of the AI Tool" autocomplete="organization" required>
-                <input type="email" name="email" placeholder="Your Email (optional)" autocomplete="email">
-                <textarea name="message" placeholder="Why is this tool great?" autocomplete="off" required></textarea>
+                <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
+                <input type="email" name="email" placeholder="Your Email (optional)">
+                <textarea name="message" placeholder="Why is this tool great?" required></textarea>
                 <button type="submit" id="submitBtn" class="submit-btn">Submit Suggestion</button>
             </form>
         </div>
-
-        <!-- VIEW 2: THE THANK YOU MESSAGE (Swaps instantly via script) -->
         <div id="successView" class="success-view hidden">
             <h2>Suggestion Received! 🚀</h2>
             <p>Thank you, Fahad! Your suggestion has been successfully submitted. We will review the AI tool and add it to our directory soon.</p>
-            
-            <!-- 2. FIXED SUCCESS HOME BUTTON: Passes tokens to prevent portal reset upon submission completion -->
-            <a href="/?siteEntered=true#directory" class="home-btn" onclick="localStorage.setItem('siteEntered', 'true'); sessionStorage.setItem('siteEntered', 'true');">Go Back Home</a>
+            <a href="/" class="home-btn">Go Back Home</a>
         </div>
     </div>
-
-    <!-- Background Javascript handling form processing without page reload -->
     <script>
         document.getElementById('ajaxForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Stop page reload completely!
-
+            e.preventDefault();
             const form = e.target;
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = "Sending...";
-
-            const formData = new FormData(form);
-
-            // Send data directly to Netlify's core endpoint matching your live index file
             fetch("/", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams(formData).toString()
+                body: new URLSearchParams(new FormData(form)).toString()
             })
             .then(() => {
-                // Success! Swap views instantly without reloading the browser
                 document.getElementById('formView').classList.add('hidden');
                 document.getElementById('successView').classList.remove('hidden');
             })
-            .catch((error) => {
+            .catch(() => {
                 alert("Submission failed. Please check your internet connection.");
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Submit Suggestion";
             });
         });
     </script>
-
 </body>
 </html>
-
