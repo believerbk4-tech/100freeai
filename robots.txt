@@ -11,3 +11,4 @@ Disallow: /marketing-preview.png
 
 # Tell Google exactly where the map is
 Sitemap: https://100freeai.netlify.app/sitemap.xml
+
