@@ -1,1 +1,2 @@
-/*    /index.html   200
+# Smoothly handle missing pages by loading index.html while maintaining static subpage access
+/*    /index.html   404
