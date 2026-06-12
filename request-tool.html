@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Suggest an AI Tool</title>
     
-    <!-- FIXED SVG ROBOT FAVICON LINK WITH FULL STANDARDIZED SCHEMA MAP -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <!-- PRIMARY SEO META TAGS -->
+    <title>Suggest an AI Tool - 100FreeAI</title>
+    <meta name="title" content="Suggest an AI Tool - 100FreeAI">
+    <meta name="description" content="Help us grow! Suggest a completely free AI tool to be featured in the 100FreeAI directory folder.">
+    <meta name="robots" content="index, follow">
+
+    <!-- OPEN GRAPH / FACEBOOK / LINKEDIN -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://netlify.app">
+    <meta property="og:title" content="Suggest an AI Tool - 100FreeAI">
+    <meta property="og:description" content="Help us grow! Suggest a completely free AI tool to be featured in the 100FreeAI directory folder.">
+    <meta property="og:image" content="https://netlify.app">
+
+    <!-- TWITTER CARD PREVIEW -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://netlify.app">
+    <meta property="twitter:title" content="Suggest an AI Tool - 100FreeAI">
+    <meta property="twitter:description" content="Help us grow! Suggest a completely free AI tool to be featured in the 100FreeAI directory folder.">
+    <meta property="twitter:image" content="https://netlify.app">
+
+    <!-- CANONICAL LINK -->
+    <link rel="canonical" href="https://netlify.app">
+
+    <!-- BRAND FAVICON ENGINE -->
+    <link rel="icon" type="image/webp" href="/images/favicon.webp" fetchpriority="high">
 
     <style>
         body {
@@ -98,13 +120,14 @@
             <h3>Suggest an AI Tool</h3>
             <p style="color: #ccc; margin-bottom: 15px;">Help us grow our library. Tell us which tool you want to see next.</p>
             
-            <form id="ajaxForm" name="tool-requests" method="POST" data-netlify="true" class="tool-form">
+            <form id="ajaxForm" name="tool-requests" method="POST" data-netlify="true" class="tool-form" autocomplete="on">
                 <!-- MANDATORY FOR NETLIFY BACKGROUND SUBMISSIONS -->
                 <input type="hidden" name="form-name" value="tool-requests">
 
-                <input type="text" name="tool-name" placeholder="Name of the AI Tool" required>
-                <input type="email" name="email" placeholder="Your Email (optional)">
-                <textarea name="message" placeholder="Why is this tool great?" required></textarea>
+                <!-- ADDED AUTOCOMPLETE RULES TO SILENCE BROWSER CONSOLE WARNINGS -->
+                <input type="text" name="tool-name" placeholder="Name of the AI Tool" autocomplete="organization" required>
+                <input type="email" name="email" placeholder="Your Email (optional)" autocomplete="email">
+                <textarea name="message" placeholder="Why is this tool great?" autocomplete="off" required></textarea>
                 <button type="submit" id="submitBtn" class="submit-btn">Submit Suggestion</button>
             </form>
         </div>
