@@ -16,6 +16,7 @@ In a world flooded with AI, finding the *right* tool is hard. 100FreeAI is built
 * **100+ Curated Tools:** Categorized neatly for seamless discovery and navigation.
 * **Real-Time User Ratings:** Powered by **Firebase Realtime Database** so the community determines the top tools.
 * **Security First:** Protected by **Firebase App Check** and **reCAPTCHA Enterprise** to prevent rating manipulation and bot spam.
+* **Monetization:** Ad-supported via **Monetag** to ensure the platform remains free for all users.
 * **SEO Optimized:** Built with semantic HTML5, high-priority asset delivery schemas, and JSON-LD FAQ structural data for maximum search indexing.
 
 ## 📁 Repository Structure
@@ -25,7 +26,7 @@ In a world flooded with AI, finding the *right* tool is hard. 100FreeAI is built
 ├── faq.html                # Structured FAQ portal with JSON-LD Schema
 ├── index.html              # Main platform application entry point
 ├── marketing-preview.png   # High-resolution social media sharing banner
-├── privacy-policy.html     # Cookie, AdSense, and database compliance logs
+├── privacy-policy.html     # Cookie, Monetag advertising, and database compliance logs
 ├── request-tool.html       # Netlify forms AJAX curation suggestion gateway
 ├── robots.txt              # Standard crawling permissions engine
 ├── sitemap.xml             # Search engine map with prioritized asset keys
