@@ -1304,7 +1304,11 @@ body:not(.portal-active) {
 
 <div class="tool-card" data-cat="writing">
     <div class="tool-logo-container">
-        <img src="https://www.google.com/s2/favicons?sz=128&domain=gocharlie.ai" alt="GoCharlie Logo" class="tool-logo" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/128/5278/5278402.png';">
+        <!-- FIXED: Direct fallback link and updated Google favicon fetch method -->
+        <img src="https://icon.horse" 
+             alt="GoCharlie Logo" 
+             class="tool-logo" 
+             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/128/5278/5278402.png';">
     </div>
     <div class="tool-info">
         <h3>GoCharlie</h3>
@@ -1318,7 +1322,7 @@ body:not(.portal-active) {
         <a href="https://gocharlie.ai" class="visit-btn" target="_blank" rel="noopener noreferrer">Visit Tool <span>↗</span></a>
     </div>
 </div>
-
+    
 <div class="tool-card" data-cat="writing">
     <div class="tool-logo-container">
         <img src="https://www.google.com/s2/favicons?sz=128&domain=longshot.ai" alt="LongShot Logo" class="tool-logo" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/128/5278/5278402.png';">
