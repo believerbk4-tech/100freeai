@@ -1745,11 +1745,12 @@ body:not(.portal-active) {
 
 <div class="tool-card" data-cat="design">
     <div class="tool-logo-container">
-        <!-- FIXED FINALLY: Direct permanent icon file to ensure a unique, beautifully unclipped logo -->
-        <img src="https://flaticon.com" 
-             alt="Vector Magic Logo" 
+        <!-- FIXED: Added the complete icon path to stop CORB blocking an HTML homepage -->
+        <img src="https://icon.horse" 
+             alt="VectorMagic Logo" 
              class="tool-logo" 
-             loading="lazy">
+             loading="lazy"
+             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/128/5278/5278402.png';">
     </div>
     <div class="tool-info">
         <h3>Vector Magic</h3>
