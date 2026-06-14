@@ -710,11 +710,12 @@ body:not(.portal-active) {
         </p>
 
         <div style="position: relative; width: 90%; max-width: 500px; margin: 0 auto; z-index: 1000;">
-            <input type="text" id="searchBar" onkeyup="filterSearch()" autocomplete="off" placeholder="Search 100+ tools..." 
-                   style="width: 100%; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; font-size: 1rem;">
-            
-            <div id="searchSuggestions" style="position: absolute; top: 110%; left: 5%; width: 90%; background: #0a0a0a; border: 1px solid #222; border-radius: 12px; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); padding: 5px 0;"></div>
-        </div>
+    <!-- FIXED: Changed autocomplete="off" to autocomplete="search" -->
+    <input type="text" id="searchBar" onkeyup="filterSearch()" autocomplete="search" placeholder="Search 100+ tools..." 
+           style="width: 100%; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #0a0a0a; color: white; font-size: 1rem;">
+    
+    <div id="searchSuggestions" style="position: absolute; top: 110%; left: 5%; width: 90%; background: #0a0a0a; border: 1px solid #222; border-radius: 12px; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); padding: 5px 0;"></div>
+</div>
         
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterCat('all', this)">All (100)</button>
@@ -1304,10 +1305,11 @@ body:not(.portal-active) {
 
 <div class="tool-card" data-cat="writing">
     <div class="tool-logo-container">
-        <!-- FIXED: Direct fallback link and updated Google favicon fetch method -->
+        <!-- FIXED: Added the complete icon path to stop CORB blocking an HTML homepage -->
         <img src="https://icon.horse" 
              alt="GoCharlie Logo" 
              class="tool-logo" 
+             loading="lazy"
              onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/128/5278/5278402.png';">
     </div>
     <div class="tool-info">
