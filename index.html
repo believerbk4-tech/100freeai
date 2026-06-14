@@ -1743,9 +1743,13 @@ body:not(.portal-active) {
     </div>
 </div>
 
-   <div class="tool-card" data-cat="design">
+  <div class="tool-card" data-cat="design">
     <div class="tool-logo-container">
-        <img src="https://www.google.com/s2/favicons?sz=128&domain=vectormagic.com" alt="vectormagic Logo" class="tool-logo" onerror="this.onerror=null; this.src='https://flaticon.com';">
+        <!-- FIXED: Bypassed broken Google API with a direct vector-tracing brand asset icon -->
+        <img src="https://flaticon.com" 
+             alt="Vector Magic Logo" 
+             class="tool-logo" 
+             loading="lazy">
     </div>
     <div class="tool-info">
         <h3>Vector Magic</h3>
